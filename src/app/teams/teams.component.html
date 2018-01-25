@@ -1,0 +1,21 @@
+<h2>My Team</h2>
+<div>
+  <label>Team name:
+    <input #teamName />
+  </label>
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button (click)="add(teamName.value); teamName.value=''">
+    add
+  </button>
+</div>
+<ul class="teams">
+  <li *ngFor="let team of teams"
+    [class.selected]="team === selectedTeam"
+    (click)="onSelect(team)">
+    <span class="badge">{{team.id}}</span> {{team.name}}
+    <button class="delete" title="delete team"
+      (click)="delete(team)">x</button>
+  </li>
+</ul>
+
+<app-team-detail [team]="selectedTeam"></app-team-detail>
