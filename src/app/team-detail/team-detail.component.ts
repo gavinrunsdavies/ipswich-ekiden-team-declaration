@@ -1,6 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Location } from '@angular/common';
 
 import { Team } from '../team';
+import { TeamService }  from '../team.service';
 
 @Component({
   selector: 'app-team-detail',
@@ -10,9 +13,25 @@ import { Team } from '../team';
 export class TeamDetailComponent implements OnInit {
   @Input() team: Team;
   
-  constructor() { }  
+  constructor(
+    private route: ActivatedRoute,
+    private teamService: TeamService,
+    private location: Location
+  ) { }  
 
   ngOnInit() {
+    this.getTeam();
+  }
+  
+  getTeam(): void {
+    const id = +this.route.snapshot.paramMap.get('id');
+    this.teamService.getTeam(id)
+      .subscribe(team => this.team = team);
+  }
+
+  
+  goBack(): void {
+    this.location.back();
   }
 
   save(): void {

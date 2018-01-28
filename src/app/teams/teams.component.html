@@ -9,12 +9,12 @@
   </button>
 </div>
 <ul class="teams">
-  <li *ngFor="let team of teams"
-    [class.selected]="team === selectedTeam"
-    (click)="onSelect(team)">
+  <li *ngFor="let team of teams">
+   <a routerLink="/detail/{{team.id}}">
     <span class="badge">{{team.id}}</span> {{team.name}}
     <button class="delete" title="delete team"
       (click)="delete(team)">x</button>
+      </a>
   </li>
 </ul>
 
