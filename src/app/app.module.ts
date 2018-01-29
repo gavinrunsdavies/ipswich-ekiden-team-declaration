@@ -13,9 +13,9 @@ import { AppComponent } from './app.component';
 import { TeamsComponent } from './teams/teams.component';
 import { TeamDetailComponent } from './team-detail/team-detail.component';
 import { TeamService } from './team.service';
+import { TeamSearchComponent } from './team-search/team-search.component';
 import { MessagesComponent } from './messages/messages.component';
 import { MessageService } from './message.service';
-import { TeamSearchComponent } from './team-search/team-search.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 
 @NgModule({
@@ -30,6 +30,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
   imports: [
     BrowserModule,
     FormsModule,
+    AppRoutingModule,
     HttpClientModule,
 
     // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
@@ -38,7 +39,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false }
     ),
-    NgbModule.forRoot()
+    NgbModule.forRoot()    
   ],
   providers: [TeamService, MessageService],
   bootstrap: [AppComponent]

@@ -1,24 +1,39 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { of } from 'rxjs/observable/of';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
+import { Observable } from 'rxjs/Observable';
+import { of } from 'rxjs/observable/of';
+import { catchError, map, tap } from 'rxjs/operators';
+
 import { Team } from './team';
-import { TEAMS } from './mock-teams';
 import { MessageService } from './message.service';
+
+const httpOptions = {
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+};
 
 @Injectable()
 export class TeamService {
 
   private teamsUrl = 'api/teams';  // URL to web api
   
-  const httpOptions = {
-    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-  };
-  
   constructor(
     private http: HttpClient,
     private messageService: MessageService) { }
+    
+  /** GET team by id. Return `undefined` when id not found */
+  getTeamNo404<Data>(id: number): Observable<Team> {
+    const url = `${this.teamsUrl}/?id=${id}`;
+    return this.http.get<Team[]>(url)
+      .pipe(
+        map(teams => teams[0]), // returns a {0|1} element array
+        tap(h => {
+          const outcome = h ? `fetched` : `did not find`;
+          this.log(`${outcome} team id=${id}`);
+        }),
+        catchError(this.handleError<Team>(`getTeam id=${id}`))
+      );
+  }
 
   getTeams(): Observable<Team[]> {    
     return this.http.get<Team[]>(this.teamsUrl)
@@ -46,7 +61,7 @@ export class TeamService {
   }
   
   /** POST: add a new team to the server */
-  addHero (team: Team): Observable<Team> {
+  addTeam (team: Team): Observable<Team> {
     return this.http.post<Team>(this.teamsUrl, team, httpOptions).pipe(
       tap((team: Team) => this.log(`added team w/ id=${team.id}`)),
       catchError(this.handleError<Team>('addTeam'))
