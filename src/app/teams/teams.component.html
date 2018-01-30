@@ -8,6 +8,16 @@
     add
   </button>
 </div>
+<ul>
+  <li *ngFor="let team of teams | paginate: { itemsPerPage: 2, currentPage: currentPageNumber }">  
+  <a routerLink="/detail/{{team.id}}">
+    <span class="badge">{{team.id}}</span> {{team.name}}
+    <button class="delete" title="delete team"
+      (click)="delete(team)">x</button>
+      </a></li>
+</ul>
+<pagination-controls (pageChange)="currentPageNumber = $event"></pagination-controls>
+
 <ul class="teams">
   <li *ngFor="let team of teams">
    <a routerLink="/detail/{{team.id}}">

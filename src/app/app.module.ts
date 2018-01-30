@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule }    from '@angular/common/http';
 import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 import { InMemoryDataService }  from './in-memory-data.service';
 
@@ -39,7 +40,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     HttpClientInMemoryWebApiModule.forRoot(
       InMemoryDataService, { dataEncapsulation: false }
     ),
-    NgbModule.forRoot()    
+    NgbModule.forRoot(),
+    NgxPaginationModule
   ],
   providers: [TeamService, MessageService],
   bootstrap: [AppComponent]

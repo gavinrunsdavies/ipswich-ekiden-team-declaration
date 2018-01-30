@@ -8,7 +8,7 @@ import { TeamService } from '../team.service';
   styleUrls: ['./teams.component.css']
 })
 export class TeamsComponent implements OnInit {
- 
+  currentPageNumber: number = 1;
   teams: Team[];  
   
   constructor(private teamService: TeamService) { }
