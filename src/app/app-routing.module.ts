@@ -6,7 +6,6 @@ import { TeamsComponent }      from './teams/teams.component';
 import { TeamDetailComponent }  from './team-detail/team-detail.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/dashboard', pathMatch: 'full' },
   { path: 'dashboard', component: DashboardComponent },
   { path: 'detail/:id', component: TeamDetailComponent },
   { path: 'teams', component: TeamsComponent }

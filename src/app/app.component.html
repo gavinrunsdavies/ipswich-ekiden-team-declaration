@@ -1,14 +1,71 @@
-<!--The content below is only a placeholder and can be replaced.-->
+<div class="container">
+ <header class="navbar navbar-light navbar-fixed-top navbar-expand-lg"> 
+  
+   <a class="navbar-brand" [routerLink]="['/']" (click)="navbarCollapsed = true">Ipswich Ekiden Team Declaration</a> 
+  
+   <button class="navbar-toggler navbar-toggler-right" type="button" (click)="navbarCollapsed = !navbarCollapsed" 
+           [attr.aria-expanded]="!navbarCollapsed" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation"> 
+     <span class="navbar-toggler-icon"></span> 
+   </button> 
+  
+   <div class="navbar-collapse" [ngbCollapse]="navbarCollapsed" id="navbarContent">     
+     <ul class="navbar-nav mr-auto"> 
+       <li class="nav-item" [routerLinkActive]="['active']"> 
+         <a class="nav-link" [routerLink]="['/']" (click)="navbarCollapsed = true">Teams</a> 
+       </li> 
+       <li class="nav-item" [routerLinkActive]="['active']"> 
+         <a class="nav-link" [routerLink]="['/register']" (click)="navbarCollapsed = true">Register</a> 
+       </li>        
+     </ul> 
+      <span class="d-none d-lg-inline"> 
+    <form class="form-inline my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="text" placeholder="Email" aria-label="Email">
+      <input class="form-control mr-sm-2" type="password" placeholder="Password" aria-label="Password">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
+    </form>
+    </span>    
+   </div> 
+ </header> 
+</div>     
+     <main role="main">     
+      <div class="jumbotron">
+        <div class="container">
+          <h1 class="display-4">Welcome to {{ title }}! </h1>
+          <p>Description of what this is for and how to do it. etc</p>
+        </div>
+      </div>
+
+      <div class="container">
+        <!-- Example row of columns -->
+        <div class="row">
+          <div class="col-md-8">
+            <app-teams></app-teams>
+            <h2>Declared Teams</h2>
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+            <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+          </div>
+          <div class="col-md-4">
+            <h2>Team Details</h2>
+            <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+            <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+          </div>     
+        </div>
+
+        <hr>
+
+      </div> <!-- /container -->
+
+    </main>
+
+    <footer class="container">
+      <p>&copy; Ipswich Ekiden Relays 2018</p>
+    </footer>
+    
 <div style="text-align:center">
   <h1>
-    Welcome to {{ title }}!    
+     
   </h1>
-  <nav>
-    <a routerLink="/dashboard">Dashboard</a>
-    <a routerLink="/teams">Teams</a>
-  </nav>
   <router-outlet></router-outlet>
   <app-messages></app-messages>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
 </div>
 

@@ -1,3 +1,5 @@
+import { Runner } from './runner';
+
 export class Team {
   id: number;
   name: string;
