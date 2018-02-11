@@ -2,8 +2,8 @@ import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
-import { Team } from '../team';
-import { TeamService }  from '../team.service';
+import { Team } from '../models/team';
+import { TeamService }  from '../services/team.service';
 
 @Component({
   selector: 'app-team-detail',

@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Observable';
 import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 
-import { Team } from './team';
+import { Team } from '../models/team';
 import { MessageService } from './message.service';
 
 const httpOptions = {
@@ -92,7 +92,7 @@ export class TeamService {
   }
 
   private log(message: string) {
-    this.messageService.add('TeamService: ' + message);
+    //this.messageService.add('TeamService: ' + message);
   }
   
   /**

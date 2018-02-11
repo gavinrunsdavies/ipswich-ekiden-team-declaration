@@ -8,8 +8,8 @@ import {
    debounceTime, distinctUntilChanged, switchMap
  } from 'rxjs/operators';
 
-import { Team } from '../team';
-import { TeamService } from '../team.service';
+import { Team } from '../models/team';
+import { TeamService } from '../services/team.service';
 
 @Component({
   selector: 'app-team-search',
