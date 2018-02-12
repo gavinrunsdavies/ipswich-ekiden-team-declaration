@@ -29,11 +29,11 @@ export class LoginComponent implements OnInit {
     }
  
     login() {
-        console.log('login called');
         this.loading = true;
         this.authenticationService.login(this.model.username, this.model.password)
             .subscribe(
                 data => {
+                    this.loading = false; // tODO needed?
                     this.router.navigate([this.returnUrl]);
                 },
                 error => {

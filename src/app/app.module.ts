@@ -9,7 +9,6 @@ import { fakeBackendProvider } from './helpers/fake-backend';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
-//import { HttpModule } from '@angular/http'; // Needed? deprecated?
 
 import { InMemoryDataService }  from './in-memory-data.service';
 
@@ -17,10 +16,9 @@ import { AppRoutingModule }     from './app-routing.module';
 
 import { AppComponent } from './app.component';
 import { TeamsComponent } from './teams/teams.component';
-import { TeamDetailComponent } from './team-detail/team-detail.component';
-import { TeamSearchComponent } from './team-search/team-search.component';
-import { MessagesComponent } from './messages/messages.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { TeamDetailComponent } from './team-detail/team-detail.component';
+import { MessagesComponent } from './messages/messages.component';
 import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { StatusComponent } from './status/status.component';
@@ -33,14 +31,15 @@ import { TeamService } from './services/team.service';
 import { EnsureAuthenticated } from './services/ensure-authenticated.service';
 import { LoginRedirect } from './services/login-redirect.service';
 
+import { JwtInterceptor  } from './helpers/jwt.interceptor';
+
 @NgModule({
   declarations: [
     AppComponent,
-    TeamsComponent,
+    DashboardComponent
+    TeamsComponent,    
     TeamDetailComponent,
     MessagesComponent,
-    TeamSearchComponent,
-    DashboardComponent,
     LoginComponent,
     RegisterComponent,
     StatusComponent,
@@ -66,6 +65,11 @@ import { LoginRedirect } from './services/login-redirect.service';
     MessageService,
     AuthService,
     UserService,
+    {
+        provide: HTTP_INTERCEPTORS,
+        useClass: JwtInterceptor,
+        multi: true
+    },
     EnsureAuthenticated,
     LoginRedirect,
     // provider used to create fake backend

@@ -1,6 +1,6 @@
  <header class="navbar navbar-light navbar-fixed-top navbar-expand-lg"> 
   
-   <a class="navbar-brand" [routerLink]="['/']" (click)="navbarCollapsed = true">Ipswich Ekiden Team Declaration</a> 
+   <a class="navbar-brand" [routerLink]="['/']" (click)="navbarCollapsed = true">Ekiden Team Declaration</a> 
   
    <button class="navbar-toggler navbar-toggler-right" type="button" (click)="navbarCollapsed = !navbarCollapsed" 
            [attr.aria-expanded]="!navbarCollapsed" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation"> 
@@ -15,6 +15,9 @@
        <li class="nav-item" [routerLinkActive]="['active']"> 
          <a class="nav-link" [routerLink]="['/register']" (click)="navbarCollapsed = true">Register</a> 
        </li>        
+        <li class="nav-item" [routerLinkActive]="['active']"> 
+         <a class="nav-link" [routerLink]="['/dashboard']" (click)="navbarCollapsed = true">My Teams</a> 
+       </li>     
      </ul> 
      <app-status></app-status>    
    </div> 
@@ -24,5 +27,5 @@
   <router-outlet></router-outlet>
  </main>
 <footer class="container">
-  <p>&copy; Ipswich Ekiden Relays 2018</p>
+  <p class="text-align: center">&copy; Ipswich Ekiden Relays 2018</p>
 </footer>

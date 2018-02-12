@@ -43,11 +43,19 @@ export class TeamService {
     );
   }
   
+  getMyTeams(): Observable<Team[]> {    
+    return this.http.get<Team[]>(this.teamsUrl)
+    .pipe(
+      tap(teams => this.log(`fetched teams`)),
+      catchError(this.handleError('getMyTeams', []))
+    );
+  }
+  
   /** GET team by id. Will 404 if id not found */
   getTeam(id: number): Observable<Team> {
     const url = `${this.teamsUrl}/${id}`;
     return this.http.get<Team>(url).pipe(
-      tap(_ => this.log(`fetched team id=${id}`)),
+      tap((team: Team)=> this.log(`fetched team id=${id} ${JSON.stringify(team)}`)),
       catchError(this.handleError<Team>(`getTeam id=${id}`))
     );
   }
@@ -92,7 +100,7 @@ export class TeamService {
   }
 
   private log(message: string) {
-    //this.messageService.add('TeamService: ' + message);
+    console.log('TeamService: ' + message);
   }
   
   /**

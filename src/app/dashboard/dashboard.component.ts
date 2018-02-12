@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getTeams(): void {
-    this.teamService.getTeams()
+    this.teamService.getMyTeams()
       .subscribe(teams => this.teams = teams.slice(1, 5));
   }
 }

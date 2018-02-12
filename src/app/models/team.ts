@@ -6,6 +6,7 @@ export class Team {
   category: TeamCategory;
   captainId: number;
   clubId: number;
+  clubName: string;
   complete: boolean;
   members: Runner[];
 }

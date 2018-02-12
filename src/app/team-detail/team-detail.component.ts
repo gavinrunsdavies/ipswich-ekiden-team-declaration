@@ -20,22 +20,5 @@ export class TeamDetailComponent implements OnInit {
   ) { }  
 
   ngOnInit() {
-    this.getTeam();
   }
-  
-  getTeam(): void {
-    const id = +this.route.snapshot.paramMap.get('id');
-    this.teamService.getTeam(id)
-      .subscribe(team => this.team = team);
-  }
-
-  
-  goBack(): void {
-    this.location.back();
-  }
-
-  save(): void {
-   this.teamService.updateTeam(this.team)
-     .subscribe(() => this.goBack());
- }
 }

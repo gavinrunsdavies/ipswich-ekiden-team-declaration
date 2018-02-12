@@ -7,9 +7,11 @@ import { TeamService } from '../services/team.service';
   templateUrl: './teams.component.html',
   styleUrls: ['./teams.component.css']
 })
+
 export class TeamsComponent implements OnInit {
   currentPageNumber: number = 1;
-  teams: Team[];  
+  teams: Team[]; 
+  selectedTeam: Team;  
   
   constructor(private teamService: TeamService) { }
 
@@ -22,17 +24,9 @@ export class TeamsComponent implements OnInit {
       .subscribe(teams => this.teams = teams);
   }
   
-  add(name: string): void {
-    name = name.trim();
-    if (!name) { return; }
-    this.teamService.addTeam({ name } as Team)
-      .subscribe(team => {
-        this.teams.push(team);
-      });
-  }
-  
-  delete(team: Team): void {
-    this.teams = this.teams.filter(h => h !== team);
-    this.teamService.deleteTeam(team).subscribe();
-  }
+  showTeam(team: Team): void {
+    console.log ("showTeam called");
+    this.teamService.getTeam(team.id)
+      .subscribe(team => this.selectedTeam = team);
+  }  
 }
