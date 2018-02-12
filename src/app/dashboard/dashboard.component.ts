@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Team } from '../models/team';
+import { TeamCategory } from '../models/team';
 import { TeamService } from '../services/team.service';
 
 @Component({
@@ -9,11 +10,15 @@ import { TeamService } from '../services/team.service';
 })
 export class DashboardComponent implements OnInit {
   teams: Team[] = [];
-
-  constructor(private teamService: TeamService) { }
+  keys: any[];
+  categories = TeamCategory;
+  
+  constructor(private teamService: TeamService) {
+    this.keys = Object.keys(this.categories).filter(f => !isNaN(Number(f)));
+  }
 
   ngOnInit() {
-    this.getTeams();
+    //this.getTeams();
   }
 
   getTeams(): void {

@@ -11,4 +11,4 @@ export class Team {
   members: Runner[];
 }
 
-enum TeamCategory {MensOpen, LadiesOpen, MaleVet, LadiesVet, SuperVet, Mixed, Over60, Over70, Unaffiliated}
+export enum TeamCategory {MensOpen = 1, LadiesOpen = 2, MaleVet = 3, LadiesVet = 4, SuperVet = 5, Mixed = 6, Over60 = 7, Over70 = 8, Unaffiliated = 0}

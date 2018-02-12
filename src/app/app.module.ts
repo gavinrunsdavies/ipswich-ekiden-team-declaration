@@ -2,15 +2,13 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS}    from '@angular/common/http';
-import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { Pipe, PipeTransform } from '@angular/core';
 
 // used to create fake backend
 import { fakeBackendProvider } from './helpers/fake-backend';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
-
-import { InMemoryDataService }  from './in-memory-data.service';
 
 import { AppRoutingModule }     from './app-routing.module';
 
@@ -33,30 +31,26 @@ import { LoginRedirect } from './services/login-redirect.service';
 
 import { JwtInterceptor  } from './helpers/jwt.interceptor';
 
+import { FilterPipe } from './filter.pipe'
+
 @NgModule({
   declarations: [
     AppComponent,
-    DashboardComponent
+    DashboardComponent,
     TeamsComponent,    
     TeamDetailComponent,
     MessagesComponent,
     LoginComponent,
     RegisterComponent,
     StatusComponent,
-    HomeComponent
+    HomeComponent,
+    FilterPipe
   ],
   imports: [
     BrowserModule,
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-
-    // The HttpClientInMemoryWebApiModule module intercepts HTTP requests
-    // and returns simulated server responses.
-    // Remove it when a real server is ready to receive requests.
-    HttpClientInMemoryWebApiModule.forRoot(
-      InMemoryDataService, { dataEncapsulation: false }
-    ),
     NgbModule.forRoot(),
     NgxPaginationModule
   ],

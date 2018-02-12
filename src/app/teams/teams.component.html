@@ -1,47 +1,37 @@
 <div class="container">
   <div class="row">
-   <div class="col-md-8">
+    <div class="col-md-8">
+      <h2>Teams</h2>
       <div class="container">
-        <div class="row">
-          <div class="col-md-8">
-            <h2>Teams</h2>
-            <div class="container">
-              <form>
-                <div class="form-row align-items-right">    
-                  <div class="col-auto">
-                    <div class="input-group mb-2">
-                      <div class="input-group-prepend">
-                        <div class="input-group-text"><span class="glyphicon glyphicon-search">Mag</span></div>
-                      </div>
-                      <input type="text" class="form-control" placeholder="Search">
-                    </div>
-                  </div>      
-                </div>
-              </form>
-              <div class="list-group">    
-                <li *ngFor="let team of teams | paginate: { itemsPerPage: 5, currentPage: currentPageNumber }" 
-                    class="list-group-item list-group-item-action flex-column align-items-start" 
-                    [class.selected]="team === selectedTeam"
-                    (click)="showTeam(team)">
-                  <!-- <a style="cursor: pointer"> -->
-                  <div class="d-flex w-100 justify-content-between">
-                    <h5 class="mb-1">{{team.name}}</h5>
-                    <span class="badge badge-pill" [ngClass]="(team.complete) ? 'badge-success' : 'badge-warning'">{{team.complete ? 'Complete' : 'Incomplete'}}</span>
-                  </div>
-                  <p class="mb-1">Affiliated Club: {{team.clubName}}</p>
-                  <small>Category: {{team.category}}; Id: {{team.id}}</small>
-                <!-- </a> -->
-                </li>
+        <div class="form-row align-items-right">    
+          <div class="col-auto">
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+                <div class="input-group-text"><span class="glyphicon glyphicon-search">Mag</span></div>
               </div>
-              <br>
-              <div class="text-center">
-                <pagination-controls (pageChange)="currentPageNumber = $event"></pagination-controls>
-              </div>
+              <input type="text" class="form-control" placeholder="Search" [(ngModel)]="searchString">
             </div>
-          </div>    
+          </div>      
+        </div>
+        <div class="list-group teams">    
+          <li *ngFor="let team of teams | FilterPipe: searchString : searchableList | paginate: { itemsPerPage: 5, currentPage: currentPageNumber }" 
+              class="list-group-item list-group-item-action flex-column align-items-start" 
+              [class.selected]="team === selectedTeam"
+              (click)="showTeam(team)">
+            <div class="d-flex w-100 justify-content-between">
+              <h5 class="mb-1">{{team.name}}</h5>
+              <span class="badge badge-pill" [ngClass]="(team.complete) ? 'badge-success' : 'badge-warning'">{{team.complete ? 'Complete' : 'Incomplete'}}</span>
+            </div>
+            <p class="mb-1">Affiliated Club: {{team.clubName}}</p>
+            <small>Category: {{team.category}}; Id: {{team.id}}</small>
+          </li>
+        </div>
+        <br>
+        <div class="text-center">
+          <pagination-controls (pageChange)="currentPageNumber = $event"></pagination-controls>
         </div>
       </div>
-    </div>
+    </div>    
     <div class="col-md-4">
       <app-team-detail [team]="selectedTeam"></app-team-detail>
     </div>     

@@ -2,7 +2,8 @@ export class Runner {
   id: number;
   name: string;
   ageCategoryCode: AgeCategoryCode;
-  sex: Sex
+  sex: Sex;
+  leg: number;
 }
 
 export enum AgeCategoryCode {Open, V40, V50, V60, V70, V35}

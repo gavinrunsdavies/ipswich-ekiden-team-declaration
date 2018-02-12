@@ -16,9 +16,43 @@ export class FakeBackendInterceptor implements HttpInterceptor {
     intercept(request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
         // array in local storage for registered users
         let users: any[] = JSON.parse(localStorage.getItem('users')) || [];
+        
+        const teams = [
+          { id: 11, name: 'Mr. Nice', category: 'MensOpen', clubName: 'Ipswixh JAFFA RC', complete: true },
+          { id: 12, name: 'Narco', category: 'Mixed', clubName: 'Harwich Road Runners', complete: true  },
+          { id: 13, name: 'Bombasto' },
+          { id: 14, name: 'Celeritas' },
+          { id: 15, name: 'Magneta' },
+          { id: 16, name: 'RubberMan' },
+          { id: 17, name: 'Dynama' },
+          { id: 18, name: 'Dr IQ' },
+          { id: 19, name: 'Magma' },
+          { id: 20, name: 'Tornado' }
+        ];
+        
+        const team11 = 
+          { id: 11, name: 'Mr. Nice', category: 'MensOpen', clubName: 'Ipswixh JAFFA RC', complete: true,
+            members: [
+            { id: 1, name: 'Gavin Davies1', ageCategoryCode: 'Open', sex: 'Male' },
+            { id: 2, name: 'Gavin Davies2', ageCategoryCode: 'V40', sex: 'Male' },
+            { id: 3, name: 'Gavin Davies3', ageCategoryCode: 'V50', sex: 'Female' },
+            { id: 4, name: 'Gavin Davies4', ageCategoryCode: 'V60', sex: 'Female' },
+            { id: 5, name: 'Gavin Davies5', ageCategoryCode: 'V70', sex: 'Male' },
+            { id: 6, name: 'Gavin Davies6', ageCategoryCode: 'Open', sex: 'Male' }
+            ]
+          };
  
         // wrap in delayed observable to simulate server api call
         return Observable.of(null).mergeMap(() => {
+          
+          
+            if (request.url.endsWith('/api/teams') && request.method === 'GET') {              
+              return Observable.of(new HttpResponse({ status: 200, body: teams }));
+            }
+            
+            if (request.url.match(/\/api\/teams\/\d+$/) && request.method === 'GET') {         
+              return Observable.of(new HttpResponse({ status: 200, body: team11 }));
+            }
  
             // authenticate
             if (request.url.endsWith('/api/login') && request.method === 'POST') {

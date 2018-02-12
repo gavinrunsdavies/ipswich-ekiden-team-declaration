@@ -8,14 +8,14 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Team } from '../models/team';
 import { MessageService } from './message.service';
 
-const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
-};
-
 @Injectable()
 export class TeamService {
-
-  private teamsUrl = 'api/teams';  // URL to web api
+  
+  private teamsUrl: string = 'http://localhost:5000/api/teams'; // TODO inject?
+  
+  private httpOptions = {
+    headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+  };
   
   constructor(
     private http: HttpClient,
@@ -62,7 +62,7 @@ export class TeamService {
   
   /** PUT: update the team on the server */
   updateTeam (team: Team): Observable<any> {
-    return this.http.put(this.teamsUrl, team, httpOptions).pipe(
+    return this.http.put(this.teamsUrl, team, this.httpOptions).pipe(
       tap(_ => this.log(`updated team id=${team.id}`)),
       catchError(this.handleError<any>('updateTeam'))
     );
@@ -70,7 +70,7 @@ export class TeamService {
   
   /** POST: add a new team to the server */
   addTeam (team: Team): Observable<Team> {
-    return this.http.post<Team>(this.teamsUrl, team, httpOptions).pipe(
+    return this.http.post<Team>(this.teamsUrl, team, this.httpOptions).pipe(
       tap((team: Team) => this.log(`added team w/ id=${team.id}`)),
       catchError(this.handleError<Team>('addTeam'))
     );
@@ -81,7 +81,7 @@ export class TeamService {
     const id = typeof team === 'number' ? team : team.id;
     const url = `${this.teamsUrl}/${id}`;
 
-    return this.http.delete<Team>(url, httpOptions).pipe(
+    return this.http.delete<Team>(url, this.httpOptions).pipe(
       tap(_ => this.log(`deleted team id=${id}`)),
       catchError(this.handleError<Team>('deleteTeam'))
     );
