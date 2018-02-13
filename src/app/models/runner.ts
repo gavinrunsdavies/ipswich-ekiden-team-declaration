@@ -6,6 +6,6 @@ export class Runner {
   leg: number;
 }
 
-export enum AgeCategoryCode {Open, V40, V50, V60, V70, V35}
+export enum AgeCategoryCode {Open = 1, V40 = 2, V50 = 3, V60 = 4, V70 = 5, V35 = 6}
 
-export enum Sex {Male, Female}
+export enum Sex {Male = 1, Female = 2}

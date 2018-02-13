@@ -30,6 +30,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
           { id: 20, name: 'Tornado' }
         ];
         
+        const clubs = [];
+        
+        const myteams = [];
+        
+        //teams = next.get('teams.json').map((response: Response) => response.json());
+        
         const team11 = 
           { id: 11, name: 'Mr. Nice', category: 'MensOpen', clubName: 'Ipswixh JAFFA RC', complete: true,
             members: [
@@ -41,19 +47,60 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             { id: 6, name: 'Gavin Davies6', ageCategoryCode: 'Open', sex: 'Male' }
             ]
           };
+        
+        for (var i=0; i < 6; i++) {
+          team11.members[i].name = 'Test' + Math.floor((Math.random() * 100) + 1);
+        }
+        
  
         // wrap in delayed observable to simulate server api call
         return Observable.of(null).mergeMap(() => {
           
-          
+            // Get list of clubs
+            if (request.url.endsWith('/api/clubs') && request.method === 'GET') {              
+              return Observable.of(new HttpResponse({ status: 200, body: clubs }));
+            }
+            
+            // Get list of teams (including runners)
             if (request.url.endsWith('/api/teams') && request.method === 'GET') {              
               return Observable.of(new HttpResponse({ status: 200, body: teams }));
             }
             
-            if (request.url.match(/\/api\/teams\/\d+$/) && request.method === 'GET') {         
+            // Get teams for user (captain). Requires server side validation
+            if (request.url.endsWith('/api/myteams/') && request.method === 'GET') {       
+              // Needs to validate against user
+              return Observable.of(new HttpResponse({ status: 200, body: myteams }));
+            }
+            
+            // Get a specific team
+            if (request.url.match(/\/api\/teams\/\d+$/) && request.method === 'GET') {    
               return Observable.of(new HttpResponse({ status: 200, body: team11 }));
             }
+            
+            // Create new team
+            if (request.url.endsWith('/api/teams') && request.method === 'POST') {
+                // get new user object from post body
+                let newTeam = request.body;
  
+                // save new user
+                newTeam.id = teams.length + 1;
+                teams.push(newTeam);
+                localStorage.setItem('teams', JSON.stringify(teams));
+ 
+                // respond 200 OK
+                return Observable.of(new HttpResponse({ status: 200 }));
+            }
+ 
+            // Update elements of a team. Requires server side validation. Return full team.
+            if (request.url.match(/\/api\/teams\/\d+$/) && request.method === 'PATCH') {    
+              return Observable.of(new HttpResponse({ status: 200, body: team11 }));
+            }
+            
+            // Delete a team. Requires server side validation
+            if (request.url.match(/\/api\/teams\/\d+$/) && request.method === 'DELETE') {    
+              return Observable.of(new HttpResponse({ status: 200, body: team11 }));
+            }
+                        
             // authenticate
             if (request.url.endsWith('/api/login') && request.method === 'POST') {
                 // find if any user matches login credentials
@@ -79,35 +126,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                     return Observable.throw('Username or password is incorrect');
                 }
             }
- 
-            // get users
-            if (request.url.endsWith('/api/users') && request.method === 'GET') {
-                // check for fake auth token in header and return users if valid, this security is implemented server side in a real application
-                if (request.headers.get('Authorization') === 'Bearer fake-jwt-token') {
-                    return Observable.of(new HttpResponse({ status: 200, body: users }));
-                } else {
-                    // return 401 not authorised if token is null or invalid
-                    return Observable.throw('Unauthorised');
-                }
-            }
- 
-            // get user by id
-            if (request.url.match(/\/api\/users\/\d+$/) && request.method === 'GET') {
-                // check for fake auth token in header and return user if valid, this security is implemented server side in a real application
-                if (request.headers.get('Authorization') === 'Bearer fake-jwt-token') {
-                    // find user by id in users array
-                    let urlParts = request.url.split('/');
-                    let id = parseInt(urlParts[urlParts.length - 1]);
-                    let matchedUsers = users.filter(user => { return user.id === id; });
-                    let user = matchedUsers.length ? matchedUsers[0] : null;
- 
-                    return Observable.of(new HttpResponse({ status: 200, body: user }));
-                } else {
-                    // return 401 not authorised if token is null or invalid
-                    return Observable.throw('Unauthorised');
-                }
-            }
- 
+                     
             // create user
             if (request.url.endsWith('/api/users') && request.method === 'POST') {
                 // get new user object from post body
@@ -127,32 +146,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
                 // respond 200 OK
                 return Observable.of(new HttpResponse({ status: 200 }));
             }
- 
-            // delete user
-            if (request.url.match(/\/api\/users\/\d+$/) && request.method === 'DELETE') {
-                // check for fake auth token in header and return user if valid, this security is implemented server side in a real application
-                if (request.headers.get('Authorization') === 'Bearer fake-jwt-token') {
-                    // find user by id in users array
-                    let urlParts = request.url.split('/');
-                    let id = parseInt(urlParts[urlParts.length - 1]);
-                    for (let i = 0; i < users.length; i++) {
-                        let user = users[i];
-                        if (user.id === id) {
-                            // delete user
-                            users.splice(i, 1);
-                            localStorage.setItem('users', JSON.stringify(users));
-                            break;
-                        }
-                    }
- 
-                    // respond 200 OK
-                    return Observable.of(new HttpResponse({ status: 200 }));
-                } else {
-                    // return 401 not authorised if token is null or invalid
-                    return Observable.throw('Unauthorised');
-                }
-            }
- 
+             
             // pass through any requests not handled above
             return next.handle(request);
              

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Team } from '../models/team';
 import { TeamService } from '../services/team.service';
-import { FilterPipe } from './filter.pipe'
+import { FilterPipe } from '../filter.pipe'
 
 @Component({
   selector: 'app-teams',

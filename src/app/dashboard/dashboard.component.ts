@@ -12,9 +12,17 @@ export class DashboardComponent implements OnInit {
   teams: Team[] = [];
   keys: any[];
   categories = TeamCategory;
+  columns = [
+    { prop: 'Leg' },
+    { prop: 'Name' },
+    { name: 'Gender' },
+    { name: 'Age Category' }
+  ];
+  rows = [];
+  loadingIndicator: boolean = true;
   
   constructor(private teamService: TeamService) {
-    this.keys = Object.keys(this.categories).filter(f => !isNaN(Number(f)));
+    this.keys = Object.keys(this.categories).filter(f => !isNaN(Number(f)));    
   }
 
   ngOnInit() {
@@ -23,6 +31,6 @@ export class DashboardComponent implements OnInit {
 
   getTeams(): void {
     this.teamService.getMyTeams()
-      .subscribe(teams => this.teams = teams.slice(1, 5));
+      .subscribe(teams => this.rows = teams);
   }
 }

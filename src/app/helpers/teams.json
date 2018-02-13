@@ -1,0 +1,161 @@
+[
+  {
+    "id": 0,
+    "name": "Smith Salas",
+    "category": 4,
+    "captainId": 363,
+    "clubId": 244,
+    "clubName": "magna",
+    "complete": true,
+    "members": [
+      {
+        "id": 0,
+        "name": "Willa Saunders",
+        "ageCategoryCode": 3,
+        "sex": 2,
+        "leg": 1
+      },
+      {
+        "id": 1,
+        "name": "Kathie Hall",
+        "ageCategoryCode": 1,
+        "sex": 2,
+        "leg": 2
+      },
+      {
+        "id": 2,
+        "name": "Alisha Coleman",
+        "ageCategoryCode": 2,
+        "sex": 5,
+        "leg": 3
+      },
+      {
+        "id": 3,
+        "name": "Dorsey Jefferson",
+        "ageCategoryCode": 1,
+        "sex": 3,
+        "leg": 4
+      },
+      {
+        "id": 4,
+        "name": "Jeanne Wagner",
+        "ageCategoryCode": 3,
+        "sex": 6,
+        "leg": 5
+      },
+      {
+        "id": 5,
+        "name": "Pollard Wallace",
+        "ageCategoryCode": 2,
+        "sex": 4,
+        "leg": 6
+      }
+    ]
+  },
+  {
+    "id": 1,
+    "name": "Caroline Briggs",
+    "category": 4,
+    "captainId": 298,
+    "clubId": 204,
+    "clubName": "et",
+    "complete": true,
+    "members": [
+      {
+        "id": 0,
+        "name": "Barker Collier",
+        "ageCategoryCode": 3,
+        "sex": 3,
+        "leg": 1
+      },
+      {
+        "id": 1,
+        "name": "Riddle Irwin",
+        "ageCategoryCode": 4,
+        "sex": 5,
+        "leg": 2
+      },
+      {
+        "id": 2,
+        "name": "Sheila Sheppard",
+        "ageCategoryCode": 3,
+        "sex": 5,
+        "leg": 3
+      },
+      {
+        "id": 3,
+        "name": "Dixie Parsons",
+        "ageCategoryCode": 5,
+        "sex": 5,
+        "leg": 4
+      },
+      {
+        "id": 4,
+        "name": "Marva Armstrong",
+        "ageCategoryCode": 2,
+        "sex": 4,
+        "leg": 5
+      },
+      {
+        "id": 5,
+        "name": "Zamora Schultz",
+        "ageCategoryCode": 3,
+        "sex": 2,
+        "leg": 6
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Evangeline Hodges",
+    "category": 4,
+    "captainId": 62,
+    "clubId": 120,
+    "clubName": "dolore",
+    "complete": false,
+    "members": [
+      {
+        "id": 0,
+        "name": "Dyer White",
+        "ageCategoryCode": 1,
+        "sex": 2,
+        "leg": 1
+      },
+      {
+        "id": 1,
+        "name": "Minnie Good",
+        "ageCategoryCode": 2,
+        "sex": 6,
+        "leg": 2
+      },
+      {
+        "id": 2,
+        "name": "Boyd Hardin",
+        "ageCategoryCode": 6,
+        "sex": 6,
+        "leg": 3
+      },
+      {
+        "id": 3,
+        "name": "Coleman Monroe",
+        "ageCategoryCode": 5,
+        "sex": 3,
+        "leg": 4
+      },
+      {
+        "id": 4,
+        "name": "Santiago Mccall",
+        "ageCategoryCode": 5,
+        "sex": 5,
+        "leg": 5
+      },
+      {
+        "id": 5,
+        "name": "Castillo Drake",
+        "ageCategoryCode": 6,
+        "sex": 1,
+        "leg": 6
+      }
+    ]
+  }
+]

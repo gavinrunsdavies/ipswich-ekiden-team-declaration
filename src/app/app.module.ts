@@ -9,6 +9,7 @@ import { fakeBackendProvider } from './helpers/fake-backend';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 import { AppRoutingModule }     from './app-routing.module';
 
@@ -52,7 +53,8 @@ import { FilterPipe } from './filter.pipe'
     AppRoutingModule,
     HttpClientModule,
     NgbModule.forRoot(),
-    NgxPaginationModule
+    NgxPaginationModule,
+    NgxDatatableModule
   ],
   providers: [
     TeamService,
