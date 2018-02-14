@@ -26,12 +26,18 @@
   </div>
 </form>
 
-<ngb-accordion #acc="ngbAccordion">
-  <ngb-panel id="toggle-1" title="First panel">
-    <ng-template ngbPanelContent>
-      <ngx-datatable
+<div class="card" *ngFor="let team of teams | async; trackBy: trackById;">  
+  <div class="card-header">
+    <button class="btn btn-link" (click)="team.isCollapsed = !team.isCollapsed">
+          {{team.name}}
+        </button>    
+
+  </div>
+  <div class="card-body" [ngbCollapse]="!team.isCollapsed">
+    <h5 class="card-title">Special title treatment</h5>
+    <ngx-datatable
         class="bootstrap"
-        [rows]="rows"
+        [rows]="teams.members | async"
         [loadingIndicator]="loadingIndicator"
         [columns]="columns"
         [columnMode]="'force'"
@@ -40,16 +46,7 @@
         [limit]="10"
         [rowHeight]="'auto'">
       </ngx-datatable>
-    </ng-template>
-  </ngb-panel>
-  <ngb-panel id="toggle-2" title="Second">
-    <ng-template ngbPanelContent>
-      Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia
-      aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor,
-      sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica,
-      craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings
-      occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
-      labore sustainable VHS.
-    </ng-template>
-  </ngb-panel>
-</ngb-accordion>
+      <button class="btn" (click)="logMe(team)">Log</button>
+    <a href="#" class="btn btn-primary">Go somewhere</a>
+  </div>
+</div>

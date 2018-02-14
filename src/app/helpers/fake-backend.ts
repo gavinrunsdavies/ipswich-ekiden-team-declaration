@@ -30,9 +30,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
           { id: 20, name: 'Tornado' }
         ];
         
-        const clubs = [];
-        
-        const myteams = [];
+        const clubs = [];              
         
         //teams = next.get('teams.json').map((response: Response) => response.json());
         
@@ -52,6 +50,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
           team11.members[i].name = 'Test' + Math.floor((Math.random() * 100) + 1);
         }
         
+        const myteams = [team11];
  
         // wrap in delayed observable to simulate server api call
         return Observable.of(null).mergeMap(() => {
