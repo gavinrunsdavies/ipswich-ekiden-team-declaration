@@ -1,109 +1,110 @@
 <h3>My Teams</h3>
-  <form>
-    <div class="form-group">
-      <label for="teamName">Team Name</label>
-      <input type="text" class="form-control" id="teamName">
+  <form name="form" (ngSubmit)="f.form.valid && createTeam()" #f="ngForm" novalidate>
+    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !name.valid }">
+      <label for="name">Team Name</label>
+      <input type="text" class="form-control" name="name" [(ngModel)]="newTeam.name" #name="ngModel" required />
+          <div *ngIf="f.submitted && !name.valid" class="help-block">Team Name is required</div>
     </div>
   <div class="form-row">
-    <div class="form-group col-md-6">
-      <label for="category">Category</label>
-      <select id="category" class="form-control">
-          <option selected>Choose...</option>
-          <option *ngFor="let key of keys" [value]="key">{{categories[key]}}</option>
+    <div class="form-group col-md-4" [ngClass]="{ 'has-error': f.submitted && !isAffiliated.valid }">
+      <label for="affiliation">Affiliation Status</label>
+      <select class="form-control" [(ngModel)]="newTeam.isAffiliated" #isAffiliated="ngModel" required name="isAffiliated">
+          <option value="-1" selected>Choose...</option>
+          <option value="0">Unaffiliated</option>
+          <option value="1">UKA affiliated</option>
       </select>
+      <div *ngIf="f.submitted && !isAffiliated.valid" class="help-block">Affiliation status is required</div>
     </div>
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-6" [ngClass]="{ 'has-error': f.submitted && !club.valid }">
       <label for="club">UKA Club</label>
-      <select id="club" class="form-control">
+      <select class="form-control" [disabled]="newTeam.isAffiliated &&  newTeam.isAffiliated == 0"  [(ngModel)]="newTeam.club" #club="ngModel" required name="club">
         <option selected>Choose...</option>
         <option>...</option>
       </select>
+      <div *ngIf="f.submitted && isAffiliated && !club.valid" class="help-block">Club is required</div>
     </div>
     <div class="form-group col-md-2">
        <label for="submit">&nbsp;</label>
-       <button id="submit" type="submit" class="form-control btn btn-primary">Add</button>
+       <button id="submit" type="submit" class="form-control btn btn-primary" [disabled]="formSubmittedIndicator">Add</button>
+        <img *ngIf="formSubmittedIndicator" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
     </div>
   </div>
 </form>
 
 <div class="card" *ngFor="let team of teams | async; trackBy: trackById;">  
   <div class="card-header">
-    <button class="btn btn-link" (click)="showTeam(team)">
-          {{team.name}}
-        </button>    
-
+    <div class="row">
+      <div class="col-10">
+        <button class="btn btn-link" (click)="showTeam(team)">
+            {{team.name}}  <span class="badge badge-pill" [ngClass]="(team.complete) ? 'badge-success' : 'badge-warning'">{{team.complete ? 'Complete' : 'Incomplete'}}</span>
+        </button> 
+      </div>
+      <div class="col">
+        <button type="button" class="btn btn-danger" (click)="deleteTeam(team)">Delete?</button>
+      </div>
+    </div>
   </div>
   <div class="card-body" [ngbCollapse]="!team.isCollapsed">
-    <h5 class="card-title">Special title treatment</h5>
-    <ngx-datatable
-        class="bootstrap"
-        [rows]="team.members"
-        [loadingIndicator]="loadingIndicator"        
-        [columnMode]="'force'"
-        [headerHeight]="40"
-        [footerHeight]="40"
-        [limit]="10"
-        [rowHeight]="'auto'">
-        <ngx-datatable-column name="Leg">
-          <ng-template ngx-datatable-cell-template let-value="value">
-            {{value}}
-          </ng-template>
-        </ngx-datatable-column>
-         <ngx-datatable-column name="Name">
-          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-            <span
+   <table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">Leg</th>
+      <th scope="col">Name</th>
+      <th scope="col">Gender</th>
+      <th scope="col">Category</th>
+    </tr>
+  </thead>
+  <tbody *ngIf="team">    
+    <tr *ngFor="let runner of team.members">
+      <th scope="row">{{runner.leg}}</th>
+      <td>
+        <span
               title="Double click to edit"
-              (dblclick)="editing[rowIndex + '-name'] = true"
-              *ngIf="!editing[rowIndex + '-name']">
-              {{value}}
+              (dblclick)="editing[team.id + '-' +runner.leg + '-name'] = true"
+              *ngIf="!editing[team.id + '-' +runner.leg + '-name']">
+              {{runner.name}}
             </span>
             <input
               autofocus
-              (blur)="updateValue(team, $event, 'name', rowIndex)"
-              *ngIf="editing[rowIndex+ '-name']"
+              (blur)="updateValue(team.id, $event, 'name', runner.leg)"
+              *ngIf="editing[team.id + '-' +runner.leg + '-name']"
               type="text"
-              [value]="value"
+              [value]="runner.name"
             />
-          </ng-template>
-        </ngx-datatable-column>
-        <ngx-datatable-column name="Gender">
-          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-             <span
+      </td>
+      <td>
+         <span
               title="Double click to edit"
-              (dblclick)="editing[rowIndex + '-gender'] = true"
-              *ngIf="!editing[rowIndex + '-gender']">
-              {{value}}
+              (dblclick)="editing[team.id + '-' +runner.leg + '-gender'] = true"
+              *ngIf="!editing[team.id + '-' +runner.leg + '-gender']">
+              {{runner.sex}}
             </span>
             <select
-              *ngIf="editing[rowIndex + '-gender']"
-              (blur)="editing[rowIndex + '-gender'] = false"
-              (change)="updateValue(team, $event, 'gender', rowIndex)"
-              [value]="value">
+              *ngIf="editing[runner.leg + '-gender']"
+              (blur)="editing[team.id + '-' +runner.leg + '-gender'] = false"
+              (change)="updateValue(team.id, $event, 'gender', runner.leg)"
+              [value]="runner.sex">
               <option value="male">Male</option>
               <option value="female">Female</option>
             </select>
-          </ng-template>
-        </ngx-datatable-column>
-         <ngx-datatable-column name="AgeCategoryCode">
-          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
-             <span
+      </td>
+      <td>
+         <span
               title="Double click to edit"
-              (dblclick)="editing[rowIndex + '-ageCategoryCode'] = true"
-              *ngIf="!editing[rowIndex + '-ageCategoryCode']">
-              {{value}}
+              (dblclick)="editing[team.id + '-' +leg + '-category'] = true"
+              *ngIf="!editing[team.id + '-' +leg + '-category']">
+              {{runner.ageCategoryCode}}
             </span>
             <select
-              *ngIf="editing[rowIndex + '-ageCategoryCode']"
-              (blur)="editing[rowIndex + '-ageCategoryCode'] = false"
-              (change)="updateValue(team, $event, 'ageCategoryCode', rowIndex)"
-              [value]="value">
-              <option value="V40">V40</option>
-              <option value="V50">V50</option>
+              *ngIf="editing[leg + '-category']"
+              (blur)="editing[team.id + '-' +leg + '-category'] = false"
+              (change)="updateValue(team.id, $event, 'category', leg)"
+              [value]="team.ageCategoryCode">
+              <option *ngFor="let key of ageCategoriesKeys" [value]="key">{{ageCategories[key]}}</option>
             </select>
-          </ng-template>
-        </ngx-datatable-column>
-      </ngx-datatable>
-      <button class="btn" (click)="logMe(team)">Log</button>
-    <a href="#" class="btn btn-primary">Go somewhere</a>
+      </td>
+    </tr>    
+  </tbody>
+</table>
   </div>
 </div>

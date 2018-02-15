@@ -28,6 +28,7 @@ export class TeamsComponent implements OnInit {
   
   showTeam(team: Team): void {
     console.log ("showTeam called");
+    this.selectedTeam = team;
     this.teamService.getTeam(team.id)
       .subscribe(team => this.selectedTeam = team);
   }  

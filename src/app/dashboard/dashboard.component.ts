@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Team } from '../models/team';
+import { AgeCategoryCode } from '../models/runner';
 import { TeamCategory } from '../models/team';
 import { TeamService } from '../services/team.service';
 import { Observable } from 'rxjs/Observable';
@@ -11,40 +12,20 @@ import 'rxjs/add/observable/of';
   styleUrls: [ './dashboard.component.css' ]
 })
 export class DashboardComponent implements OnInit {
-  // teams: Team[] = [
-          // { id: 11, name: 'Mr. Nice', category: 1, clubName: 'Ipswixh JAFFA RC', complete: true, clubId: 1, captainId: 1,
-            // members: [
-            // { id: 1, name: 'Gavin Davies1', ageCategoryCode: 1, sex: 1 },
-            // { id: 2, name: 'Gavin Davies2', ageCategoryCode: 2, sex: 1 },
-            // { id: 3, name: 'Gavin Davies3', ageCategoryCode: 3, sex: 2 },
-            // { id: 4, name: 'Gavin Davies4', ageCategoryCode: 3, sex: 2 },
-            // { id: 5, name: 'Gavin Davies5', ageCategoryCode: 3, sex: 1 },
-            // { id: 6, name: 'Gavin Davies6', ageCategoryCode: 4, sex: 1 }
-            // ]
-          // },
-          // { id: 11, name: 'Mr. Nice2', category: 1, clubName: 'Ipswixh JAFFA RC 2', complete: true, clubId: 1, captainId: 1,
-            // members: [
-            // { id: 1, name: 'Gavin Davies21', ageCategoryCode: 1, sex: 1 },
-            // { id: 2, name: 'Gavin Davies22', ageCategoryCode: 1, sex: 1 },
-            // { id: 3, name: 'Gavin Davies23', ageCategoryCode: 1, sex: 1 },
-            // { id: 4, name: 'Gavin Davies24', ageCategoryCode: 1, sex: 1 }            
-            // ]
-          // }];
+
   teams: Observable<Team[]>;  
   keys: any[];
-  categories = TeamCategory;
-  columns = [
-    { name: 'Leg' },
-    { name: 'Name' },
-    { name: 'Sex' },
-    { name: 'ageCategoryCode' }
-  ];
+  ageCategoriesKeys: any[];
+  teamCategories = TeamCategory;
+  ageCategories = AgeCategoryCode;
   editing = {};
+  newTeam: any = {};
   
+  formSubmittedIndicator: boolean = false;
   loadingIndicator: boolean = true;
   
   constructor(private teamService: TeamService) {
-    this.keys = Object.keys(this.categories).filter(f => !isNaN(Number(f)));    
+    this.ageCategoriesKeys = Object.keys(this.ageCategories).filter(f => !isNaN(Number(f)));    
   }
 
   ngOnInit() {
@@ -63,16 +44,16 @@ export class DashboardComponent implements OnInit {
     );
   }
   
-  logMe(x) : void {
-    console.log(`teams membersdd:`);
+  deleteTeam(tea,) : void {
+    console.log(`delete team called`);
   }
   
-  updateValue(team, event, cell, rowIndex) {
-    console.log('inline editing rowIndex', rowIndex)
-    this.editing[rowIndex + '-' + cell] = false;
-    team.members[rowIndex][cell] = event.target.value;
-    team.members = [...team.members];
-    console.log('UPDATED!', this.rows[rowIndex][cell]);
+  updateValue(teamId, event, cell, leg) {
+    console.log('inline editing', teamId)
+    this.editing[teamId + '-' +leg + cell] = false;
+    this.editing[teamId][leg][cell] = event.target.value;
+   // this.editing = [...this.editing];
+    console.log('UPDATED!', this.editing[teamId][leg][cell]);
   }
   
   showTeam(team) : void {
@@ -88,4 +69,17 @@ export class DashboardComponent implements OnInit {
     return team.id;
   }
 
+  createTeam() {
+        this.formSubmittedIndicator = true;
+        this.teamService.addTeam(this.newTeam)
+            .subscribe(
+                data => {
+                    // set success message and pass true parameter to persist the message after redirecting to the login page
+                   this.messageService.success('Team created', true);                    
+                },
+                error => {
+                    this.messageService.error(error);
+                    this.formSubmittedIndicator = false;
+                });
+    }
 }
