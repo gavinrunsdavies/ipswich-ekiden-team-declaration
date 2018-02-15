@@ -35,10 +35,11 @@ export class DashboardComponent implements OnInit {
   categories = TeamCategory;
   columns = [
     { name: 'Leg' },
-    { name: 'name' },
-    { name: 'sex' },
+    { name: 'Name' },
+    { name: 'Sex' },
     { name: 'ageCategoryCode' }
   ];
+  editing = {};
   
   loadingIndicator: boolean = true;
   
@@ -54,7 +55,7 @@ export class DashboardComponent implements OnInit {
 
   getTeams(): void {
     console.log('teamService.getMyTeams() called');
-    this.teamService.getTeams()
+    this.teamService.getMyTeams()
       .subscribe(teams => {
         this.teams = Observable.of(teams);
         this.teams.subscribe(result => {console.log(result.length)});       
@@ -62,8 +63,25 @@ export class DashboardComponent implements OnInit {
     );
   }
   
-   logMe(team) {
-    console.log(`teams members:`.team.members.length);
+  logMe(x) : void {
+    console.log(`teams membersdd:`);
+  }
+  
+  updateValue(team, event, cell, rowIndex) {
+    console.log('inline editing rowIndex', rowIndex)
+    this.editing[rowIndex + '-' + cell] = false;
+    team.members[rowIndex][cell] = event.target.value;
+    team.members = [...team.members];
+    console.log('UPDATED!', this.rows[rowIndex][cell]);
+  }
+  
+  showTeam(team) : void {
+    team.isCollapsed = !team.isCollapsed;
+    
+     // console.log('teamService.getMyTeams() called');
+     // this.teamService.getTeam(team.id)
+      // .subscribe(fullTeam => team.members = fullTeam.members);
+    
   }
     
   trackById(index, team) {

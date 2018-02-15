@@ -37,12 +37,12 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         const team11 = 
           { id: 11, name: 'Mr. Nice', category: 'MensOpen', clubName: 'Ipswixh JAFFA RC', complete: true,
             members: [
-            { id: 1, name: 'Gavin Davies1', ageCategoryCode: 'Open', sex: 'Male' },
-            { id: 2, name: 'Gavin Davies2', ageCategoryCode: 'V40', sex: 'Male' },
-            { id: 3, name: 'Gavin Davies3', ageCategoryCode: 'V50', sex: 'Female' },
-            { id: 4, name: 'Gavin Davies4', ageCategoryCode: 'V60', sex: 'Female' },
-            { id: 5, name: 'Gavin Davies5', ageCategoryCode: 'V70', sex: 'Male' },
-            { id: 6, name: 'Gavin Davies6', ageCategoryCode: 'Open', sex: 'Male' }
+            { id: 1, name: 'Gavin Davies1', ageCategoryCode: 'Open', sex: 'Male', leg: 1 },
+            { id: 2, name: 'Gavin Davies2', ageCategoryCode: 'V40', sex: 'Male', leg: 2 },
+            { id: 3, name: 'Gavin Davies3', ageCategoryCode: 'V50', sex: 'Female', leg: 3 },
+            { id: 4, name: 'Gavin Davies4', ageCategoryCode: 'V60', sex: 'Female', leg: 4 },
+            { id: 5, name: 'Gavin Davies5', ageCategoryCode: 'V70', sex: 'Male', leg: 5 },
+            { id: 6, name: 'Gavin Davies6', ageCategoryCode: 'Open', sex: 'Male', leg: 6 }
             ]
           };
         
@@ -66,7 +66,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
             }
             
             // Get teams for user (captain). Requires server side validation
-            if (request.url.endsWith('/api/myteams/') && request.method === 'GET') {       
+            if (request.url.endsWith('/api/myteams') && request.method === 'GET') {       
               // Needs to validate against user
               return Observable.of(new HttpResponse({ status: 200, body: myteams }));
             }

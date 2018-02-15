@@ -44,7 +44,7 @@ export class TeamService {
   }
   
   getMyTeams(): Observable<Team[]> {    
-    return this.http.get<Team[]>(this.teamsUrl)
+    return this.http.get<Team[]>('http://localhost:5000/api/myteams')
     .pipe(
       tap(teams => this.log(`fetched teams`)),
       catchError(this.handleError('getMyTeams', []))

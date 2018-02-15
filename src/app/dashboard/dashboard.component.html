@@ -28,7 +28,7 @@
 
 <div class="card" *ngFor="let team of teams | async; trackBy: trackById;">  
   <div class="card-header">
-    <button class="btn btn-link" (click)="team.isCollapsed = !team.isCollapsed">
+    <button class="btn btn-link" (click)="showTeam(team)">
           {{team.name}}
         </button>    
 
@@ -37,14 +37,71 @@
     <h5 class="card-title">Special title treatment</h5>
     <ngx-datatable
         class="bootstrap"
-        [rows]="teams.members | async"
-        [loadingIndicator]="loadingIndicator"
-        [columns]="columns"
+        [rows]="team.members"
+        [loadingIndicator]="loadingIndicator"        
         [columnMode]="'force'"
         [headerHeight]="40"
         [footerHeight]="40"
         [limit]="10"
         [rowHeight]="'auto'">
+        <ngx-datatable-column name="Leg">
+          <ng-template ngx-datatable-cell-template let-value="value">
+            {{value}}
+          </ng-template>
+        </ngx-datatable-column>
+         <ngx-datatable-column name="Name">
+          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+            <span
+              title="Double click to edit"
+              (dblclick)="editing[rowIndex + '-name'] = true"
+              *ngIf="!editing[rowIndex + '-name']">
+              {{value}}
+            </span>
+            <input
+              autofocus
+              (blur)="updateValue(team, $event, 'name', rowIndex)"
+              *ngIf="editing[rowIndex+ '-name']"
+              type="text"
+              [value]="value"
+            />
+          </ng-template>
+        </ngx-datatable-column>
+        <ngx-datatable-column name="Gender">
+          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+             <span
+              title="Double click to edit"
+              (dblclick)="editing[rowIndex + '-gender'] = true"
+              *ngIf="!editing[rowIndex + '-gender']">
+              {{value}}
+            </span>
+            <select
+              *ngIf="editing[rowIndex + '-gender']"
+              (blur)="editing[rowIndex + '-gender'] = false"
+              (change)="updateValue(team, $event, 'gender', rowIndex)"
+              [value]="value">
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </ng-template>
+        </ngx-datatable-column>
+         <ngx-datatable-column name="AgeCategoryCode">
+          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+             <span
+              title="Double click to edit"
+              (dblclick)="editing[rowIndex + '-ageCategoryCode'] = true"
+              *ngIf="!editing[rowIndex + '-ageCategoryCode']">
+              {{value}}
+            </span>
+            <select
+              *ngIf="editing[rowIndex + '-ageCategoryCode']"
+              (blur)="editing[rowIndex + '-ageCategoryCode'] = false"
+              (change)="updateValue(team, $event, 'ageCategoryCode', rowIndex)"
+              [value]="value">
+              <option value="V40">V40</option>
+              <option value="V50">V50</option>
+            </select>
+          </ng-template>
+        </ngx-datatable-column>
       </ngx-datatable>
       <button class="btn" (click)="logMe(team)">Log</button>
     <a href="#" class="btn btn-primary">Go somewhere</a>
