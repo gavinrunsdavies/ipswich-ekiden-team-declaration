@@ -15,13 +15,14 @@
       </select>
       <div *ngIf="f.submitted && !isAffiliated.valid" class="help-block">Affiliation status is required</div>
     </div>
-    <div class="form-group col-md-6" [ngClass]="{ 'has-error': f.submitted && !club.valid }">
+    <div class="form-group col-md-6" [ngClass]="{ 'has-error': f.submitted && isAffiliated == 1 && club > 0 }">
       <label for="club">UKA Club</label>
-      <select class="form-control" [disabled]="newTeam.isAffiliated &&  newTeam.isAffiliated == 0"  [(ngModel)]="newTeam.club" #club="ngModel" required name="club">
-        <option selected>Choose...</option>
-        <option>...</option>
+      <select class="form-control" [disabled]="newTeam.isAffiliated != '1'" [(ngModel)]="newTeam.club" #club="ngModel" required name="club">
+        <option value="0" selected>Choose...</option>
+        <option value="1">Club 1</option>
+        <option value="2">Club 2</option>
       </select>
-      <div *ngIf="f.submitted && isAffiliated && !club.valid" class="help-block">Club is required</div>
+      <div *ngIf="f.submitted && isAffiliated == 1 && club > 0" class="help-block">Club is required</div>
     </div>
     <div class="form-group col-md-2">
        <label for="submit">&nbsp;</label>

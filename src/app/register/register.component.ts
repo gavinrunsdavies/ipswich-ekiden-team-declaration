@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
  
 import { AuthService } from '../services/auth.service';
 import { MessageService } from '../services/message.service';
@@ -25,7 +26,7 @@ export class RegisterComponent {
         this.userService.create(this.model)
             .subscribe(
                 data => {
-                    // set success message and pass true paramater to persist the message after redirecting to the login page
+                    // set success message and pass true parameter to persist the message after redirecting to the login page
                     this.messageService.success('Registration successful. Please check your emails for confirmation and login.', true);
                     this.router.navigate(['/']);
                 },

@@ -9,7 +9,7 @@ import { fakeBackendProvider } from './helpers/fake-backend';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { RecaptchaModule } from 'ng-recaptcha';
 
 import { AppRoutingModule }     from './app-routing.module';
 
@@ -54,7 +54,7 @@ import { FilterPipe } from './filter.pipe'
     HttpClientModule,
     NgbModule.forRoot(),
     NgxPaginationModule,
-    NgxDatatableModule
+    RecaptchaModule.forRoot()
   ],
   providers: [
     TeamService,

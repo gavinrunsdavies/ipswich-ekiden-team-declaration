@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/observable/of';
+
 import { Team } from '../models/team';
 import { AgeCategoryCode } from '../models/runner';
 import { TeamCategory } from '../models/team';
 import { TeamService } from '../services/team.service';
-import { Observable } from 'rxjs/Observable';
-import 'rxjs/add/observable/of';
+import { MessageService } from '../services/message.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -24,7 +26,9 @@ export class DashboardComponent implements OnInit {
   formSubmittedIndicator: boolean = false;
   loadingIndicator: boolean = true;
   
-  constructor(private teamService: TeamService) {
+  constructor(
+    private teamService: TeamService,
+    private messageService: MessageService) {
     this.ageCategoriesKeys = Object.keys(this.ageCategories).filter(f => !isNaN(Number(f)));    
   }
 
