@@ -5,7 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS}    from '@angular/common/http';
 import { Pipe, PipeTransform } from '@angular/core';
 
 // used to create fake backend
-import { fakeBackendProvider } from './helpers/fake-backend';
+//import { fakeBackendProvider } from './helpers/fake-backend';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -67,9 +67,9 @@ import { FilterPipe } from './filter.pipe'
         multi: true
     },
     EnsureAuthenticated,
-    LoginRedirect,
+    LoginRedirect
     // provider used to create fake backend
-    fakeBackendProvider
+    //fakeBackendProvider
   ],
   bootstrap: [AppComponent]
 })
