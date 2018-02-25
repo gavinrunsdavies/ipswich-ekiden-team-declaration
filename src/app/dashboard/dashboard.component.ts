@@ -5,6 +5,7 @@ import 'rxjs/add/observable/of';
 import { Team } from '../models/team';
 import { AgeCategoryCode } from '../models/runner';
 import { TeamCategory } from '../models/team';
+import { Club } from '../models/club';
 import { TeamService } from '../services/team.service';
 import { MessageService } from '../services/message.service';
 
@@ -15,7 +16,8 @@ import { MessageService } from '../services/message.service';
 })
 export class DashboardComponent implements OnInit {
 
-  teams: Observable<Team[]>;  
+  teams: Team[];  
+  clubs: Club[];
   keys: any[];
   ageCategoriesKeys: any[];
   teamCategories = TeamCategory;
@@ -33,17 +35,24 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getTeams();
-    console.log(`teams length:`);
-    
+    this.getMyTeams();
+    this.getClubs();
   }
 
-  getTeams(): void {
+  getMyTeams(): void {
     console.log('teamService.getMyTeams() called');
     this.teamService.getMyTeams()
       .subscribe(teams => {
-        this.teams = Observable.of(teams);
-        this.teams.subscribe(result => {console.log(result.length)});       
+        this.teams = teams;
+      }
+    );
+  }
+  
+  getClubs(): void {
+    console.log('teamService.getClubs() called');
+    this.teamService.getClubs()
+      .subscribe(clubs => {
+        this.clubs = clubs; 
       }
     );
   }
@@ -74,16 +83,25 @@ export class DashboardComponent implements OnInit {
   }
 
   createTeam() {
-        this.formSubmittedIndicator = true;
-        this.teamService.addTeam(this.newTeam)
-            .subscribe(
-                data => {
-                    // set success message and pass true parameter to persist the message after redirecting to the login page
-                   this.messageService.success('Team created', true);                    
-                },
-                error => {
-                    this.messageService.error(error);
-                    this.formSubmittedIndicator = false;
-                });
+    this.formSubmittedIndicator = true;
+    this.teamService.addTeam(this.newTeam)
+      .subscribe(
+          data => {
+             this.teams.push({team: data);
+              // set success message and pass true parameter to persist the message after redirecting to the login page
+             this.messageService.success(`Team ${data.name} created`, true);  
+
+//[{"id":"14","name":"test2","isAffiliated":"1","clubName":"Abingdon Amblers AC","complete":"0"}] REceived myteams
+// {"team":[{"id":"17","name":"test4","isAffiliated":"1","clubName":"53-12","complete":"0","captainId":"11"}],"runners":[]}
+//             
+
+             // reset form
+             this.formSubmittedIndicator = false;
+             this.f.resetForm();
+          },
+          error => {
+              this.messageService.error(error);
+              this.formSubmittedIndicator = false;
+          });
     }
 }

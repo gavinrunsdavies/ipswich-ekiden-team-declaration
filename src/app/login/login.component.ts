@@ -23,14 +23,13 @@ export class LoginComponent implements OnInit {
     ngOnInit() {      
         // reset login status
         this.authenticationService.logout();
- 
-        // get return url from route parameters or default to '/'
-        this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
+
+        this.returnUrl = '/dashboard';
     }
  
     login() {
         this.loading = true;
-        this.authenticationService.login(this.model.username, this.model.password)
+        this.authenticationService.login(this.model.email, this.model.password)
             .subscribe(
                 data => {
                     this.loading = false; // tODO needed?

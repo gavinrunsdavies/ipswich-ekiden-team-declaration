@@ -1,4 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
+
+import { User } from '../models/user';
+import { AuthService } from '../services/auth.service';
+import { MessageService } from '../services/message.service';
+
 
 @Component({
   selector: 'app-status',
@@ -7,13 +14,42 @@ import { Component, OnInit } from '@angular/core';
 })
 export class StatusComponent implements OnInit {
   isLoggedIn: boolean = false;
+  loading:boolean = false;
+  currentUser: User;
+  userStatusSubscription: Subscription;
+  model: any = {};
   
-  constructor() {}
+  constructor(
+        private route: ActivatedRoute,
+        private router: Router,
+        private authenticationService: AuthService,
+        private messageService: MessageService) { }
+ 
   
   ngOnInit(): void {
-    const token = localStorage.getItem('token');
-    if (token) {
-          this.isLoggedIn = true;
-        }
+    // reset login status
+    //this.authenticationService.logout(); TODO
+    this.userStatusSubscription = this.authenticationService.getCurrentUser().subscribe(user => { 
+      this.currentUser = user;
+      this.isLoggedIn = this.currentUser != null;
+    });    
+  } 
+
+  login(): void {
+        this.loading = true;
+        this.authenticationService.login(this.model.email, this.model.password)
+            .subscribe(
+                data => {
+                    this.loading = false; // tODO needed?
+                    this.router.navigate(['/dashboard']);
+                },
+                error => {
+                    this.messageService.error(error);
+                    this.loading = false;
+                });
     }  
+    
+  logout(): void {
+    this.authenticationService.logout();
+  }
 }

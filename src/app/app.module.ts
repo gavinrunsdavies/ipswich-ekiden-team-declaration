@@ -18,7 +18,6 @@ import { TeamsComponent } from './teams/teams.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { TeamDetailComponent } from './team-detail/team-detail.component';
 import { MessagesComponent } from './messages/messages.component';
-import { LoginComponent } from './login/login.component';
 import { RegisterComponent } from './register/register.component';
 import { StatusComponent } from './status/status.component';
 import { HomeComponent } from './home/home.component';
@@ -41,7 +40,7 @@ import { FilterPipe } from './filter.pipe'
     TeamsComponent,    
     TeamDetailComponent,
     MessagesComponent,
-    LoginComponent,
+    //LoginComponent,
     RegisterComponent,
     StatusComponent,
     HomeComponent,
@@ -68,8 +67,6 @@ import { FilterPipe } from './filter.pipe'
     },
     EnsureAuthenticated,
     LoginRedirect
-    // provider used to create fake backend
-    //fakeBackendProvider
   ],
   bootstrap: [AppComponent]
 })

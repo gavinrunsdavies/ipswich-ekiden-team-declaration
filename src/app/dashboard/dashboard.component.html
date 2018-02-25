@@ -1,38 +1,49 @@
 <h3>My Teams</h3>
-  <form name="form" (ngSubmit)="f.form.valid && createTeam()" #f="ngForm" novalidate>
-    <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !name.valid }">
+  <form #f="ngForm" (ngSubmit)="createTeam()">
+    <div class="form-group">
       <label for="name">Team Name</label>
-      <input type="text" class="form-control" name="name" [(ngModel)]="newTeam.name" #name="ngModel" required />
-          <div *ngIf="f.submitted && !name.valid" class="help-block">Team Name is required</div>
+      <input id="name" type="text" class="form-control" name="name" [(ngModel)]="newTeam.name" #name="ngModel" required minlength="3" />
+      <div *ngIf="name.invalid && (name.dirty || name.touched)"
+             class="alert alert-danger">
+        <div *ngIf="name.errors.required">
+          Team name is required.
+        </div>
+        <div *ngIf="name.errors.minlength">
+          Team name must be at least 3 characters long.
+        </div>
+      </div>
     </div>
   <div class="form-row">
-    <div class="form-group col-md-4" [ngClass]="{ 'has-error': f.submitted && !isAffiliated.valid }">
+    <div class="form-group col-md-4">
       <label for="affiliation">Affiliation Status</label>
-      <select class="form-control" [(ngModel)]="newTeam.isAffiliated" #isAffiliated="ngModel" required name="isAffiliated">
+      <select id="affiliation" class="form-control" [(ngModel)]="newTeam.isAffiliated" #isAffiliated="ngModel" required name="isAffiliated">
           <option value="-1" selected>Choose...</option>
           <option value="0">Unaffiliated</option>
           <option value="1">UKA affiliated</option>
       </select>
-      <div *ngIf="f.submitted && !isAffiliated.valid" class="help-block">Affiliation status is required</div>
+      <div *ngIf="isAffiliated.errors && isAffiliated.touched" class="alert alert-danger">
+          <div *ngIf="isAffiliated.errors.required">Affiliation status is required.</div>
+      </div>
     </div>
-    <div class="form-group col-md-6" [ngClass]="{ 'has-error': f.submitted && isAffiliated == 1 && club > 0 }">
+    <div class="form-group col-md-5">
       <label for="club">UKA Club</label>
-      <select class="form-control" [disabled]="newTeam.isAffiliated != '1'" [(ngModel)]="newTeam.club" #club="ngModel" required name="club">
-        <option value="0" selected>Choose...</option>
-        <option value="1">Club 1</option>
-        <option value="2">Club 2</option>
+      <select id="club" class="form-control" [disabled]="newTeam.isAffiliated != '1'" [(ngModel)]="newTeam.clubId" #club="ngModel" required name="club">
+         <option *ngFor="let club of clubs" [value]="club.id">{{club.name}}</option>
       </select>
-      <div *ngIf="f.submitted && isAffiliated == 1 && club > 0" class="help-block">Club is required</div>
+      <div *ngIf="club.errors && club.touched" class="alert alert-danger">
+          <div *ngIf="club.errors.required && isAffiliated == 1">Club is required for affiliated club entries.</div>
+      </div>
     </div>
-    <div class="form-group col-md-2">
+    <div class="form-group col-md-3">
        <label for="submit">&nbsp;</label>
-       <button id="submit" type="submit" class="form-control btn btn-primary" [disabled]="formSubmittedIndicator">Add</button>
+       <button id="submit" type="submit" class="form-control btn btn-primary" [disabled]="f.invalid">Add</button>
+       <button type="button" class="form-control btn btn-default" (click)="f.resetForm({})">Reset</button>
         <img *ngIf="formSubmittedIndicator" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
     </div>
   </div>
 </form>
 
-<div class="card" *ngFor="let team of teams | async; trackBy: trackById;">  
+<div class="card" *ngFor="let team of teams; trackBy: trackById;">  
   <div class="card-header">
     <div class="row">
       <div class="col-10">

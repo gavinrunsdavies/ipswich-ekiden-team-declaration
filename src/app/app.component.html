@@ -12,10 +12,10 @@
        <li class="nav-item" [routerLinkActive]="['active']"> 
          <a class="nav-link" [routerLink]="['/']" (click)="navbarCollapsed = true">Teams</a> 
        </li> 
-       <li class="nav-item" [routerLinkActive]="['active']"> 
+       <li class="nav-item" [routerLinkActive]="['active']" *ngIf="!isLoggedIn"> 
          <a class="nav-link" [routerLink]="['/register']" (click)="navbarCollapsed = true">Register</a> 
        </li>        
-        <li class="nav-item" [routerLinkActive]="['active']"> 
+        <li class="nav-item" [routerLinkActive]="['active']" *ngIf="isLoggedIn"> 
          <a class="nav-link" [routerLink]="['/dashboard']" (click)="navbarCollapsed = true">My Teams</a> 
        </li>     
      </ul> 

@@ -6,12 +6,13 @@ import { of } from 'rxjs/observable/of';
 import { catchError, map, tap } from 'rxjs/operators';
 
 import { Team } from '../models/team';
+import { Club } from '../models/club';
 import { MessageService } from './message.service';
 
 @Injectable()
 export class TeamService {
   
-  private teamsUrl: string = 'http://localhost:5000/api/teams'; // TODO inject?
+  private teamsUrl: string = 'http://www.ipswichekiden.co.uk/wp-json/ipswich-ekiden-team-declaration-api/v1'; // TODO inject?
   
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
@@ -20,31 +21,28 @@ export class TeamService {
   constructor(
     private http: HttpClient,
     private messageService: MessageService) { }
-    
-  /** GET team by id. Return `undefined` when id not found */
-  getTeamNo404<Data>(id: number): Observable<Team> {
-    const url = `${this.teamsUrl}/?id=${id}`;
-    return this.http.get<Team[]>(url)
-      .pipe(
-        map(teams => teams[0]), // returns a {0|1} element array
-        tap(h => {
-          const outcome = h ? `fetched` : `did not find`;
-          this.log(`${outcome} team id=${id}`);
-        }),
-        catchError(this.handleError<Team>(`getTeam id=${id}`))
-      );
-  }
 
-  getTeams(): Observable<Team[]> {    
-    return this.http.get<Team[]>(this.teamsUrl)
+  getTeams(): Observable<Team[]> {  
+    const url = `${this.teamsUrl}/teams`;  
+    return this.http.get<Team[]>(url)
     .pipe(
       tap(teams => this.log(`fetched teams`)),
       catchError(this.handleError('getTeams', []))
     );
   }
   
-  getMyTeams(): Observable<Team[]> {    
-    return this.http.get<Team[]>('http://localhost:5000/api/myteams')
+  getClubs(): Observable<Club[]> {  
+    const url = `${this.teamsUrl}/clubs`;  
+    return this.http.get<Club[]>(url)
+    .pipe(
+      tap(clubs => this.log(`fetched clubs`)),
+      catchError(this.handleError('getClubs', []))
+    );
+  }
+  
+  getMyTeams(): Observable<Team[]> {  
+    const url = `${this.teamsUrl}/myteams`;    
+    return this.http.get<Team[]>(url)
     .pipe(
       tap(teams => this.log(`fetched teams`)),
       catchError(this.handleError('getMyTeams', []))
@@ -53,7 +51,7 @@ export class TeamService {
   
   /** GET team by id. Will 404 if id not found */
   getTeam(id: number): Observable<Team> {
-    const url = `${this.teamsUrl}/${id}`;
+    const url = `${this.teamsUrl}/teams/${id}`;
     return this.http.get<Team>(url).pipe(
       tap((team: Team)=> this.log(`fetched team id=${id} ${JSON.stringify(team)}`)),
       catchError(this.handleError<Team>(`getTeam id=${id}`))
@@ -62,7 +60,8 @@ export class TeamService {
   
   /** PUT: update the team on the server */
   updateTeam (team: Team): Observable<any> {
-    return this.http.put(this.teamsUrl, team, this.httpOptions).pipe(
+    const url = `${this.teamsUrl}/teams`;
+    return this.http.put(url, team, this.httpOptions).pipe(
       tap(_ => this.log(`updated team id=${team.id}`)),
       catchError(this.handleError<any>('updateTeam'))
     );
@@ -70,7 +69,8 @@ export class TeamService {
   
   /** POST: add a new team to the server */
   addTeam (team: Team): Observable<Team> {
-    return this.http.post<Team>(this.teamsUrl, team, this.httpOptions).pipe(
+    const url = `${this.teamsUrl}/teams`;
+    return this.http.post<Team>(url, team, this.httpOptions).pipe(
       tap((team: Team) => this.log(`added team w/ id=${team.id}`)),
       catchError(this.handleError<Team>('addTeam'))
     );
@@ -79,23 +79,11 @@ export class TeamService {
   /** DELETE: delete the team from the server */
   deleteTeam (team: Team | number): Observable<Team> {
     const id = typeof team === 'number' ? team : team.id;
-    const url = `${this.teamsUrl}/${id}`;
+    const url = `${this.teamsUrl}/teams/${id}`;
 
     return this.http.delete<Team>(url, this.httpOptions).pipe(
       tap(_ => this.log(`deleted team id=${id}`)),
       catchError(this.handleError<Team>('deleteTeam'))
-    );
-  }
-  
-  /* GET teams whose name contains search term */
-  searchTeams(term: string): Observable<Team[]> {
-    if (!term.trim()) {
-      // if not search term, return empty team array.
-      return of([]);
-    }
-    return this.http.get<Team[]>(`api/teams/?name=${term}`).pipe(
-      tap(_ => this.log(`found teams matching "${term}"`)),
-      catchError(this.handleError<Team[]>('searchTeams', []))
     );
   }
 

@@ -13,8 +13,8 @@
   <tbody>    
     <tr *ngFor="let leg of [1,2,3,4,5,6]">
       <th scope="row">{{leg}}</th>
-      <td>{{ team.members[leg - 1].name }}</td>
-      <td>{{ team.members[leg - 1].ageCategoryCode }}</td>
+      <td>{{ getRunnerProperty(team, leg, 'name') }}</td>
+      <td>{{ getRunnerProperty(team, leg, 'ageCategoryCode') }}</td>
     </tr>    
   </tbody>
 </table>
