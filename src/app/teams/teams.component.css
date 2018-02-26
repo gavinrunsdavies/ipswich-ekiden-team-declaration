@@ -1,12 +1,13 @@
 /* teamsComponent's private CSS styles */
 .selected {
-  background-color: #CFD8DC !important;
-  color: white;
+  background-color: #F9F9F9 !important;
+  border: 2px solid black;
 }
 
 .teams li {
   cursor: pointer;
 }
+
 .teams li.selected:hover {
   background-color: #BBD8DC !important;
   color: white;

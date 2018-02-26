@@ -44,7 +44,12 @@ export class StatusComponent implements OnInit {
                     this.router.navigate(['/dashboard']);
                 },
                 error => {
-                    this.messageService.error(error);
+                    var message = "ERROR: Login failed. Please try again.";
+                    if (error.status = 403) {
+                      message = "ERROR: Incorrect email or password.";
+                    }
+                    
+                    this.messageService.error(message);
                     this.loading = false;
                 });
     }  

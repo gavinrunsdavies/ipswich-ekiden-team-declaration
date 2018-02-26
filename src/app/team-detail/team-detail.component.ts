@@ -23,14 +23,14 @@ export class TeamDetailComponent implements OnInit {
   }
   
   getRunnerProperty(runners, leg: number, prop) {
-    console.log(runners);
     if (runners == undefined) {
-      return 'Not declaredx';
+      return;
     }
+    
     var runner = runners.find(runner => runner.leg == leg); 
     if (runner == undefined)
       return 'Not declared';
     else
-      return runner['prop'];
+      return runner[prop];
   }
 }
