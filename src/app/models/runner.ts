@@ -1,8 +1,8 @@
 export class Runner {
   id: number;
   name: string;
-  ageCategoryCode: AgeCategoryCode;
-  sex: Sex;
+  ageCategory: string;
+  gender: number;
   leg: number;
 }
 

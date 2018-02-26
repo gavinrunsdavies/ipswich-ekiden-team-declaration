@@ -22,10 +22,12 @@ export class TeamDetailComponent implements OnInit {
   ngOnInit() {
   }
   
-  // TODO - change response for JSON so that runners is in team.
-  getRunnerProperty(x, leg: number, prop) {
-    console.log(x);
-    var runner = x.find(x => x.leg == leg); 
+  getRunnerProperty(runners, leg: number, prop) {
+    console.log(runners);
+    if (runners == undefined) {
+      return 'Not declaredx';
+    }
+    var runner = runners.find(runner => runner.leg == leg); 
     if (runner == undefined)
       return 'Not declared';
     else
