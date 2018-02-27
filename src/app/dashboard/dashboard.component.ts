@@ -87,7 +87,7 @@ export class DashboardComponent implements OnInit {
     this.teamService.addTeam(this.newTeam)
       .subscribe(
           data => {
-             this.teams.push({team: data.team});
+             this.teams.push(data);
               // set success message and pass true parameter to persist the message after redirecting to the login page
              this.messageService.success(`Team ${data.name} created`, true);  
 
@@ -97,7 +97,7 @@ export class DashboardComponent implements OnInit {
 
              // reset form
              this.formSubmittedIndicator = false;
-             this.f.resetForm();
+            // this.f.resetForm();
           },
           error => {
               this.messageService.error(error);

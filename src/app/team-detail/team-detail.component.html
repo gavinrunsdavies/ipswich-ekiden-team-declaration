@@ -1,7 +1,8 @@
 <h2>Team Details</h2>
 <div class="container" *ngIf="team">
- <h5>{{team.name}}</h5>
- <h6 class="text-muted">{{team.category}}</h6>
+ <h4>{{team.name}}</h4>
+ <h6><strong>Category</strong>: {{(team.category) ? team.category : 'Uncategorized'}}; Id: {{team.id}}</h6> 
+  <p>Complete? {{team.complete ? 'Yes' : 'No'}}</p>
  <table class="table table-striped">
   <thead>
     <tr>
