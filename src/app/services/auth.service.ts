@@ -27,10 +27,8 @@ export class AuthService {
                 currentUser.token = user.token;
                 currentUser.displayName = user.user_display_name;
                 currentUser.email = user.user_email;
-                
 
-                // store user details and jwt token in local storage to keep user logged in between page refreshes
-                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
                 this.currentUserSubject.next(currentUser);
             }
             
@@ -40,7 +38,7 @@ export class AuthService {
     
   logout() {
       // remove user from local storage to log user out and clear observable
-      localStorage.removeItem('currentUser');
+      sessionStorage.removeItem('currentUser');
       this.currentUserSubject.next();
   }
   

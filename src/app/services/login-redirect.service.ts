@@ -6,7 +6,7 @@ import { AuthService } from './auth.service';
 export class LoginRedirect implements CanActivate {
   constructor(private auth: AuthService, private router: Router) {}
   canActivate(): boolean {
-    if (localStorage.getItem('token')) {
+    if (sessionStorage.getItem('token')) {
       this.router.navigateByUrl('/status');
       return false;
     }
