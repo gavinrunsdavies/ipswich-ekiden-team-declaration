@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
 import { Team } from '../models/team';
+import { Runner } from '../models/runner';
 import { AgeCategoryCode } from '../models/runner';
 import { TeamCategory } from '../models/team';
 import { Club } from '../models/club';
@@ -40,7 +41,6 @@ export class DashboardComponent implements OnInit {
   }
 
   getMyTeams(): void {
-    console.log('teamService.getMyTeams() called');
     this.teamService.getMyTeams()
       .subscribe(teams => {
         this.teams = teams;
@@ -49,7 +49,6 @@ export class DashboardComponent implements OnInit {
   }
   
   getClubs(): void {
-    console.log('teamService.getClubs() called');
     this.teamService.getClubs()
       .subscribe(clubs => {
         this.clubs = clubs; 
@@ -83,25 +82,53 @@ export class DashboardComponent implements OnInit {
   }
 
   createTeam() {
-    this.formSubmittedIndicator = true;
-    this.teamService.addTeam(this.newTeam)
-      .subscribe(
-          data => {
-             this.teams.push(data);
-              // set success message and pass true parameter to persist the message after redirecting to the login page
-             this.messageService.success(`Team ${data.name} created`, true);  
-
-//[{"id":"14","name":"test2","isAffiliated":"1","clubName":"Abingdon Amblers AC","complete":"0"}] REceived myteams
-// {"team":[{"id":"17","name":"test4","isAffiliated":"1","clubName":"53-12","complete":"0","captainId":"11"}],"runners":[]}
-//             
-
-             // reset form
-             this.formSubmittedIndicator = false;
-            // this.f.resetForm();
-          },
-          error => {
-              this.messageService.error(error);
-              this.formSubmittedIndicator = false;
-          });
-    }
+    try {
+      this.formSubmittedIndicator = true;
+      this.teamService.addTeam(this.newTeam)
+        .subscribe(
+            team => {
+               if (team && team.id > 0) {
+                 let newRunner: Runner;
+                newRunner = new Runner();
+                 for (var i = 1; i <= 6; i++) {
+                   newRunner.leg = i;
+                 team.runners.push(newRunner);
+                 }
+                 
+                 this.teams.push(team);                
+                 this.messageService.success(`Team ${team.name} created`, true);  
+               }
+            },
+            error => {
+                this.messageService.error(error);
+                
+            });
+      }
+      catch (e) {
+        console.log("Error: ", e); 
+      }
+      this.formSubmittedIndicator = false;
+  } 
+  
+   saveTeamEdit(team) {
+     console.log(`saveTeamEdit team called`);
+    // Save team, Update, set to view mode.
+  }
+  
+   cancelTeamEdit(team) {
+     console.log(`cancelTeamEdit team called`);
+    // Set team as in view mode
+    this.editing[team.id] = false;
+  }
+  
+   editTeam(teamId) {
+     console.log(`editTeam team called`);
+    // Set team as in edit mode
+    this.editing[teamId] = true;
+  }
+  
+  inEditMode(teamId) {
+    console.log(`inEditMode team called`);
+    return this.editing[teamId];
+  }
 }

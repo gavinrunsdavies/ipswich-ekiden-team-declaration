@@ -7,7 +7,7 @@
           <div class="input-group-prepend">
             <span class="input-group-text">Search</span>
           </div>
-          <input type="text" class="form-control" placeholder="Team name or club name or category" [(ngModel)]="searchString">
+          <input type="text" class="form-control" placeholder="Team name or club name" [(ngModel)]="searchString">
         </div>
         <div class="list-group teams">    
           <li *ngFor="let team of teams | FilterPipe: searchString : searchableList | paginate: { itemsPerPage: 5, currentPage: currentPageNumber }" 
@@ -15,11 +15,10 @@
               [class.selected]="selectedTeam && team.id === selectedTeam.id"
               (click)="showTeam(team)">
             <div class="d-flex w-100 justify-content-between">
-              <h5 class="mb-1">{{team.name}}</h5>
-              <span class="badge badge-pill" [ngClass]="(team.complete) ? 'badge-success' : 'badge-warning'">{{team.complete ? 'Complete' : 'Incomplete'}}</span>
+              <h5 class="mb-1">{{team.name}}</h5>             
             </div>
             <p class="mb-1">Affiliated Club: {{team.clubName}}</p>
-            <small><strong>Category</strong>: {{(team.category) ? team.category : 'Uncategorized'}}; Id: {{team.id}}</small>
+            <small>Id: {{team.id}}</small>
           </li>
         </div>
         <br>

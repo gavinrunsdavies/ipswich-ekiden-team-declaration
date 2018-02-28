@@ -13,7 +13,7 @@ export class TeamsComponent implements OnInit {
   currentPageNumber: number = 1;
   teams: Team[]; 
   selectedTeam: Team;  
-  searchableList = ['name', 'clubName', 'category']  ;
+  searchableList = ['name', 'clubName']  ;
   
   constructor(private teamService: TeamService) { }
 
