@@ -71,27 +71,11 @@
     <tr *ngFor="let runner of team.runners">
       <th scope="row">{{runner.leg}}</th>
       <td>
-        <span
-              title="Double click to edit"
-              (dblclick)="editing[team.id + '-' +runner.leg + '-name'] = true"
-              *ngIf="!editing[team.id + '-' +runner.leg + '-name']">
-              {{runner.name}}
-            </span>
-            <input
-              autofocus
-              (blur)="updateValue(team.id, $event, 'name', runner.leg)"
-              *ngIf="editing[team.id + '-' +runner.leg + '-name']"
-              type="text"
-              [value]="runner.name"
-            />
+        <span *ngIf="!editing[team.id]">{{runner.name}}</span>
+        <input autofocus *ngIf="editing[team.id]" type="text" [value]="runner.name" />
       </td>
       <td>
-         <span
-              title="Double click to edit"
-              (dblclick)="editing[team.id + '-' +runner.leg + '-gender'] = true"
-              *ngIf="!editing[team.id + '-' +runner.leg + '-gender']">
-              {{runner.sex}}
-            </span>
+         <span *ngIf="!editing[team.id]">{{runner.sex}}</span>
             <select
               *ngIf="editing[runner.leg + '-gender']"
               (blur)="editing[team.id + '-' +runner.leg + '-gender'] = false"
