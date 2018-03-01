@@ -31,7 +31,7 @@
          <option *ngFor="let club of clubs" [value]="club.id">{{club.name}}</option>
       </select>
       <div *ngIf="club.errors && club.touched" class="alert alert-danger">
-          <div *ngIf="club.errors.required && isAffiliated == 1">Club is required for affiliated club entries.</div>
+          <div *ngIf="club.errors && isAffiliated == 1">Club is required for affiliated club entries.</div>
       </div>
     </div>
     <div class="form-group col-md-3">
@@ -57,7 +57,7 @@
     </div>
   </div>
   <div class="card-body" [ngbCollapse]="!team.isCollapsed">
-  <form #editTableForm="ngForm" (ngSubmit)="createTeam()">
+  <form #editTableForm="ngForm" (ngSubmit)="saveTeamEdit(team)">
    <table class="table table-striped">
   <thead>
     <tr>
@@ -72,31 +72,20 @@
       <th scope="row">{{runner.leg}}</th>
       <td>
         <span *ngIf="!editing[team.id]">{{runner.name}}</span>
-        <input autofocus *ngIf="editing[team.id]" type="text" [value]="runner.name" />
+        <input autofocus *ngIf="editing[team.id]" type="text" [(ngModel)]="runner.name" />
       </td>
       <td>
          <span *ngIf="!editing[team.id]">{{runner.sex}}</span>
             <select
-              *ngIf="editing[runner.leg + '-gender']"
-              (blur)="editing[team.id + '-' +runner.leg + '-gender'] = false"
-              (change)="updateValue(team.id, $event, 'gender', runner.leg)"
-              [value]="runner.sex">
-              <option value="male">Male</option>
-              <option value="female">Female</option>
+              *ngIf="editing[team.id]"          
+              [(ngModel)]="runner.sex">
+              <option value="1">Male</option>
+              <option value="2">Female</option>
             </select>
       </td>
       <td>
-         <span
-              title="Double click to edit"
-              (dblclick)="editing[team.id + '-' +leg + '-category'] = true"
-              *ngIf="!editing[team.id + '-' +leg + '-category']">
-              {{runner.ageCategoryCode}}
-            </span>
-            <select
-              *ngIf="editing[leg + '-category']"
-              (blur)="editing[team.id + '-' +leg + '-category'] = false"
-              (change)="updateValue(team.id, $event, 'category', leg)"
-              [value]="team.ageCategoryCode">
+         <span *ngIf="!editing[team.id]">{{runner.ageCategoryCode}}</span>
+            <select *ngIf="editing[team.id]" [(ngModel)]="team.ageCategoryCode">
               <option *ngFor="let key of ageCategoriesKeys" [value]="key">{{ageCategories[key]}}</option>
             </select>
       </td>
@@ -110,8 +99,8 @@
       </button>
     </div>
     <div class="btn-form" ng-show="tableform.$visible">
-      <button type="submit" *ngIf="inEditMode(team.id)" class="btn btn-primary" (click)="saveTeamEdit(team)">save</button>
-      <button type="button" *ngIf="inEditMode(team.id)" class="btn btn-default" (click)="cancelTeamEdit(team)">cancel</button>
+      <button type="submit" *ngIf="inEditMode(team.id)" class="btn btn-primary">save</button>
+      <button type="button" *ngIf="inEditMode(team.id)" class="btn btn-default" (click)="cancelTeamEdit(team); editTableForm.reset()">cancel</button>
     </div>
     </form>
   </div>

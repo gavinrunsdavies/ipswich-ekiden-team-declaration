@@ -89,10 +89,11 @@ export class DashboardComponent implements OnInit {
             team => {
                if (team && team.id > 0) {
                  let newRunner: Runner;
-                newRunner = new Runner();
+                
                  for (var i = 1; i <= 6; i++) {
+                   newRunner = new Runner();
                    newRunner.leg = i;
-                 team.runners.push(newRunner);
+                   team.runners.push(newRunner);
                  }
                  
                  this.teams.push(team);                
