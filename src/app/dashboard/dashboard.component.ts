@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+
 import { Team } from '../models/team';
 import { Runner } from '../models/runner';
 import { AgeCategoryCode } from '../models/runner';
@@ -25,13 +27,15 @@ export class DashboardComponent implements OnInit {
   ageCategories = AgeCategoryCode;
   editing = {};
   newTeam: any = {};
+  selectedDeleteTeam: Team;
   
   formSubmittedIndicator: boolean = false;
   loadingIndicator: boolean = true;
   
   constructor(
     private teamService: TeamService,
-    private messageService: MessageService) {
+    private messageService: MessageService,
+    private modalService: NgbModal) {
     this.ageCategoriesKeys = Object.keys(this.ageCategories).filter(f => !isNaN(Number(f)));    
   }
 
@@ -69,12 +73,7 @@ export class DashboardComponent implements OnInit {
   }
   
   showTeam(team) : void {
-    team.isCollapsed = !team.isCollapsed;
-    
-     // console.log('teamService.getMyTeams() called');
-     // this.teamService.getTeam(team.id)
-      // .subscribe(fullTeam => team.members = fullTeam.members);
-    
+    team.isShown = !team.isShown;
   }
     
   trackById(index, team) {
@@ -128,8 +127,36 @@ export class DashboardComponent implements OnInit {
     this.editing[teamId] = true;
   }
   
-  inEditMode(teamId) {
-    console.log(`inEditMode team called`);
+  inEditMode(teamId) {    
     return this.editing[teamId];
+  }  
+
+  openDeleteTeamModal(deleteTeamModal, team) {
+    this.selectedDeleteTeam = team;
+    this.modalService.open(deleteTeamModal).result.then((result) => {
+      // Closed
+    }, (reason) => {
+      // Dismissed
+    });
+  }
+
+  deleteTeam() {
+     this.teamService.deleteTeam(this.selectedDeleteTeam)
+        .subscribe(
+            success => {
+              
+              for(var i = this.teams.length - 1; i >= 0; i--) {
+                if(this.teams[i].id === this.selectedDeleteTeam.id) {
+                  this.teams.splice(i, 1);
+                  break;                
+                }
+              }
+ 
+              this.messageService.success(`Team ${this.selectedDeleteTeam.name} deleted`, true);
+              
+            },
+            error => {
+                this.messageService.error(error);               
+            });
   }
 }
