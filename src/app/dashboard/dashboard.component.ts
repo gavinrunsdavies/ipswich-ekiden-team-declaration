@@ -48,6 +48,11 @@ export class DashboardComponent implements OnInit {
     this.teamService.getMyTeams()
       .subscribe(teams => {
         this.teams = teams;
+        
+        // Add placeholders for runner legs
+        for(var i = 0; i < this.teams.length; i++) {
+          this.addRunnerPlaceHolders(this.teams[i]);
+        }
       }
     );
   }
@@ -58,18 +63,6 @@ export class DashboardComponent implements OnInit {
         this.clubs = clubs; 
       }
     );
-  }
-  
-  deleteTeam(tea,) : void {
-    console.log(`delete team called`);
-  }
-  
-  updateValue(teamId, event, cell, leg) {
-    console.log('inline editing', teamId)
-    this.editing[teamId + '-' +leg + cell] = false;
-    this.editing[teamId][leg][cell] = event.target.value;
-   // this.editing = [...this.editing];
-    console.log('UPDATED!', this.editing[teamId][leg][cell]);
   }
   
   showTeam(team) : void {
@@ -113,6 +106,30 @@ export class DashboardComponent implements OnInit {
    saveTeamEdit(team) {
      console.log(`saveTeamEdit team called`);
     // Save team, Update, set to view mode.
+    
+    this.teamService.updateTeam(team)
+        .subscribe(
+            updatedTeam => {
+              
+              this.addRunnerPlaceHolders(updatedTeam);
+              
+              // Update array
+              for (var i = 0; i < this.teams.length; i++) {
+                if (this.teams[i].id === updatedTeam.id) {
+                  this.teams[i] = updatedTeam;
+                  this.teams[i].isShown = true;
+                  break;                
+                }
+              }
+ 
+              this.messageService.success(`Team ${updatedTeam.name} updated`, true);
+              
+            },
+            error => {
+                this.messageService.error(error);               
+            });
+            
+    this.editing[team.id] = false;
   }
   
    cancelTeamEdit(team) {
@@ -159,4 +176,32 @@ export class DashboardComponent implements OnInit {
                 this.messageService.error(error);               
             });
   }
+  
+  addRunnerPlaceHolders(team) {
+    for(var leg = 1; leg <= 6; leg++) {
+      var exists = false;
+      for(var k = 0; k < team.runners.length; k++) {
+        if (team.runners[k].leg == leg) {
+          exists = true;
+          break;
+        }
+      }
+      
+      if (!exists) {
+        let newRunner: Runner = new Runner();
+        newRunner.leg = leg;
+        team.runners.push(newRunner);
+      }
+    }
+
+    team.runners.sort(this.compareRunnersByLeg);
+  }
+  
+  compareRunnersByLeg(a,b) {
+  if (a.leg < b.leg)
+    return -1;
+  if (a.leg > b.leg)
+    return 1;
+  return 0;
+}
 }

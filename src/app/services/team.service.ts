@@ -60,7 +60,7 @@ export class TeamService {
   
   /** PUT: update the team on the server */
   updateTeam (team: Team): Observable<any> {
-    const url = `${this.teamsUrl}/teams`;
+    const url = `${this.teamsUrl}/teams/${team.id}`;
     return this.http.put(url, team, this.httpOptions).pipe(
       tap(_ => this.log(`updated team id=${team.id}`)),
       catchError(this.handleError<any>('updateTeam'))
@@ -88,6 +88,7 @@ export class TeamService {
   }
 
   private log(message: string) {
+    // TODO only log in debug mode.
     console.log('TeamService: ' + message);
   }
   

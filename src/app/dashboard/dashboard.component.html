@@ -1,4 +1,6 @@
 <h3>My Teams</h3>
+<hr/>
+<h5>Add New Team</h5>
   <form #createTeamForm="ngForm" (ngSubmit)="createTeam()">
     <div class="form-group">
       <label for="name">Team Name</label>
@@ -25,7 +27,7 @@
           <div *ngIf="isAffiliated.errors.required">Affiliation status is required.</div>
       </div>
     </div>
-    <div class="form-group col-md-5">
+    <div class="form-group col-md-4">
       <label for="club">UKA Club</label>
       <select id="club" class="form-control" [disabled]="newTeam.isAffiliated != '1'" [(ngModel)]="newTeam.clubId" #club="ngModel" required name="club">
          <option *ngFor="let club of clubs" [value]="club.id">{{club.name}}</option>
@@ -34,15 +36,20 @@
           <div *ngIf="club.errors && isAffiliated == 1">Club is required for affiliated club entries.</div>
       </div>
     </div>
-    <div class="form-group col-md-3">
+    <div class="form-group col-md-2">    
        <label for="submit">&nbsp;</label>
-       <button id="submit" type="submit" class="form-control btn btn-primary" [disabled]="!createTeamForm.form.valid">Add</button>
-       <button type="button" class="form-control btn btn-default" (click)="createTeamForm.reset()">Reset</button>
-        <img *ngIf="formSubmittedIndicator" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
+       <button *ngIf="!formSubmittedIndicator" id="submit" type="submit" class="form-control btn btn-primary" [disabled]="!createTeamForm.form.valid">Add</button> 
+ <img *ngIf="formSubmittedIndicator" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />       
     </div>
+       <div class="form-group col-md-2">    
+       <label for="reset">&nbsp;</label>
+       <button id="reset" type="button" class="form-control btn btn-info" (click)="createTeamForm.reset()">Reset</button>
+       
+        </div>   
   </div>
 </form>
-
+<hr/>
+<h5>Current Teams</h5>
 <div class="card" *ngFor="let team of teams; trackBy: trackById;">  
   <div class="card-header">
     <div class="row">
