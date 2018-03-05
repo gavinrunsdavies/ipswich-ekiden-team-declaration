@@ -132,15 +132,11 @@ export class DashboardComponent implements OnInit {
     this.editing[team.id] = false;
   }
   
-   cancelTeamEdit(team) {
-     console.log(`cancelTeamEdit team called`);
-    // Set team as in view mode
+   cancelTeamEdit(team) {     
     this.editing[team.id] = false;
   }
   
    editTeam(teamId) {
-     console.log(`editTeam team called`);
-    // Set team as in edit mode
     this.editing[teamId] = true;
   }
   

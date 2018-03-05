@@ -9,6 +9,7 @@ export class Team {
   clubName: string;
   complete: boolean;
   runners: Runner[];
+  isShown: boolean; // internal only.
 }
 
 export enum TeamCategory {MensOpen = 1, LadiesOpen = 2, MensVet = 3, LadiesVet = 4, MensSuperVet = 5, LadiesSuperVet = 6, Mixed = 7, Over60 = 8, Over70 = 9, Unaffiliated = 0}

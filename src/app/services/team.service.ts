@@ -8,6 +8,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 import { Team } from '../models/team';
 import { Club } from '../models/club';
 import { MessageService } from './message.service';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class TeamService {
@@ -88,8 +89,9 @@ export class TeamService {
   }
 
   private log(message: string) {
-    // TODO only log in debug mode.
-    console.log('TeamService: ' + message);
+    if (environment.production == false) {
+      console.log('TeamService: ' + message);    
+    }
   }
   
   /**
