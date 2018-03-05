@@ -7,7 +7,7 @@ import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import { Team } from '../models/team';
 import { Runner } from '../models/runner';
 import { AgeCategoryCode } from '../models/runner';
-import { TeamCategory } from '../models/team';
+import { Gender } from '../models/runner';
 import { Club } from '../models/club';
 import { TeamService } from '../services/team.service';
 import { MessageService } from '../services/message.service';
@@ -21,10 +21,11 @@ export class DashboardComponent implements OnInit {
 
   teams: Team[];  
   clubs: Club[];
-  keys: any[];
+
   ageCategoriesKeys: any[];
-  teamCategories = TeamCategory;
-  ageCategories = AgeCategoryCode;
+  ageCategory = AgeCategoryCode;
+  genderKeys: any[];
+  gender = Gender;
   editing = {};
   newTeam: any = {};
   selectedDeleteTeam: Team;
@@ -36,7 +37,8 @@ export class DashboardComponent implements OnInit {
     private teamService: TeamService,
     private messageService: MessageService,
     private modalService: NgbModal) {
-    this.ageCategoriesKeys = Object.keys(this.ageCategories).filter(f => !isNaN(Number(f)));    
+    this.ageCategoriesKeys = Object.keys(this.ageCategory);    
+    this.genderKeys = Object.keys(this.gender);
   }
 
   ngOnInit() {

@@ -55,7 +55,6 @@
     <div class="row">
     <div class="col-md-8">
     <h4>{{team.name}}   <span class="badge badge-pill" [ngClass]="(team.complete) ? 'badge-success' : 'badge-warning'">{{team.complete ? 'Complete' : 'Incomplete'}}</span></h4>
-  
     </div>
     <div class="col-md-4 text-right">
     <span class="btn-group pull-right"> 
@@ -77,25 +76,22 @@
     </tr>
   </thead>
   <tbody *ngIf="team">    
-    <tr *ngFor="let runner of team.runners">
+    <tr *ngFor="let runner of team.runners; let index = index;">
       <th scope="row">{{runner.leg}}</th>
       <td>
         <span *ngIf="!editing[team.id]">{{runner.name}}</span>
-        <input autofocus *ngIf="editing[team.id]" type="text" [(ngModel)]="runner.name" name="name"/>
+        <input autofocus *ngIf="editing[team.id]" type="text" [(ngModel)]="team.runners[index].name" name="name-{{index}}"/>
       </td>
       <td>
          <span *ngIf="!editing[team.id]">{{runner.gender}}</span>
-            <select
-              *ngIf="editing[team.id]"          
-              [(ngModel)]="runner.gender" name="gender">
-              <option value="1">Male</option>
-              <option value="2">Female</option>
+            <select *ngIf="editing[team.id]" [(ngModel)]="team.runners[index].gender" name="gender-{{index}}">
+               <option *ngFor="let key of genderKeys" [value]="key">{{gender[key]}}</option>
             </select>
       </td>
       <td>
          <span *ngIf="!editing[team.id]">{{runner.ageCategory}}</span>
-            <select *ngIf="editing[team.id]" [(ngModel)]="runner.ageCategory" name="ageCategory">
-              <option *ngFor="let key of ageCategoriesKeys" [value]="key">{{ageCategories[key]}}</option>
+            <select *ngIf="editing[team.id]" [(ngModel)]="team.runners[index].ageCategory" name="ageCategory-{{index}}">
+              <option *ngFor="let key of ageCategoriesKeys" [value]="key">{{ageCategory[key]}}</option>
             </select>
       </td>
     </tr>    
@@ -106,8 +102,12 @@
       <button type="button" class="btn btn-default" *ngIf="!inEditMode(team.id)" (click)="editTeam(team.id)">edit</button>
     </div>
     <div class="btn-form" *ngIf="inEditMode(team.id)">
-      <button type="submit" *ngIf="inEditMode(team.id)" class="btn btn-primary">save</button>
+      <button type="submit" *ngIf="inEditMode(team.id)" class="btn btn-primary">save</button><!-- [disabled]="!editTeamForm.form.valid"-->
       <button type="button" *ngIf="inEditMode(team.id)" class="btn btn-default" (click)="cancelTeamEdit(team); editTableForm.reset()">cancel</button>
+      <!-- TODO custom validation -->
+       <!-- <div *ngIf="!isValidEditeditTeamForm.form.valid" class="alert alert-danger"> -->
+          <!-- <div *ngIf="club.errors && isAffiliated == 1">Club is required for affiliated club entries.</div> -->
+      <!-- </div> -->
     </div>
     </form>
   </div>

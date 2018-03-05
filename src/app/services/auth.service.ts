@@ -4,10 +4,10 @@ import 'rxjs/add/operator/map'
 import { User } from '../models/user';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
+import { environment } from '../../environments/environment';
 
 @Injectable()
 export class AuthService {
-  private BASE_URL: string = 'http://www.ipswichekiden.co.uk'; // TODO inject?
   private headers: HttpHeaders = new HttpHeaders({'Content-Type': 'application/json'});
   
   private currentUserSubject: Subject<User>;
@@ -17,7 +17,7 @@ export class AuthService {
     }
   
   login(username: string, password: string) {
-    let url: string = `${this.BASE_URL}/wp-json/jwt-auth/v1/token`;
+    let url: string = `${environment.baseUrl}/wp-json/jwt-auth/v1/token`;
     return this.http.post<any>(url, { username: username, password: password }, {headers: this.headers})
         .map(user => {
             // login successful if there's a jwt token in the response
@@ -28,7 +28,7 @@ export class AuthService {
                 currentUser.displayName = user.user_display_name;
                 currentUser.email = user.user_email;
 
-                sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
                 this.currentUserSubject.next(currentUser);
             }
             
@@ -38,7 +38,7 @@ export class AuthService {
     
   logout() {
       // remove user from local storage to log user out and clear observable
-      sessionStorage.removeItem('currentUser');
+      localStorage.removeItem('currentUser');
       this.currentUserSubject.next();
   }
   

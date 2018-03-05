@@ -5,7 +5,7 @@ import { CanActivate, Router } from '@angular/router';
 export class EnsureAuthenticated implements CanActivate {
   constructor(private router: Router) {}
   canActivate(): boolean {
-    if (sessionStorage.getItem('currentUser')) {
+    if (localStorage.getItem('currentUser')) {
       return true;
     }
     else {
