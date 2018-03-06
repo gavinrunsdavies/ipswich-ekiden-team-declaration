@@ -29,10 +29,7 @@ export class TeamDetailComponent implements OnInit {
     
     var runner = runners.find(runner => runner.leg == leg); 
     if (runner == undefined)
-      if (prop == 'name')
-        return '<span class="font-italic font-weight-light">Not declared</span>';
-      else
-        return '-';
+      return null;
     else
       return runner[prop];
   }

@@ -12,12 +12,14 @@
       <th scope="col">Category</th>
     </tr>
   </thead>
-  <tbody *ngIf="team.runners.length > 0">    
+  <tbody>    
     <tr *ngFor="let leg of [1,2,3,4,5,6]">
       <th scope="row">{{leg}}</th>
-      <td>{{ getRunnerProperty(team.runners, leg, 'name') }}</td>
-      <td>{{ getRunnerProperty(team.runners, leg, 'gender') }}</td>
-      <td>{{ getRunnerProperty(team.runners, leg, 'ageCategory') }}</td>
+      <td *ngIf="getRunnerProperty(team.runners, leg, 'name') as name; else noNameDeclared">{{name}}</td>
+      <ng-template #noNameDeclared><td><span class="font-italic font-weight-light">Not declared</span></td></ng-template>
+      <td *ngIf="getRunnerProperty(team.runners, leg, 'gender') as gender; else notDeclared">{{gender}}</td>
+      <td *ngIf="getRunnerProperty(team.runners, leg, 'ageCategory') as ageCategory; else notDeclared">{{ageCategory}}</td>
+      <ng-template #notDeclared><td><span class="font-weight-light">-</span></td></ng-template>
     </tr>    
   </tbody>
 </table>
