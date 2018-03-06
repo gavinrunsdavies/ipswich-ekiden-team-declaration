@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
 
 import { User } from './models/user';
 import { AuthService } from './services/auth.service';
@@ -10,17 +11,13 @@ import { AuthService } from './services/auth.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-   isLoggedIn: boolean = false;
-   currentUser: User;
-  userStatusSubscription: Subscription;
+   isLoggedIn = new Subject<boolean>();   
    
     constructor(private authenticationService: AuthService) { }
         
     ngOnInit(): void {
-    this.userStatusSubscription = this.authenticationService.getCurrentUser().subscribe(user => { 
-      this.currentUser = user;
-      this.isLoggedIn = this.currentUser != null;
+      this.userStatusSubscription = this.authenticationService.getCurrentUser().subscribe(user => {             
+        this.isLoggedIn = (user != null);
     });
-    
   } 
 }

@@ -9,6 +9,7 @@ import { Runner } from '../models/runner';
 import { AgeCategoryCode } from '../models/runner';
 import { Gender } from '../models/runner';
 import { Club } from '../models/club';
+import { AuthService } from '../services/auth.service';
 import { TeamService } from '../services/team.service';
 import { MessageService } from '../services/message.service';
 
@@ -34,6 +35,7 @@ export class DashboardComponent implements OnInit {
   loadingIndicator: boolean = true;
   
   constructor(
+    private authenticationService: AuthService,
     private teamService: TeamService,
     private messageService: MessageService,
     private modalService: NgbModal) {
@@ -42,8 +44,15 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.getMyTeams();
-    this.getClubs();
+    this.authenticationService.ensureAuthenticated()
+      .subscribe(
+        success => {
+          this.getMyTeams();
+          this.getClubs();
+        },
+        error => {
+           // TODO redirect to login 
+        });
   }
 
   getMyTeams(): void {

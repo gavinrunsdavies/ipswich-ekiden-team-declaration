@@ -45,4 +45,25 @@ export class AuthService {
   getCurrentUser(): Observable<User> {
         return this.currentUserSubject.asObservable();
     }
+    
+  ensureAuthenticated() {
+    const localStorageCurrentUser = localStorage.getItem('currentUser');
+    
+    if (localStorageCurrentUser) {
+      let user = JSON.parse(localStorageCurrentUser);
+      let url: string = `${environment.baseUrl}/wp-json/jwt-auth/v1/token/Validate`;
+      let headers: HttpHeaders = new HttpHeaders({
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${user.token}`
+      });
+      return this.http.post<any>(url, {headers: headers})
+        .map(validateResponse => {          
+            console.log(`ensureAuthenticated success response: ${JSON.stringify(validateResponse)}`); // TODO DEBUG
+            if (validateResponse.data.status == '200') {
+              console.log('Im logged in'); // TODO debug
+              return this.currentUser;
+            }
+          });
+    }
+  }
 }
