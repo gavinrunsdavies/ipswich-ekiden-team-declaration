@@ -4,15 +4,11 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS}    from '@angular/common/http';
 import { Pipe, PipeTransform } from '@angular/core';
 
-// used to create fake backend
-//import { fakeBackendProvider } from './helpers/fake-backend';
-
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { RecaptchaModule } from 'ng-recaptcha';
 
 import { AppRoutingModule }     from './app-routing.module';
-
 import { AppComponent } from './app.component';
 import { TeamsComponent } from './teams/teams.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -40,7 +36,6 @@ import { FilterPipe } from './filter.pipe'
     TeamsComponent,    
     TeamDetailComponent,
     MessagesComponent,
-    //LoginComponent,
     RegisterComponent,
     StatusComponent,
     HomeComponent,
