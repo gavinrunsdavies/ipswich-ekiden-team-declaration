@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 import { Subject } from 'rxjs/Subject';
 
 import { User } from '../models/user';
@@ -12,26 +13,25 @@ import { MessageService } from '../services/message.service';
   templateUrl: './status.component.html',
   styleUrls: ['./status.component.css']
 })
-export class StatusComponent implements OnInit {
-  isLoggedIn = new Subject<boolean>();
+export class StatusComponent {
+  isLoggedIn: boolean = false;
+   userStatusSubscription: Subscription;
   loading: boolean = false;
-  currentUser = new Subject<User>();
+  currentUser : User;
   model: any = {};
   
   constructor(
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthService,
-        private messageService: MessageService) { }
-  
-  ngOnInit(): void {    
-  console.log('status comp ngOnIt');
-    this.userStatusSubscription = this.authenticationService.getCurrentUser().subscribe(user => { 
-    console.log('Im logged inuserStatusSubscription');
-      this.currentUser = user;
-      this.isLoggedIn = this.currentUser != null;
+        private messageService: MessageService) {
+          console.log('constructor');
+ this.userStatusSubscription = this.authenticationService.getCurrentUser().subscribe(user => {     
+console.log(`GetCurrentUser promise receive ${JSON.stringify(user)}`); 
+        this.currentUser = user;
+        this.isLoggedIn = (user != null);
     });
-  }
+        }
 
   login(): void {
     this.loading = true;
@@ -43,7 +43,7 @@ export class StatusComponent implements OnInit {
             },
             error => {
                 var message = "ERROR: Login failed. Please try again.";
-                if (error.status = 403) {
+                if (error.status == 403) {
                   message = "ERROR: Incorrect email or password.";
                 }
                 
@@ -53,6 +53,8 @@ export class StatusComponent implements OnInit {
     }  
     
   logout(): void {
+    var message = `User ${this.currentUser.displayName} successfully logged out`;
     this.authenticationService.logout();
+     this.messageService.success(message);
   }
 }

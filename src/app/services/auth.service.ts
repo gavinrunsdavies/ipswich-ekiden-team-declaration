@@ -40,6 +40,8 @@ export class AuthService {
       // remove user from local storage to log user out and clear observable
       localStorage.removeItem('currentUser');
       this.currentUserSubject.next();
+      
+      // TODO logout from wordpress?
   }
   
   getCurrentUser(): Observable<User> {
@@ -60,8 +62,8 @@ export class AuthService {
         .map(validateResponse => {          
             console.log(`ensureAuthenticated success response: ${JSON.stringify(validateResponse)}`); // TODO DEBUG
             if (validateResponse.data.status == '200') {
-              console.log('Im logged in'); // TODO debug
-              return this.currentUser;
+              this.currentUserSubject.next(user);
+              return user;
             }
           });
     }

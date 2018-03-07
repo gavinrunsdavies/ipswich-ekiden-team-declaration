@@ -11,13 +11,12 @@ import { AuthService } from './services/auth.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-   isLoggedIn = new Subject<boolean>();   
+   isLoggedIn: boolean = false;
+   userStatusSubscription: Subscription;
    
-    constructor(private authenticationService: AuthService) { }
-        
-    ngOnInit(): void {
-      this.userStatusSubscription = this.authenticationService.getCurrentUser().subscribe(user => {             
+    constructor(private authenticationService: AuthService) { 
+    this.userStatusSubscription = this.authenticationService.getCurrentUser().subscribe(user => {             
         this.isLoggedIn = (user != null);
     });
-  } 
+    }
 }

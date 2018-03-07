@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/observable/of';
 
@@ -35,6 +36,7 @@ export class DashboardComponent implements OnInit {
   loadingIndicator: boolean = true;
   
   constructor(
+    private router: Router,
     private authenticationService: AuthService,
     private teamService: TeamService,
     private messageService: MessageService,
@@ -52,6 +54,7 @@ export class DashboardComponent implements OnInit {
         },
         error => {
            // TODO redirect to login 
+           this.router.navigate(['/']);
         });
   }
 
@@ -84,6 +87,23 @@ export class DashboardComponent implements OnInit {
     return team.id;
   }
 
+  public onAffiliationChange(event): void {
+    const Unattached = 989;
+    const newAffiliationValue = event.target.value;
+    if (newAffiliationValue == 0) {
+      this.newTeam.clubId = Unattached;
+    } else {
+       this.newTeam.clubId = '';
+    }
+  }
+  
+  public onGenderChange(runner, event): void {
+    const newGenderValue = event.target.value;
+    if (newGenderValue == 'Male' && runner.ageCategory == 'V35') {
+      runner.ageCategory = '';
+    }
+  }
+  
   createTeam() {
     try {
       this.formSubmittedIndicator = true;
