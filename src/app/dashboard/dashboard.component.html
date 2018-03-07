@@ -84,15 +84,15 @@
       </td>
       <td>
          <span *ngIf="!editing[team.id]">{{runner.gender}}</span>
-            <select *ngIf="editing[team.id]" [(ngModel)]="team.runners[index].gender" name="gender-{{index}}">
-               <option *ngFor="let key of genderKeys" [value]="key">{{gender[key]}}</option>
-            </select>
+          <select *ngIf="editing[team.id]" [(ngModel)]="team.runners[index].gender" name="gender-{{index}}">
+             <option *ngFor="let key of genderKeys" [value]="key">{{gender[key]}}</option>
+          </select>
       </td>
       <td>
          <span *ngIf="!editing[team.id]">{{runner.ageCategory}}</span>
-            <select *ngIf="editing[team.id]" [(ngModel)]="team.runners[index].ageCategory" name="ageCategory-{{index}}">
-              <option *ngFor="let key of ageCategoriesKeys" [value]="key">{{ageCategory[key]}}</option>
-            </select>
+          <select *ngIf="editing[team.id]" [(ngModel)]="team.runners[index].ageCategory" name="ageCategory-{{index}}">
+            <option [disabled]="'Male' === team.runners[index].gender && key == 'V35'" *ngFor="let key of ageCategoriesKeys" [value]="key">{{ageCategory[key]}}</option>
+          </select>
       </td>
     </tr>    
   </tbody>
