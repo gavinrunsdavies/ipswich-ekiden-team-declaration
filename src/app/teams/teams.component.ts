@@ -13,7 +13,7 @@ export class TeamsComponent implements OnInit {
   currentPageNumber: number = 1;
   teams: Team[]; 
   selectedTeam: Team;  
-  searchableList = ['name', 'clubName']  ;
+  searchableList = ['name', 'clubName', 'category']  ;
   
   constructor(private teamService: TeamService) { }
 
@@ -27,6 +27,6 @@ export class TeamsComponent implements OnInit {
   }
   
   showTeam(team: Team): void {
-    this.selectedTeam = team;
+    this.selectedTeam = team;    
   }  
 }

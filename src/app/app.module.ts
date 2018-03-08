@@ -1,14 +1,15 @@
 import { BrowserModule } from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { HttpClientModule, HTTP_INTERCEPTORS}    from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { Pipe, PipeTransform } from '@angular/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { RecaptchaModule } from 'ng-recaptcha';
 
-import { AppRoutingModule }     from './app-routing.module';
+import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TeamsComponent } from './teams/teams.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
@@ -25,7 +26,7 @@ import { TeamService } from './services/team.service';
 import { EnsureAuthenticated } from './services/ensure-authenticated.service';
 import { LoginRedirect } from './services/login-redirect.service';
 
-import { JwtInterceptor  } from './helpers/jwt.interceptor';
+import { JwtInterceptor } from './helpers/jwt.interceptor';
 
 import { FilterPipe } from './filter.pipe'
 
@@ -33,7 +34,7 @@ import { FilterPipe } from './filter.pipe'
   declarations: [
     AppComponent,
     DashboardComponent,
-    TeamsComponent,    
+    TeamsComponent,
     TeamDetailComponent,
     MessagesComponent,
     RegisterComponent,
@@ -43,6 +44,7 @@ import { FilterPipe } from './filter.pipe'
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
@@ -56,9 +58,9 @@ import { FilterPipe } from './filter.pipe'
     AuthService,
     UserService,
     {
-        provide: HTTP_INTERCEPTORS,
-        useClass: JwtInterceptor,
-        multi: true
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true
     },
     EnsureAuthenticated,
     LoginRedirect
