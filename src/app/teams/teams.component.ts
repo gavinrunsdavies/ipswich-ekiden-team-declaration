@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Team } from '../models/team';
 import { TeamService } from '../services/team.service';
-import { FilterPipe } from '../filter.pipe'
+import { FilterPipe } from '../filter.pipe';
 
 @Component({
   selector: 'app-teams',
@@ -10,23 +10,23 @@ import { FilterPipe } from '../filter.pipe'
 })
 
 export class TeamsComponent implements OnInit {
-  currentPageNumber: number = 1;
-  teams: Team[]; 
-  selectedTeam: Team;  
+  currentPageNumber = 1;
+  teams: Team[];
+  selectedTeam: Team;
   searchableList = ['name', 'clubName', 'category']  ;
-  
+
   constructor(private teamService: TeamService) { }
 
   ngOnInit() {
     this.getTeams();
-  }   
-  
+  }
+
   getTeams(): void {
    this.teamService.getTeams()
       .subscribe(teams => this.teams = teams);
   }
-  
+
   showTeam(team: Team): void {
-    this.selectedTeam = team;    
-  }  
+    this.selectedTeam = team;
+  }
 }

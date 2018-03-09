@@ -13,7 +13,7 @@ import { environment } from '../../environments/environment';
 @Injectable()
 export class TeamService {
 
-  private teamsUrl: string = `${environment.baseUrl}/wp-json/ipswich-ekiden-team-declaration-api/v1`;
+  private teamsUrl = `${environment.baseUrl}/wp-json/ipswich-ekiden-team-declaration-api/v1`;
 
   private httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })

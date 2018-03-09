@@ -1,26 +1,26 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
- 
+
 import { AuthService } from '../services/auth.service';
 import { MessageService } from '../services/message.service';
 import { UserService } from '../services/user.service';
- 
+
 @Component({
     selector: 'app-register',
     moduleId: module.id,
     templateUrl: 'register.component.html'
 })
- 
+
 export class RegisterComponent {
     model: any = {};
     loading = false;
- 
+
     constructor(
         private router: Router,
         private userService: UserService,
         private messageService: MessageService) { }
- 
+
     register() {
         this.loading = true;
         this.userService.create(this.model)

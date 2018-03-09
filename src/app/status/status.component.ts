@@ -13,9 +13,9 @@ import { MessageService } from '../services/message.service';
   styleUrls: ['./status.component.css']
 })
 export class StatusComponent {
-  isLoggedIn: boolean = false;
+  isLoggedIn = false;
   userStatusSubscription: Subscription;
-  loading: boolean = false;
+  loading = false;
   currentUser: User;
   model: any = {};
 
@@ -41,9 +41,10 @@ export class StatusComponent {
           this.router.navigate(['/dashboard']);
         },
         error => {
-          var message = "ERROR: Login failed. Please try again.";
+          let message = 'ERROR: Login failed. Please try again.';
           if (error.status == 403) {
-            message = "ERROR: Incorrect email or password.";
+            message = 'ERROR: Incorrect email or password.';
+            message += ' <a href="http://www.ipswichekiden.co.uk/wp-login.php?action=lostpassword">Lost your password?</a>';
           }
 
           this.messageService.error(message);
@@ -52,7 +53,7 @@ export class StatusComponent {
   }
 
   logout(): void {
-    var message = `User ${this.currentUser.displayName} successfully logged out`;
+    const message = `User ${this.currentUser.displayName} successfully logged out`;
     this.authenticationService.logout();
     this.messageService.success(message);
   }

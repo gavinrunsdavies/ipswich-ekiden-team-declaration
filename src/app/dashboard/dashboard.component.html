@@ -1,3 +1,4 @@
+<br/>
 <h3>My Teams</h3>
 <hr/>
 <h5>Add New Team</h5>
@@ -93,7 +94,7 @@
         </div>
       </div>
     </div>
-    <div class="card-body" [ngbCollapse]="!team.isShown" >
+    <div class="card-body" [ngbCollapse]="!team.isShown">
       <form #editTableForm="ngForm" (ngSubmit)="saveTeamEdit(team)" [@slideInOut]="team.isShown ? 'in' : 'out'">
         <div class="form-row">
           <div class="col-md-8 mb-3">
@@ -101,25 +102,20 @@
             <h4 *ngIf="!editing[team.id]" id="name{{team.id}}">{{team.name}}</h4>
             <input *ngIf="editing[team.id]" id="name{{team.id}}" type="text" class="form-control" name="name" [(ngModel)]="team.name"
               #name="ngModel" required minlength="3" />
-            <!-- <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
-                <div *ngIf="name.errors.required">
-                  Team name is required.
-                </div>
-                <div *ngIf="name.errors.minlength">
-                  Team name must be at least 3 characters long.
-                </div>
-              </div> -->
+            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+              <div *ngIf="name.errors.required">
+                Team name is required.
+              </div>
+              <div *ngIf="name.errors.minlength">
+                Team name must be at least 3 characters long.
+              </div>
+            </div>
           </div>
-          <div class="col-md-1 mb-3">
-            <label for="isAffiliated{{team.id}}">Affiliated?</label>
-            <input id="isAffiliated{{team.id}}" class="form-control" type="checkbox" [disabled]="!editing[team.id]" [checked]="team.clubId != 989"
-              value="{{team.clubId == 989}}" required />
-          </div>
-          <div class="col-md-3 mb-3">
-            <label for="clubName{{team.id}}">UKA Club Name</label>
+          <div class="col-md-4 mb-3">
+            <label for="clubName{{team.id}}">UKA Club Name / Unattached</label>
             <h4 *ngIf="!editing[team.id]" id="clubName{{team.id}}">{{team.clubName}}</h4>
-            <select *ngIf="editing[team.id]" id="clubName{{team.id}}" class="form-control" [disabled]="isAffiliated != '1'" [(ngModel)]="team.clubId"
-              required name="club" #club="ngModel">
+            <select *ngIf="editing[team.id]" id="clubName{{team.id}}" class="form-control" [(ngModel)]="team.clubId" required name="club"
+              #club="ngModel">
               <option value="" selected>Choose...</option>
               <option *ngFor="let club of clubs" [value]="club.id">{{club.name}}</option>
             </select>
@@ -169,6 +165,7 @@
     </div>
   </div>
 </div>
+
 <ng-template #deleteTeamModal let-c="close" let-d="dismiss">
   <div class="modal-header">
     <h4 class="modal-title">Delete Team {{selectedDeleteTeam.name}}?</h4>

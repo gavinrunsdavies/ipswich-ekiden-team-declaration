@@ -1,32 +1,32 @@
- <header class="navbar navbar-light navbar-fixed-top navbar-expand-lg"> 
-  
-   <a class="navbar-brand" [routerLink]="['/']" (click)="navbarCollapsed = true">Ekiden Team Declaration</a> 
-  
-   <button class="navbar-toggler navbar-toggler-right" type="button" (click)="navbarCollapsed = !navbarCollapsed" 
-           [attr.aria-expanded]="!navbarCollapsed" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation"> 
-     <span class="navbar-toggler-icon"></span> 
-   </button> 
-  
-   <div class="navbar-collapse" [ngbCollapse]="navbarCollapsed" id="navbarContent">     
-     <ul class="navbar-nav mr-auto"> 
-       <li class="nav-item" [routerLinkActive]="['active']"> 
-         <a class="nav-link" [routerLink]="['/']" (click)="navbarCollapsed = true">Teams</a> 
-       </li> 
-       <li class="nav-item" [routerLinkActive]="['active']" *ngIf="!isLoggedIn"> 
-         <a class="nav-link" [routerLink]="['/register']" (click)="navbarCollapsed = true">Register</a> 
-       </li>        
-        <li class="nav-item" [routerLinkActive]="['active']" *ngIf="isLoggedIn"> 
-         <a class="nav-link" [routerLink]="['/dashboard']" (click)="navbarCollapsed = true">My Teams</a> 
-       </li>     
-     </ul> 
-     <app-status></app-status>    
-   </div> 
- </header> 
- <main role="main">  
+<header class="navbar navbar-dark bg-dark navbar-fixed-top navbar-expand-lg">
+
+  <a class="navbar-brand" [routerLink]="['/']" (click)="navbarCollapsed = true">Ekiden Team Declaration</a>
+
+  <button class="navbar-toggler navbar-toggler-right" type="button" (click)="navbarCollapsed = !navbarCollapsed" [attr.aria-expanded]="!navbarCollapsed"
+    aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="navbar-collapse" [ngbCollapse]="navbarCollapsed" id="navbarContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item" [routerLinkActive]="['active']">
+        <a class="nav-link" [routerLink]="['/']" (click)="navbarCollapsed = true">Teams</a>
+      </li>
+      <li class="nav-item" [routerLinkActive]="['active']" *ngIf="!isLoggedIn">
+        <a class="nav-link" [routerLink]="['/register']" (click)="navbarCollapsed = true">Register</a>
+      </li>
+      <li class="nav-item" [routerLinkActive]="['active']" *ngIf="isLoggedIn">
+        <a class="nav-link" [routerLink]="['/dashboard']" (click)="navbarCollapsed = true">My Teams</a>
+      </li>
+    </ul>
+    <app-status></app-status>
+  </div>
+</header>
+<main role="main">
   <app-messages></app-messages>
   <router-outlet></router-outlet>
   <hr/>
- </main>
-<footer class="container">  
+</main>
+<footer class="container">
   <p class="text-align: center">&copy; Ipswich Ekiden Relays 2018</p>
 </footer>

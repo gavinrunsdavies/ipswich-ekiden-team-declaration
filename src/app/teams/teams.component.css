@@ -1,7 +1,7 @@
 /* teamsComponent's private CSS styles */
 .selected {
-  background-color: #F9F9F9 !important;
-  border: 2px solid black;
+  background-color: #e9ecef !important;
+  border: 1px solid #42A948;
 }
 
 .teams li {
@@ -9,7 +9,7 @@
 }
 
 .teams li.selected:hover {
-  background-color: #BBD8DC !important;
+  background-color: #343a40!important;
   color: white;
 }
 

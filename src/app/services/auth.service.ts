@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import 'rxjs/add/operator/map'
+import 'rxjs/add/operator/map';
 import { User } from '../models/user';
 import { Observable } from 'rxjs';
 import { Subject } from 'rxjs/Subject';
@@ -17,7 +17,7 @@ export class AuthService {
   }
 
   login(username: string, password: string) {
-    let url: string = `${environment.baseUrl}/wp-json/jwt-auth/v1/token`;
+    const url = `${environment.baseUrl}/wp-json/jwt-auth/v1/token`;
     return this.http.post<any>(url, { username: username, password: password }, { headers: this.headers })
       .map(user => {
         // login successful if there's a jwt token in the response
@@ -52,9 +52,9 @@ export class AuthService {
     const localStorageCurrentUser = localStorage.getItem('currentUser');
 
     if (localStorageCurrentUser) {
-      let user = JSON.parse(localStorageCurrentUser);
-      let url: string = `${environment.baseUrl}/wp-json/jwt-auth/v1/token/Validate`;
-      let headers: HttpHeaders = new HttpHeaders({
+      const user = JSON.parse(localStorageCurrentUser);
+      const url = `${environment.baseUrl}/wp-json/jwt-auth/v1/token/Validate`;
+      const headers: HttpHeaders = new HttpHeaders({
         'Content-Type': 'application/json',
         Authorization: `Bearer ${user.token}`
       });

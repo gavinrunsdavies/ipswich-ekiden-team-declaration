@@ -28,7 +28,7 @@ import { LoginRedirect } from './services/login-redirect.service';
 
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 
-import { FilterPipe } from './filter.pipe'
+import { FilterPipe } from './filter.pipe';
 
 @NgModule({
   declarations: [

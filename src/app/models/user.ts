@@ -6,6 +6,6 @@ export class User {
     firstName: string;
     lastName: string;
     token: string;
-  
+
   constructor(email?: string, password?: string) {}
 }

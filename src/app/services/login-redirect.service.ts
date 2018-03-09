@@ -9,8 +9,7 @@ export class LoginRedirect implements CanActivate {
     if (localStorage.getItem('currentUser')) {
       this.router.navigateByUrl('/dashboard');
       return false;
-    }
-    else {
+    } else {
       return true;
     }
   }
