@@ -31,7 +31,12 @@ export class RegisterComponent {
                     this.router.navigate(['/']);
                 },
                 error => {
-                    this.messageService.error(error);
+                    let message = 'ERROR: Registration failed. Please try again.';
+                    if (error.status === 400) {
+                        message = 'ERROR: Email already registered:';
+                        message += ' <a href="http://www.ipswichekiden.co.uk/wp-login.php?action=lostpassword">Lost your password?</a>';
+                    }
+                    this.messageService.error(message);
                     this.loading = false;
                 });
     }

@@ -95,7 +95,7 @@
       </div>
     </div>
     <div class="card-body" [ngbCollapse]="!team.isShown">
-      <form #editTableForm="ngForm" (ngSubmit)="saveTeamEdit(team)" [@slideInOut]="team.isShown ? 'in' : 'out'">
+      <form #editTableForm="ngForm" (ngSubmit)="saveTeamEdit(team)">
         <div class="form-row">
           <div class="col-md-8 mb-3">
             <label for="name{{team.id}}">Team Name</label>
