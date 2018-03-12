@@ -5,5 +5,5 @@
 
 export const environment = {
   production: false,
-  baseUrl: 'http://www.ipswichekiden.co.uk'
+  baseUrl: 'https://www.ipswichekiden.co.uk'
 };

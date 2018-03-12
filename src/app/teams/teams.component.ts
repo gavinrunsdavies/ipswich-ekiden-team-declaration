@@ -14,7 +14,8 @@ export class TeamsComponent implements OnInit {
   teams: Team[];
   selectedTeam: Team;
   searchString: string;
-  searchableList = ['name', 'clubName', 'category']  ;
+  searchableList = ['name', 'clubName', 'category'];
+  loadingIndicator: boolean;
 
   constructor(private teamService: TeamService) { }
 
@@ -23,8 +24,12 @@ export class TeamsComponent implements OnInit {
   }
 
   getTeams(): void {
-   this.teamService.getTeams()
-      .subscribe(teams => this.teams = teams);
+    this.loadingIndicator = true;
+    this.teamService.getTeams()
+      .subscribe(teams => {
+        this.teams = teams;
+        this.loadingIndicator = false;
+      });
   }
 
   showTeam(team: Team): void {
