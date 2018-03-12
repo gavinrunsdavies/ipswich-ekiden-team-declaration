@@ -12,6 +12,7 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent {
     isLoggedIn = false;
+    navbarCollapsed = false;
     userStatusSubscription: Subscription;
 
     constructor(private authenticationService: AuthService) {
