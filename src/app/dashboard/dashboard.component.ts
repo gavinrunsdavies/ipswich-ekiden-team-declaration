@@ -48,13 +48,13 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.authenticationService.ensureAuthenticated()
       .subscribe(
-        success => {
-          this.getMyTeams();
-          this.getClubs();
-        },
-        error => {
-          this.router.navigate(['/']);
-        });
+      success => {
+        this.getMyTeams();
+        this.getClubs();
+      },
+      error => {
+        this.router.navigate(['/']);
+      });
   }
 
   getMyTeams(): void {
@@ -111,25 +111,25 @@ export class DashboardComponent implements OnInit {
       this.formSubmittedIndicator = true;
       this.teamService.addTeam(this.newTeam)
         .subscribe(
-          team => {
-            if (team && team.id > 0) {
-              let newRunner: Runner;
+        team => {
+          if (team && team.id > 0) {
+            let newRunner: Runner;
 
-              for (let i = 1; i <= 6; i++) {
-                newRunner = new Runner();
-                newRunner.leg = i;
-                team.runners.push(newRunner);
-              }
-
-              this.teams.push(team);
-              this.messageService.success(`Team ${team.name} created`, true);
-              this.formSubmittedIndicator = false;
+            for (let i = 1; i <= 6; i++) {
+              newRunner = new Runner();
+              newRunner.leg = i;
+              team.runners.push(newRunner);
             }
-          },
-          error => {
-            this.messageService.error(error);
+
+            this.teams.push(team);
+            this.messageService.success(`Team ${team.name} created`, true);
             this.formSubmittedIndicator = false;
-          });
+          }
+        },
+        error => {
+          this.messageService.error(error);
+          this.formSubmittedIndicator = false;
+        });
     } catch (e) {
       this.formSubmittedIndicator = false;
       console.log('Error: ', e);
@@ -142,25 +142,25 @@ export class DashboardComponent implements OnInit {
 
     this.teamService.updateTeam(team)
       .subscribe(
-        updatedTeam => {
+      updatedTeam => {
 
-          this.addRunnerPlaceHolders(updatedTeam);
+        this.addRunnerPlaceHolders(updatedTeam);
 
-          // Update array
-          for (let i = 0; i < this.teams.length; i++) {
-            if (this.teams[i].id == updatedTeam.id) {
-              this.teams[i] = updatedTeam;
-              this.teams[i].isShown = true;
-              break;
-            }
+        // Update array
+        for (let i = 0; i < this.teams.length; i++) {
+          if (this.teams[i].id == updatedTeam.id) {
+            this.teams[i] = updatedTeam;
+            this.teams[i].isShown = true;
+            break;
           }
+        }
 
-          this.messageService.success(`Team ${updatedTeam.name} updated`, true);
+        this.messageService.success(`Team ${updatedTeam.name} updated`, true);
 
-        },
-        error => {
-          this.messageService.error(error);
-        });
+      },
+      error => {
+        this.messageService.error(error);
+      });
 
     this.editing[team.id] = false;
   }
@@ -189,21 +189,21 @@ export class DashboardComponent implements OnInit {
   deleteTeam() {
     this.teamService.deleteTeam(this.selectedDeleteTeam)
       .subscribe(
-        success => {
+      success => {
 
-          for (let i = this.teams.length - 1; i >= 0; i--) {
-            if (this.teams[i].id == this.selectedDeleteTeam.id) {
-              this.teams.splice(i, 1);
-              break;
-            }
+        for (let i = this.teams.length - 1; i >= 0; i--) {
+          if (this.teams[i].id == this.selectedDeleteTeam.id) {
+            this.teams.splice(i, 1);
+            break;
           }
+        }
 
-          this.messageService.success(`Team ${this.selectedDeleteTeam.name} deleted`, true);
+        this.messageService.success(`Team ${this.selectedDeleteTeam.name} deleted`, true);
 
-        },
-        error => {
-          this.messageService.error(error);
-        });
+      },
+      error => {
+        this.messageService.error(error);
+      });
   }
 
   addRunnerPlaceHolders(team) {

@@ -24,9 +24,7 @@ export class StatusComponent {
     private router: Router,
     private authenticationService: AuthService,
     private messageService: MessageService) {
-    console.log('constructor');
     this.userStatusSubscription = this.authenticationService.getCurrentUser().subscribe(user => {
-      console.log(`GetCurrentUser promise receive ${JSON.stringify(user)}`);
       this.currentUser = user;
       this.isLoggedIn = (user != null);
     });

@@ -18,6 +18,8 @@ import { MessagesComponent } from './messages/messages.component';
 import { RegisterComponent } from './register/register.component';
 import { StatusComponent } from './status/status.component';
 import { HomeComponent } from './home/home.component';
+import { StatisticsComponent } from './statistics/statistics.component';
+import { JuniorsComponent } from './juniors/juniors.component';
 
 import { AuthService } from './services/auth.service';
 import { UserService } from './services/user.service';
@@ -40,7 +42,9 @@ import { FilterPipe } from './filter.pipe';
     RegisterComponent,
     StatusComponent,
     HomeComponent,
-    FilterPipe
+    FilterPipe,
+    StatisticsComponent,
+    JuniorsComponent
   ],
   imports: [
     BrowserModule,
