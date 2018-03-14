@@ -23,7 +23,7 @@ export class TeamService {
     private http: HttpClient,
     private messageService: MessageService) { }
 
-  getTeams(): Observable<Team[]> {
+  getTeams(race?: string): Observable<Team[]> {
     const url = `${this.teamsUrl}/teams`;
     return this.http.get<Team[]>(url)
       .pipe(

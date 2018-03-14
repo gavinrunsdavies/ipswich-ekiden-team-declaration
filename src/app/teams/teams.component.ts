@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { Team } from '../models/team';
 import { TeamService } from '../services/team.service';
 import { FilterPipe } from '../filter.pipe';
@@ -10,6 +10,9 @@ import { FilterPipe } from '../filter.pipe';
 })
 
 export class TeamsComponent implements OnInit {
+  @Input() race: string;
+  @Input('title') title: string;
+
   currentPageNumber = 1;
   teams: Team[];
   selectedTeam: Team;
@@ -20,12 +23,12 @@ export class TeamsComponent implements OnInit {
   constructor(private teamService: TeamService) { }
 
   ngOnInit() {
-    this.getTeams();
+    this.getTeams(this.race);
   }
 
-  getTeams(): void {
+  getTeams(race): void {
     this.loadingIndicator = true;
-    this.teamService.getTeams()
+    this.teamService.getTeams(this.race)
       .subscribe(teams => {
         this.teams = teams;
         this.loadingIndicator = false;
