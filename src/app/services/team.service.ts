@@ -7,6 +7,7 @@ import { catchError, map, tap } from 'rxjs/operators';
 
 import { Team } from '../models/team';
 import { Club } from '../models/club';
+import { Statistics } from '../models/statistics';
 import { MessageService } from './message.service';
 import { environment } from '../../environments/environment';
 
@@ -23,12 +24,21 @@ export class TeamService {
     private http: HttpClient,
     private messageService: MessageService) { }
 
+  getStatistics(): Observable<Statistics> {
+    const url = `${this.teamsUrl}/statistics`;
+    return this.http.get<Statistics>(url)
+      .pipe(
+      tap((stats: Statistics) => this.log(`fetched statistics ${JSON.stringify(stats)}`)),
+      catchError(this.handleError<Statistics>('getStatistics'))
+      );
+  }
+
   getTeams(race?: string): Observable<Team[]> {
     const url = `${this.teamsUrl}/teams`;
     return this.http.get<Team[]>(url)
       .pipe(
-        tap(teams => this.log(`fetched teams`)),
-        catchError(this.handleError('getTeams', []))
+      tap(teams => this.log(`fetched teams`)),
+      catchError(this.handleError('getTeams', []))
       );
   }
 
@@ -36,8 +46,8 @@ export class TeamService {
     const url = `${this.teamsUrl}/clubs`;
     return this.http.get<Club[]>(url)
       .pipe(
-        tap(clubs => this.log(`fetched clubs`)),
-        catchError(this.handleError('getClubs', []))
+      tap(clubs => this.log(`fetched clubs`)),
+      catchError(this.handleError('getClubs', []))
       );
   }
 
@@ -45,8 +55,8 @@ export class TeamService {
     const url = `${this.teamsUrl}/myteams`;
     return this.http.get<Team[]>(url)
       .pipe(
-        tap(teams => this.log(`fetched teams`)),
-        catchError(this.handleError('getMyTeams', []))
+      tap(teams => this.log(`fetched teams`)),
+      catchError(this.handleError('getMyTeams', []))
       );
   }
 

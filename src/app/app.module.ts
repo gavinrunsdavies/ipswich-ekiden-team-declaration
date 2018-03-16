@@ -8,6 +8,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { NgxPaginationModule } from 'ngx-pagination';
 import { RecaptchaModule } from 'ng-recaptcha';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -54,7 +55,8 @@ import { FilterPipe } from './filter.pipe';
     HttpClientModule,
     NgbModule.forRoot(),
     NgxPaginationModule,
-    RecaptchaModule.forRoot()
+    RecaptchaModule.forRoot(),
+    NgxChartsModule
   ],
   providers: [
     TeamService,
