@@ -32,6 +32,9 @@ import { LoginRedirect } from './services/login-redirect.service';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 
 import { FilterPipe } from './filter.pipe';
+import { CallbackPipe } from './team-detail/callback.pipe';
+import { ContactComponent } from './contact/contact.component';
+import { SeniorsComponent } from './seniors/seniors.component';
 
 @NgModule({
   declarations: [
@@ -44,8 +47,11 @@ import { FilterPipe } from './filter.pipe';
     StatusComponent,
     HomeComponent,
     FilterPipe,
+    CallbackPipe,
     StatisticsComponent,
-    JuniorsComponent
+    JuniorsComponent,
+    ContactComponent,
+    SeniorsComponent
   ],
   imports: [
     BrowserModule,

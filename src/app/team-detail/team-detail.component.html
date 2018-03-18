@@ -2,7 +2,7 @@
 <div class="container" *ngIf="team">
   <h4>{{team.name}}</h4>
   <h6>
-    <strong>Category</strong>: {{(team.category) ? team.category : 'Uncategorized'}}; Id: {{team.id}}</h6>
+    <strong>Category</strong>: {{(team.category) ? team.category : 'Uncategorized'}}; Number: {{team.number}}</h6>
   <p>Complete? {{team.complete ? 'Yes' : 'No'}}</p>
   <table class="table table-striped">
     <thead>
@@ -14,7 +14,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let leg of [1,2,3,4,5,6]">
+      <tr *ngFor="let leg of legs">
         <th scope="row">{{leg}}</th>
         <td *ngIf="getRunnerProperty(team.runners, leg, 'name') as name; else noNameDeclared">{{name}}</td>
         <ng-template #noNameDeclared>

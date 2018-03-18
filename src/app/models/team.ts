@@ -10,4 +10,6 @@ export class Team {
   complete: boolean;
   runners: Runner[];
   isShown: boolean; // internal only.
+  isJuniorTeam: boolean;
+  number: number;
 }

@@ -4,6 +4,7 @@ import { Location } from '@angular/common';
 
 import { Team } from '../models/team';
 import { TeamService } from '../services/team.service';
+import { CallbackPipe } from './callback.pipe';
 
 @Component({
   selector: 'app-team-detail',
@@ -12,26 +13,37 @@ import { TeamService } from '../services/team.service';
 })
 export class TeamDetailComponent implements OnInit {
   @Input() team: Team;
+  legs: number[] = [1, 2, 3, 4, 5, 6];
+  isJuniorTeam: boolean;
 
   constructor(
     private route: ActivatedRoute,
     private teamService: TeamService,
     private location: Location
-  ) { }
+  ) {
+  }
 
   ngOnInit() {
   }
 
   getRunnerProperty(runners, leg: number, prop) {
-    if (runners == undefined) {
+    if (runners === undefined) {
       return;
     }
 
-    const runner = runners.find(r => r.leg == leg);
-    if (runner == undefined) {
+    const runner = runners.find(r => r.leg === leg);
+    if (runner === undefined) {
       return null;
     } else {
       return runner[prop];
+    }
+  }
+
+  filterLegs(leg: number) {
+    if (leg <= 4) {
+      return leg;
+    } else {
+     //return this.team.isJuniorTeam ? false : leg;
     }
   }
 }

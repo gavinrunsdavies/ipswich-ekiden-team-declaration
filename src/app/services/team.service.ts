@@ -28,17 +28,22 @@ export class TeamService {
     const url = `${this.teamsUrl}/statistics`;
     return this.http.get<Statistics>(url)
       .pipe(
-      tap((stats: Statistics) => this.log(`fetched statistics ${JSON.stringify(stats)}`)),
-      catchError(this.handleError<Statistics>('getStatistics'))
+        tap((stats: Statistics) => this.log(`fetched statistics ${JSON.stringify(stats)}`)),
+        catchError(this.handleError<Statistics>('getStatistics'))
       );
   }
 
   getTeams(race?: string): Observable<Team[]> {
-    const url = `${this.teamsUrl}/teams`;
+    let url: string;
+    if (race !== undefined) {
+      url = `${this.teamsUrl}/teams?race=${race}`;
+    } else {
+      url = `${this.teamsUrl}/teams/`;
+    }
     return this.http.get<Team[]>(url)
       .pipe(
-      tap(teams => this.log(`fetched teams`)),
-      catchError(this.handleError('getTeams', []))
+        tap(teams => this.log(`fetched teams`)),
+        catchError(this.handleError('getTeams', []))
       );
   }
 
@@ -46,8 +51,8 @@ export class TeamService {
     const url = `${this.teamsUrl}/clubs`;
     return this.http.get<Club[]>(url)
       .pipe(
-      tap(clubs => this.log(`fetched clubs`)),
-      catchError(this.handleError('getClubs', []))
+        tap(clubs => this.log(`fetched clubs`)),
+        catchError(this.handleError('getClubs', []))
       );
   }
 
@@ -55,8 +60,8 @@ export class TeamService {
     const url = `${this.teamsUrl}/myteams`;
     return this.http.get<Team[]>(url)
       .pipe(
-      tap(teams => this.log(`fetched teams`)),
-      catchError(this.handleError('getMyTeams', []))
+        tap(teams => this.log(`fetched teams`)),
+        catchError(this.handleError('getMyTeams', []))
       );
   }
 
@@ -82,7 +87,7 @@ export class TeamService {
   addTeam(team: Team): Observable<Team> {
     const url = `${this.teamsUrl}/teams`;
     return this.http.post<Team>(url, team, this.httpOptions).pipe(
-      tap((team: Team) => this.log(`added team w/ id=${team.id}`)),
+      tap((t: Team) => this.log(`added team w/ id=${t.id}`)),
       catchError(this.handleError<Team>('addTeam'))
     );
   }

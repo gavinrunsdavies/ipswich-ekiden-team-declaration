@@ -83,7 +83,7 @@
         <div class="col-md-8">
           <h4>{{team.name}}
             <small *ngIf="team.complete">:{{team.category}}</small>
-            <span class="badge badge-pill" [ngClass]="(team.complete) ? 'badge-success' : 'badge-warning'">{{team.complete ? 'Complete' : 'Incomplete'}}</span>
+            <span class="badge " [ngClass]="(team.complete) ? 'badge-success' : 'badge-warning'">{{team.complete ? 'Complete' : 'Incomplete'}}</span>
           </h4>
         </div>
         <div class="col-md-4 text-right">
@@ -146,7 +146,7 @@
               <td>
                 <span *ngIf="!editing[team.id]">{{runner.ageCategory}}</span>
                 <select *ngIf="editing[team.id]" [(ngModel)]="team.runners[index].ageCategory" name="ageCategory-{{index}}">
-                  <option [disabled]="'Male' == team.runners[index].gender && key == 'V35'" *ngFor="let key of ageCategoriesKeys" [value]="key">{{ageCategory[key]}}</option>
+                  <option [disabled]="'Male' == team.runners[index].gender && (key == 'V35' || key == 'V45')" *ngFor="let key of ageCategoriesKeys" [value]="key">{{ageCategory[key]}}</option>
                 </select>
               </td>
             </tr>
@@ -159,7 +159,7 @@
         <div class="btn-form" *ngIf="inEditMode(team.id)">
           <button type="submit" *ngIf="inEditMode(team.id)" class="btn btn-primary">save</button>
           <button type="button" *ngIf="inEditMode(team.id)" class="btn btn-default" (click)="cancelTeamEdit(team)">cancel</button>
-          Please enter the runner's full name, gender and age category. Note, V35 age category is only allowed for females.
+          Please enter the runner's full name, gender and age category. Note, V35 and V45 age categores are only allowed for females.
         </div>
       </form>
     </div>
