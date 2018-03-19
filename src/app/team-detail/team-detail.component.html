@@ -14,7 +14,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let leg of legs">
+      <tr *ngFor="let leg of legs" [hidden]="leg > 4 && team.isJuniorTeam == 1">
         <th scope="row">{{leg}}</th>
         <td *ngIf="getRunnerProperty(team.runners, leg, 'name') as name; else noNameDeclared">{{name}}</td>
         <ng-template #noNameDeclared>

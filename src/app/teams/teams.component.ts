@@ -10,6 +10,7 @@ import { FilterPipe } from '../filter.pipe';
 })
 
 export class TeamsComponent implements OnInit {
+
   @Input() race: string;
   @Input('title') title: string;
 

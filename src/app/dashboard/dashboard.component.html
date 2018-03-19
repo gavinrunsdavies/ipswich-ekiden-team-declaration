@@ -17,7 +17,7 @@
     </div>
   </div>
   <div class="form-row">
-    <div class="form-group col-md-4">
+    <div class="form-group col-md-2">
       <label for="affiliation">Affiliation Status</label>
       <select id="affiliation" class="form-control" [(ngModel)]="newTeam.isAffiliated" #isAffiliated="ngModel" required name="isAffiliated"
         (change)="onAffiliationChange($event)">
@@ -28,6 +28,13 @@
       <div *ngIf="isAffiliated.errors && isAffiliated.touched" class="alert alert-danger">
         <div *ngIf="isAffiliated.errors.required">Affiliation status is required.</div>
       </div>
+    </div>
+    <div class="form-group col-md-2">
+      <label for="race">Senior / Junior Team</label>
+      <select id="race" class="form-control" [(ngModel)]="newTeam.isJuniorTeam" #isJuniorTeam="ngModel" required name="isJuniorTeam">
+        <option value="0" selected>Senior</option>
+        <option value="1">Junior</option>
+      </select>
     </div>
     <div class="form-group col-md-4">
       <label for="club">UKA Club</label>
@@ -77,7 +84,8 @@
   </div>
 </div>
 <div *ngIf="!loadingIndicator">
-  <div class="card mb-3" *ngFor="let team of teams; trackBy: trackById;">
+  <h6>Senior Teams</h6>
+  <div class="card mb-3" *ngFor="let team of teams | TeamFilterPipe : 0; trackBy: trackById;">
     <div class="card-header">
       <div class="row">
         <div class="col-md-8">
@@ -146,7 +154,8 @@
               <td>
                 <span *ngIf="!editing[team.id]">{{runner.ageCategory}}</span>
                 <select *ngIf="editing[team.id]" [(ngModel)]="team.runners[index].ageCategory" name="ageCategory-{{index}}">
-                  <option [disabled]="'Male' == team.runners[index].gender && (key == 'V35' || key == 'V45')" *ngFor="let key of ageCategoriesKeys" [value]="key">{{ageCategory[key]}}</option>
+                  <option [disabled]="'Male' == team.runners[index].gender && (key == 'V35' || key == 'V45')" *ngFor="let key of ageCategoriesKeys"
+                    [value]="key">{{ageCategory[key]}}</option>
                 </select>
               </td>
             </tr>
@@ -160,6 +169,95 @@
           <button type="submit" *ngIf="inEditMode(team.id)" class="btn btn-primary">save</button>
           <button type="button" *ngIf="inEditMode(team.id)" class="btn btn-default" (click)="cancelTeamEdit(team)">cancel</button>
           Please enter the runner's full name, gender and age category. Note, V35 and V45 age categores are only allowed for females.
+        </div>
+      </form>
+    </div>
+  </div>
+  <h6>Junior Teams</h6>
+  <div class="card mb-3" *ngFor="let team of teams | TeamFilterPipe : 1; trackBy: trackById;">
+    <div class="card-header">
+      <div class="row">
+        <div class="col-md-8">
+          <h4>{{team.name}}
+            <small *ngIf="team.complete">:{{team.category}}</small>
+            <span class="badge " [ngClass]="(team.complete) ? 'badge-success' : 'badge-warning'">{{team.complete ? 'Complete' : 'Incomplete'}}</span>
+          </h4>
+        </div>
+        <div class="col-md-4 text-right">
+          <span class="btn-group pull-right">
+            <button class="btn btn-primary " (click)="showTeam(team)">{{team.isShown ? 'Hide' : 'Show'}}</button>
+            <button type="button" class="btn btn-danger" (click)="openDeleteTeamModal(deleteTeamModal, team)">Delete?</button>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="card-body" [ngbCollapse]="!team.isShown">
+      <form #editTableForm="ngForm" (ngSubmit)="saveTeamEdit(team)">
+        <div class="form-row">
+          <div class="col-md-8 mb-3">
+            <label for="name{{team.id}}">Team Name</label>
+            <h4 *ngIf="!editing[team.id]" id="name{{team.id}}">{{team.name}}</h4>
+            <input *ngIf="editing[team.id]" id="name{{team.id}}" type="text" class="form-control" name="name" [(ngModel)]="team.name"
+              #name="ngModel" required minlength="3" />
+            <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
+              <div *ngIf="name.errors.required">
+                Team name is required.
+              </div>
+              <div *ngIf="name.errors.minlength">
+                Team name must be at least 3 characters long.
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="clubName{{team.id}}">UKA Club Name / Unattached</label>
+            <h4 *ngIf="!editing[team.id]" id="clubName{{team.id}}">{{team.clubName}}</h4>
+            <select *ngIf="editing[team.id]" id="clubName{{team.id}}" class="form-control" [(ngModel)]="team.clubId" required name="club"
+              #club="ngModel">
+              <option value="" selected>Choose...</option>
+              <option *ngFor="let club of clubs" [value]="club.id">{{club.name}}</option>
+            </select>
+          </div>
+        </div>
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th scope="col">Leg</th>
+              <th scope="col">Name</th>
+              <th scope="col">Gender</th>
+              <th scope="col">Category</th>
+            </tr>
+          </thead>
+          <tbody *ngIf="team">
+            <tr *ngFor="let runner of team.runners; let index = index;">
+              <th scope="row">{{runner.leg}}</th>
+              <td>
+                <span *ngIf="!editing[team.id]">{{runner.name}}</span>
+                <input autofocus *ngIf="editing[team.id]" type="text" [(ngModel)]="team.runners[index].name" name="name-{{index}}" />
+              </td>
+              <td>
+                <span *ngIf="!editing[team.id]">{{runner.gender}}</span>
+                <select *ngIf="editing[team.id]" [(ngModel)]="team.runners[index].gender" name="gender-{{index}}" (change)="onGenderChange(runner, $event)">
+                  <option *ngFor="let key of genderKeys" [value]="key">{{gender[key]}}</option>
+                </select>
+              </td>
+              <td>
+                <span *ngIf="!editing[team.id]">{{runner.ageCategory}}</span>
+                <select *ngIf="editing[team.id]" [(ngModel)]="team.runners[index].ageCategory" name="juniorAgeCategory-{{index}}">
+                  <option *ngFor="let key of juniorAgeCategoriesKeys"
+                    [value]="key">{{juniorAgeCategory[key]}}</option>
+                </select>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <!-- buttons -->
+        <div class="btn-edit">
+          <button type="button" class="btn btn-default" *ngIf="!inEditMode(team.id)" (click)="editTeam(team.id)">edit</button>
+        </div>
+        <div class="btn-form" *ngIf="inEditMode(team.id)">
+          <button type="submit" *ngIf="inEditMode(team.id)" class="btn btn-primary">save</button>
+          <button type="button" *ngIf="inEditMode(team.id)" class="btn btn-default" (click)="cancelTeamEdit(team)">cancel</button>
+          Please enter the runner's full name, gender and age category.
         </div>
       </form>
     </div>

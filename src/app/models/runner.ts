@@ -8,4 +8,6 @@ export class Runner {
 
 export enum AgeCategoryCode {Open = 'Open', V35 = 'V35', V40 = 'V40', V45 = 'V45', V50 = 'V50', V60 = 'V60', V70 = 'V70' }
 
+export enum JuniorAgeCategoryCode { U11 = 'U11', U16 = 'U16' }
+
 export enum Gender {Male = 'Male', Female = 'Female'}

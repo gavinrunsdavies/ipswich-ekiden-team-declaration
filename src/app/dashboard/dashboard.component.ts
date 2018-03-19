@@ -7,7 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 import { Team } from '../models/team';
 import { Runner } from '../models/runner';
-import { AgeCategoryCode } from '../models/runner';
+import { AgeCategoryCode, JuniorAgeCategoryCode } from '../models/runner';
 import { Gender } from '../models/runner';
 import { Club } from '../models/club';
 import { AuthService } from '../services/auth.service';
@@ -26,6 +26,8 @@ export class DashboardComponent implements OnInit {
 
   ageCategoriesKeys: any[];
   ageCategory = AgeCategoryCode;
+  juniorAgeCategoriesKeys: any[];
+  juniorAgeCategory = JuniorAgeCategoryCode;
   genderKeys: any[];
   gender = Gender;
   editing = {};
@@ -42,6 +44,7 @@ export class DashboardComponent implements OnInit {
     private messageService: MessageService,
     private modalService: NgbModal) {
     this.ageCategoriesKeys = Object.keys(this.ageCategory);
+    this.juniorAgeCategoriesKeys = Object.keys(this.juniorAgeCategory);
     this.genderKeys = Object.keys(this.gender);
   }
 
@@ -101,7 +104,7 @@ export class DashboardComponent implements OnInit {
 
   public onGenderChange(runner, event): void {
     const newGenderValue = event.target.value;
-    if (newGenderValue == 'Male' && runner.ageCategory == 'V35') {
+    if (newGenderValue == 'Male' && (runner.ageCategory == 'V35' || runner.ageCategory == 'V45')) {
       runner.ageCategory = '';
     }
   }
@@ -114,8 +117,12 @@ export class DashboardComponent implements OnInit {
         team => {
           if (team && team.id > 0) {
             let newRunner: Runner;
+            let legs = 6;
+            if (team.isJuniorTeam) {
+              legs = 4;
+            }
 
-            for (let i = 1; i <= 6; i++) {
+            for (let i = 1; i <= legs; i++) {
               newRunner = new Runner();
               newRunner.leg = i;
               team.runners.push(newRunner);
@@ -207,7 +214,12 @@ export class DashboardComponent implements OnInit {
   }
 
   addRunnerPlaceHolders(team) {
-    for (let leg = 1; leg <= 6; leg++) {
+    let legs = 6;
+    if (team.isJuniorTeam) {
+      legs = 4;
+    }
+
+    for (let leg = 1; leg <= legs; leg++) {
       let exists = false;
       for (let k = 0; k < team.runners.length; k++) {
         if (team.runners[k].leg == leg) {

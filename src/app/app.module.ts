@@ -14,6 +14,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { TeamsComponent } from './teams/teams.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { TeamFilterPipe } from './dashboard/team-filter.pipe';
 import { TeamDetailComponent } from './team-detail/team-detail.component';
 import { MessagesComponent } from './messages/messages.component';
 import { RegisterComponent } from './register/register.component';
@@ -32,7 +33,6 @@ import { LoginRedirect } from './services/login-redirect.service';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 
 import { FilterPipe } from './filter.pipe';
-import { CallbackPipe } from './team-detail/callback.pipe';
 import { ContactComponent } from './contact/contact.component';
 import { SeniorsComponent } from './seniors/seniors.component';
 
@@ -47,7 +47,7 @@ import { SeniorsComponent } from './seniors/seniors.component';
     StatusComponent,
     HomeComponent,
     FilterPipe,
-    CallbackPipe,
+    TeamFilterPipe,
     StatisticsComponent,
     JuniorsComponent,
     ContactComponent,
