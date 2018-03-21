@@ -1,1 +1,1 @@
-<div *ngIf="message" [ngClass]="{ 'alert': message, 'alert-success': message.type === 'success', 'alert-danger': message.type === 'error' }" [innerHTML]="message.text"></div>
+<ngb-alert *ngIf="message" [type]="message.type == 'success' ? 'success' : 'danger'" (close)="message = null"><span [innerHTML]="message.text"></span></ngb-alert>

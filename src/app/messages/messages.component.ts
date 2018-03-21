@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Subject } from 'rxjs/Subject';
 import { MessageService } from '../services/message.service';
 
 @Component({
@@ -10,9 +11,12 @@ export class MessagesComponent implements OnInit {
 
   message: any;
 
-  constructor(public messageService: MessageService) {}
+  constructor(public messageService: MessageService) { }
 
   ngOnInit() {
-     this.messageService.getMessage().subscribe(message => { this.message = message; });
+    this.messageService.getMessage().subscribe(message => {
+      this.message = message;
+      setTimeout(() => this.message = null, 5000);
+    });
   }
 }
