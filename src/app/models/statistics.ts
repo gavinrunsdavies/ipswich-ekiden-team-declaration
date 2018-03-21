@@ -6,6 +6,8 @@ export class Statistics {
   completeTeamsCount: number;
   maleRunnerCount: number;
   femaleRunnerCount: number;
+  seniorTeamsCount: number;
+  juniorTeamsCount: number;
 }
 
 export class StatisticItem {

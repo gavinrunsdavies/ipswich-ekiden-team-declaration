@@ -1,29 +1,39 @@
 <div class="container">
-  <ngx-charts-pie-chart [legend]="true" [results]="clubTeamsCountData" [doughnut]="true" [legendTitle]="'Affiliated Club teams'"
-    [labels]="true" [gradient]="false" [trimLabels]="false" [view]="view">
-  </ngx-charts-pie-chart>
-  <p>Team Category</p>
-</div>
-<div class="container">
-  <ngx-charts-pie-chart [legend]="true" [results]="teamCategoryCountData" [doughnut]="true" [legendTitle]="'Team by category'"
-    [labels]="true" [gradient]="false" [trimLabels]="false" [view]="view">
-  </ngx-charts-pie-chart>
-  <p>Team Category</p>
-</div>
-<div class="container">
-  <ngx-charts-pie-chart [legend]="true" [results]="runnerCategoryCountData" [doughnut]="true" [legendTitle]="'Runers by category'"
-    [labels]="true" [gradient]="false" [trimLabels]="false" [view]="view">
-  </ngx-charts-pie-chart>
-  <p>Team Category</p>
-</div>
-<div class="container">
-  <ngx-charts-bar-horizontal-normalized [results]="genderData" [customColors]="genderColours" [xAxis]="true" [yAxis]="false"
-    [legend]="false" [showXAxisLabel]="true" [showYAxisLabel]="false" [xAxisLabel]="'Normalized Entries by Gender'" [view]="view">
-  </ngx-charts-bar-horizontal-normalized>
-  <p>Team Category</p>
-</div>
-<div class="container">
-  <ngx-charts-number-card [results]="cardData">
-  </ngx-charts-number-card>
-  <p>Team Category</p>
+  <div class="row">
+    <div class="col">
+      <h5>Teams per Club</h5>
+      <ngx-charts-pie-grid [results]="clubTeamsCountData" [view]="view" [designatedTotal]="totalTeamsCount">
+      </ngx-charts-pie-grid>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h5>Team Category Count</h5>
+      <ngx-charts-pie-chart [legend]="true" [results]="teamCategoryCountData" [doughnut]="true" [legendTitle]="'Team by category'"
+        [labels]="true" [gradient]="false" [trimLabels]="false" [view]="view">
+      </ngx-charts-pie-chart>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h5>Runner Category Count</h5>
+      <ngx-charts-pie-chart [legend]="true" [results]="runnerCategoryCountData" [doughnut]="true" [legendTitle]="'Runners by category'"
+        [labels]="true" [gradient]="false" [trimLabels]="false" [view]="view">
+      </ngx-charts-pie-chart>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <h5>Gender Count</h5>
+      <ngx-charts-bar-horizontal-normalized [results]="genderData" [customColors]="genderColours" [xAxis]="true" [yAxis]="false"
+        [legend]="true"  [legendTitle]="Gender" [showYAxisLabel]="false" [xAxisLabel]="'Normalized Entries by Gender'">
+      </ngx-charts-bar-horizontal-normalized>      
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <ngx-charts-number-card [results]="cardData">
+      </ngx-charts-number-card>
+    </div>
+  </div>
 </div>

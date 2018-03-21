@@ -18,6 +18,8 @@ export class StatisticsComponent implements OnInit {
   femaleRunnerCount: number;
   maleRunnerCount: number;
   totalTeamsCount: number;
+  seniorTeamsCount: number;
+  juniorTeamsCount: number;
   runnerCategoryCountData: StatisticItem[] = [];
   teamCategoryCountData: StatisticItem[] = [];
   clubTeamsCountData: StatisticItem[] = [];
@@ -36,7 +38,7 @@ export class StatisticsComponent implements OnInit {
   colourScheme = {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
   };
-  view: any[] = [800, 400];
+  view: any[] = [1000, 400];
 
   constructor(private teamService: TeamService) { }
 
@@ -54,6 +56,8 @@ export class StatisticsComponent implements OnInit {
         this.femaleRunnerCount = this.statistics.femaleRunnerCount;
         this.maleRunnerCount = this.statistics.maleRunnerCount;
         this.totalTeamsCount = this.statistics.totalTeamsCount;
+        this.seniorTeamsCount = this.statistics.seniorTeamsCount;
+        this.juniorTeamsCount = this.statistics.juniorTeamsCount;
         this.runnerCategoryCountData = this.statistics.runnerCategoryCount;
         this.teamCategoryCountData = this.statistics.teamCategoryCount;
 
@@ -62,11 +66,11 @@ export class StatisticsComponent implements OnInit {
           'series': [
             {
               'name': 'Male',
-              'value': `${this.maleRunnerCount}`
+              'value': this.maleRunnerCount
             },
             {
               'name': 'Female',
-              'value': `${this.femaleRunnerCount}`
+              'value': this.femaleRunnerCount
             }
           ]
         }];
@@ -78,6 +82,14 @@ export class StatisticsComponent implements OnInit {
         {
           'name': 'Complete Teams',
           'value': `${this.completeTeamsCount}`
+        },
+        {
+          'name': 'Senior Teams',
+          'value': `${this.seniorTeamsCount}`
+        },
+        {
+          'name': 'Junior Teams',
+          'value': `${this.juniorTeamsCount}`
         }];
         this.loadingIndicator = false;
       });
