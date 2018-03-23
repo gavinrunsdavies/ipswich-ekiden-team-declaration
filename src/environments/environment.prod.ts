@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  baseUrl: 'https://www.ipswichekiden.co.uk'
+  baseUrl: 'http://www.ipswichekiden.co.uk'
 };
