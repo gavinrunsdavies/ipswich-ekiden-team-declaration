@@ -1,3 +1,36 @@
-<p>
-  contact works!
-</p>
+<div class="row">
+  <div class="col-md-8 col-md-offset-2">
+    <h1>Get in touch!</h1>
+    <hr>
+    <br>
+    <form name="form" (ngSubmit)="f.form.valid && send()" #f="ngForm" novalidate>
+      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !firstName.valid }">
+        <label for="firstName">First Name</label>
+        <input type="text" class="form-control" name="firstName" [(ngModel)]="model.firstName" #firstName="ngModel" required />
+        <div *ngIf="f.submitted && !firstName.valid" class="help-block">First Name is required</div>
+      </div>
+      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !lastName.valid }">
+        <label for="lastName">Last Name</label>
+        <input type="text" class="form-control" name="lastName" [(ngModel)]="model.lastName" #lastName="ngModel" required />
+        <div *ngIf="f.submitted && !lastName.valid" class="help-block">Last Name is required</div>
+      </div>
+      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !email.valid }">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" name="email" [(ngModel)]="model.email" #email="ngModel" required />
+        <div *ngIf="f.submitted && !email.valid" class="help-block">Email is required</div>
+      </div>
+      <div class="form-group" [ngClass]="{ 'has-error': f.submitted && !message.valid }">
+        <label for="message">Message</label>
+        <textarea class="form-control" name="message" [(ngModel)]="model.message" #message="ngModel" required rows="8"></textarea>
+        <div *ngIf="f.submitted && !message.valid" class="help-block">Message is required</div>
+      </div>
+      <re-captcha size="invisible" #invisibleReCaptcha name="captcha" required siteKey="6LdYxUYUAAAAAKSugGqQWUTJtZh5czVV_dxoG6rT"></re-captcha>
+      <div class="form-group">
+        <button [disabled]="loading" class="btn btn-primary">Send</button>
+        <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+        />
+        <a [routerLink]="['/login']" class="btn btn-link">Cancel</a>
+      </div>
+    </form>
+  </div>
+</div>

@@ -25,6 +25,7 @@ import { JuniorsComponent } from './juniors/juniors.component';
 
 import { AuthService } from './services/auth.service';
 import { UserService } from './services/user.service';
+import { ContactService } from './services/contact.service';
 import { MessageService } from './services/message.service';
 import { TeamService } from './services/team.service';
 import { EnsureAuthenticated } from './services/ensure-authenticated.service';
@@ -35,6 +36,7 @@ import { JwtInterceptor } from './helpers/jwt.interceptor';
 import { FilterPipe } from './filter.pipe';
 import { ContactComponent } from './contact/contact.component';
 import { SeniorsComponent } from './seniors/seniors.component';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +53,8 @@ import { SeniorsComponent } from './seniors/seniors.component';
     StatisticsComponent,
     JuniorsComponent,
     ContactComponent,
-    SeniorsComponent
+    SeniorsComponent,
+    SpinnerComponent
   ],
   imports: [
     BrowserModule,
@@ -67,6 +70,7 @@ import { SeniorsComponent } from './seniors/seniors.component';
   providers: [
     TeamService,
     MessageService,
+    ContactService,
     AuthService,
     UserService,
     {

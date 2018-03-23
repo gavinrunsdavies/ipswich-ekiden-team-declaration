@@ -8,7 +8,6 @@ import { UserService } from '../services/user.service';
 
 @Component({
     selector: 'app-register',
-    moduleId: module.id,
     templateUrl: 'register.component.html'
 })
 
