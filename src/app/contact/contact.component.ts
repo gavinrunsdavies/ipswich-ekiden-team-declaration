@@ -23,6 +23,7 @@ export class ContactComponent {
             .subscribe(
             data => {
                 this.messageService.success('Message sent. Thank you.', false);
+                this.loading = false;
             },
             error => {
                 const message = 'ERROR: Failed to send message. Please try again.';
