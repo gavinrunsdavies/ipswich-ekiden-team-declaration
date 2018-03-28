@@ -22,6 +22,10 @@ import { StatusComponent } from './status/status.component';
 import { HomeComponent } from './home/home.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { JuniorsComponent } from './juniors/juniors.component';
+import { ContactComponent } from './contact/contact.component';
+import { SeniorsComponent } from './seniors/seniors.component';
+import { SpinnerComponent } from './spinner/spinner.component';
+import { AdminComponent } from './admin/admin.component';
 
 import { AuthService } from './services/auth.service';
 import { UserService } from './services/user.service';
@@ -34,9 +38,6 @@ import { LoginRedirect } from './services/login-redirect.service';
 import { JwtInterceptor } from './helpers/jwt.interceptor';
 
 import { FilterPipe } from './filter.pipe';
-import { ContactComponent } from './contact/contact.component';
-import { SeniorsComponent } from './seniors/seniors.component';
-import { SpinnerComponent } from './spinner/spinner.component';
 
 @NgModule({
   declarations: [
@@ -54,7 +55,8 @@ import { SpinnerComponent } from './spinner/spinner.component';
     JuniorsComponent,
     ContactComponent,
     SeniorsComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    AdminComponent
   ],
   imports: [
     BrowserModule,
