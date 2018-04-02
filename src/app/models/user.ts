@@ -6,6 +6,7 @@ export class User {
     firstName: string;
     lastName: string;
     token: string;
+    isAdmin: boolean;
 
   constructor(email?: string, password?: string) {}
 }

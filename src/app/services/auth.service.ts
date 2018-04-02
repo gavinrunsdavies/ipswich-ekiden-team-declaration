@@ -60,6 +60,7 @@ export class AuthService {
       });
       return this.http.post<any>(url, { headers: headers })
         .map(validateResponse => {
+          // tslint:disable-next-line:triple-equals
           if (validateResponse.data.status == '200') {
             this.currentUserSubject.next(user);
             return user;

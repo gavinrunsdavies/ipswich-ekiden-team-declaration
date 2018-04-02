@@ -4,9 +4,11 @@ import { CanActivate, Router } from '@angular/router';
 import { AuthService } from './auth.service';
 
 @Injectable()
-export class EnsureAuthenticated implements CanActivate {
+export class EnsureAdminUser implements CanActivate {
   constructor(private router: Router,
               private authenticationService: AuthService) {}
+
+  // TODO
   canActivate(): boolean {
     if (localStorage.getItem('currentUser')) {
       return true;

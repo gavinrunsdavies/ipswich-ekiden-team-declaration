@@ -12,12 +12,14 @@ import { AuthService } from './services/auth.service';
 })
 export class AppComponent {
     isLoggedIn = false;
+    isAdmin = false;
     navbarCollapsed = true;
     userStatusSubscription: Subscription;
 
     constructor(private authenticationService: AuthService) {
         this.userStatusSubscription = this.authenticationService.getCurrentUser().subscribe(user => {
             this.isLoggedIn = (user != null);
+            this.isAdmin = user.isAdmin;
         });
     }
 }

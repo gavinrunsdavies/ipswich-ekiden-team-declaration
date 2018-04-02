@@ -74,6 +74,14 @@ export class TeamService {
     );
   }
 
+  getTeamDelcartionPreview(): Observable<any> {
+    const url = `${this.teamsUrl}/teams/download`;
+    return this.http.get(url).pipe(
+      tap(_ => this.log(`fetched team declaration download preview`)),
+      catchError(this.handleError(`getTeamDelcartionPreview`))
+    );
+  }
+
   /** PUT: update the team on the server */
   updateTeam(team: Team): Observable<any> {
     const url = `${this.teamsUrl}/teams/${team.id}`;
@@ -89,6 +97,14 @@ export class TeamService {
     return this.http.post<Team>(url, team, this.httpOptions).pipe(
       tap((t: Team) => this.log(`added team w/ id=${t.id}`)),
       catchError(this.handleError<Team>('addTeam'))
+    );
+  }
+
+  sendTeamDeclarations(email: string) {
+    const url = `${this.teamsUrl}/teams/send`;
+    return this.http.post(url, {'email': email}, this.httpOptions).pipe(
+      tap(_ => this.log(`email sent to ${email}`)),
+      catchError(this.handleError('sendTeamDeclarations'))
     );
   }
 
