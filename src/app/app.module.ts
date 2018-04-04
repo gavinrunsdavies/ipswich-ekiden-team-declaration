@@ -33,6 +33,7 @@ import { ContactService } from './services/contact.service';
 import { MessageService } from './services/message.service';
 import { TeamService } from './services/team.service';
 import { EnsureAuthenticated } from './services/ensure-authenticated.service';
+import { EnsureAdminUser } from './services/ensure-admin-user.service';
 import { LoginRedirect } from './services/login-redirect.service';
 
 import { JwtInterceptor } from './helpers/jwt.interceptor';
@@ -81,6 +82,7 @@ import { FilterPipe } from './filter.pipe';
       multi: true
     },
     EnsureAuthenticated,
+    EnsureAdminUser,
     LoginRedirect
   ],
   bootstrap: [AppComponent]

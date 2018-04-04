@@ -14,7 +14,10 @@ import { MessageService } from '../services/message.service';
 })
 export class AdminComponent implements OnInit {
 
-  data: any;
+  seniorData: any;
+  juniorData: any;
+  juniorHeaders: string[];
+  seniorHeaders: string[];
   loadingIndicator = true;
   constructor(
     private router: Router,
@@ -25,11 +28,11 @@ export class AdminComponent implements OnInit {
     this.authenticationService.ensureAuthenticated()
       .subscribe(
         user => {
-          if (user.isAdmin) {
+        //  if (user.isAdmin) {
             this.getPreview();
-          } else {
-            this.router.navigate(['/']);
-          }
+    //      } else {
+      //      this.router.navigate(['/']);
+      //    }
         },
         error => {
           this.router.navigate(['/']);
@@ -38,9 +41,18 @@ export class AdminComponent implements OnInit {
 
   getPreview(): void {
     this.loadingIndicator = true;
-    this.teamService.getTeamDelcartionPreview()
+    this.teamService.getTeamDeclartionPreview()
       .subscribe(data => {
-        this.data = data;
+        this.seniorData = data.seniors;
+        if (data.seniors.length > 0) {
+          this.seniorHeaders = Object.getOwnPropertyNames(data.seniors[0]);
+        }
+
+        this.juniorData = data.juniors;
+        if (data.juniors.length > 0) {
+          this.juniorHeaders = Object.getOwnPropertyNames(data.juniors[0]);
+        }
+
         this.loadingIndicator = false;
       }
       );

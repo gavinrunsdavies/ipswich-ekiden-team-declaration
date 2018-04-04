@@ -1,3 +1,30 @@
-<p>
-  admin works!
-</p>
+<br/>
+<h3>Administration</h3>
+<hr/>
+<h5>Submit Teams</h5>
+<h6>Senior Teams</h6>
+<table class="table table-striped"> 
+  <thead>
+    <tr>
+      <th *ngFor="let header of seniorHeaders">{{header}}</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let row of seniorData">
+        <td *ngFor="let header of seniorHeaders">{{row[header]}}</td>
+      </tr>
+  </tbody>
+</table>
+<h6>Junior Teams</h6>
+<table class="table table-striped"> 
+  <thead>
+    <tr>
+      <th *ngFor="let header of juniorHeaders">{{header}}</th>
+    </tr>
+  </thead>
+  <tbody>
+      <tr *ngFor="let row of juniorData">
+        <td *ngFor="let header of juniorHeaders">{{row[header]}}</td>
+      </tr>
+  </tbody>
+</table>

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import 'rxjs/add/operator/map';
+import { Router } from '@angular/router';
 import { User } from '../models/user';
 import { Observable } from 'rxjs/Observable';
 import { Subject } from 'rxjs/Subject';
@@ -12,7 +13,8 @@ export class AuthService {
 
   private currentUserSubject: Subject<User>;
 
-  constructor(private http: HttpClient) {
+  constructor(private router: Router,
+    private http: HttpClient) {
     this.currentUserSubject = new Subject<User>();
   }
 
@@ -40,6 +42,8 @@ export class AuthService {
     // remove user from local storage to log user out and clear observable
     localStorage.removeItem('currentUser');
     this.currentUserSubject.next();
+
+    this.router.navigateByUrl('/');
 
     // TODO logout from wordpress?
   }

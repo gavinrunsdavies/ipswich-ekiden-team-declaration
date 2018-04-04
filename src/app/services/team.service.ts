@@ -74,7 +74,7 @@ export class TeamService {
     );
   }
 
-  getTeamDelcartionPreview(): Observable<any> {
+  getTeamDeclartionPreview(): Observable<any> {
     const url = `${this.teamsUrl}/teams/download`;
     return this.http.get(url).pipe(
       tap(_ => this.log(`fetched team declaration download preview`)),
