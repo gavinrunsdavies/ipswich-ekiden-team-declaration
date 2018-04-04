@@ -2,29 +2,52 @@
 <h3>Administration</h3>
 <hr/>
 <h5>Submit Teams</h5>
-<h6>Senior Teams</h6>
-<table class="table table-striped"> 
-  <thead>
-    <tr>
-      <th *ngFor="let header of seniorHeaders">{{header}}</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr *ngFor="let row of seniorData">
+
+<div class="loading" *ngIf="loadingIndicator">
+  <app-spinner></app-spinner>
+</div>
+<div *ngIf="!loadingIndicator">
+  <form #sendDeclarations="ngForm" (ngSubmit)="send();">
+    <div class="form-row">
+      <div class="form-group col-md-10">
+        <label for="email">Email</label>
+        <input id="email" type="text" class="form-control" name="email" [(ngModel)]="email.email" #email="ngModel" required />
+        <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+          <div *ngIf="email.errors.required">
+            Destination email is required.
+          </div>
+        </div>
+      </div>
+      <div class="form-group col-md-2">
+        <label for="submit">&nbsp;</label>
+        <button *ngIf="!formSubmittedIndicator" id="submit" type="submit" class="form-control btn btn-primary" [disabled]="!sendDeclarations.form.valid">Send</button>
+        <img *ngIf="formSubmittedIndicator" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+        />
+      </div>
+    </div>
+  </form>
+  <h6>Senior Teams</h6>
+  <table class="table table-striped">
+    <tbody>
+      <tr *ngFor="let row of seniorData | paginate: { itemsPerPage: 10, currentPage: seniorsCurrentPageNumber, id: 'seniors'}">
         <td *ngFor="let header of seniorHeaders">{{row[header]}}</td>
       </tr>
-  </tbody>
-</table>
-<h6>Junior Teams</h6>
-<table class="table table-striped"> 
-  <thead>
-    <tr>
-      <th *ngFor="let header of juniorHeaders">{{header}}</th>
-    </tr>
-  </thead>
-  <tbody>
-      <tr *ngFor="let row of juniorData">
+    </tbody>
+  </table>
+  <br>
+  <div class="text-center">
+    <pagination-controls (pageChange)="seniorsCurrentPageNumber = $event" id="seniors"></pagination-controls>
+  </div>
+  <h6>Junior Teams</h6>
+  <table class="table table-striped">
+    <tbody>
+      <tr *ngFor="let row of juniorData| paginate: { itemsPerPage: 10, currentPage: juniorsCurrentPageNumber, id: 'juniors' }">
         <td *ngFor="let header of juniorHeaders">{{row[header]}}</td>
       </tr>
-  </tbody>
-</table>
+    </tbody>
+  </table>
+  <br>
+  <div class="text-center">
+    <pagination-controls (pageChange)="juniorsCurrentPageNumber = $event" id="juniors"></pagination-controls>
+  </div>
+</div>

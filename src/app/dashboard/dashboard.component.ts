@@ -144,7 +144,6 @@ export class DashboardComponent implements OnInit {
   }
 
   saveTeamEdit(team) {
-    console.log(`saveTeamEdit team called`);
     // Save team, Update, set to view mode.
 
     this.teamService.updateTeam(team)

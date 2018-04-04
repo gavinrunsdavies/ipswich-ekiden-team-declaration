@@ -14,11 +14,17 @@ import { MessageService } from '../services/message.service';
 })
 export class AdminComponent implements OnInit {
 
+  seniorsCurrentPageNumber = 1;
+  juniorsCurrentPageNumber = 1;
+
   seniorData: any;
   juniorData: any;
   juniorHeaders: string[];
   seniorHeaders: string[];
   loadingIndicator = true;
+  formSubmittedIndicator = false;
+  email: any = {};
+
   constructor(
     private router: Router,
     private authenticationService: AuthService,
@@ -28,11 +34,11 @@ export class AdminComponent implements OnInit {
     this.authenticationService.ensureAuthenticated()
       .subscribe(
         user => {
-        //  if (user.isAdmin) {
-            this.getPreview();
-    //      } else {
-      //      this.router.navigate(['/']);
-      //    }
+          //  if (user.isAdmin) {
+          this.getPreview();
+          //      } else {
+          //      this.router.navigate(['/']);
+          //    }
         },
         error => {
           this.router.navigate(['/']);
@@ -54,6 +60,15 @@ export class AdminComponent implements OnInit {
         }
 
         this.loadingIndicator = false;
+      }
+      );
+  }
+
+  send(): void {
+    this.formSubmittedIndicator = true;
+    this.teamService.sendTeamDeclarations(this.email)
+      .subscribe(data => {
+        this.formSubmittedIndicator = false;
       }
       );
   }
