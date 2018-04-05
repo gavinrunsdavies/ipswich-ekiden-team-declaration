@@ -1,17 +1,74 @@
 <br/>
 <h3>Administration</h3>
+<p>Use this page to assigned team numbers to declared teams and to preview teams that can be emailed to the Chip Timing providers
+  as CSV attachments.</p>
 <hr/>
-<h5>Submit Teams</h5>
-
-<div class="loading" *ngIf="loadingIndicator">
+<h5>Assign Team Numbers</h5>
+<div class="loading" *ngIf="loadingIndicator.seniors">
   <app-spinner></app-spinner>
 </div>
-<div *ngIf="!loadingIndicator">
+<div *ngIf="!loadingIndicator.seniors">
+  <h6>Senior Teams</h6>
+  <table class="table table-striped table-sm">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Number</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let team of seniorTeams | paginate: { itemsPerPage: 10, currentPage: seniorTeamsCurrentPageNumber, id: 'seniorTeamsList'}">
+        <td>{{team.name}} - (
+          <em>{{team.clubName}})</em>
+        </td>
+        <td>
+          <input autofocus type="number" [(ngModel)]="team.number" name="number-{{team.id}}" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <br>
+  <div class="text-center">
+    <pagination-controls (pageChange)="seniorTeamsCurrentPageNumber = $event" id="seniorTeamsList"></pagination-controls>
+  </div>
+</div>
+<div class="loading" *ngIf="loadingIndicator.juniors">
+  <app-spinner></app-spinner>
+</div>
+<div *ngIf="!loadingIndicator.juniors">
+  <h6>Junior Teams</h6>
+  <table class="table table-striped table-sm">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Number</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let team of juniorTeams | paginate: { itemsPerPage: 10, currentPage: juniorTeamsCurrentPageNumber, id: 'juniorTeamsList'}">
+        <td>{{team.name}} - (
+          <em>{{team.clubName}})</em>
+        </td>
+        <td>{{team.number}}</td>
+      </tr>
+    </tbody>
+  </table>
+  <br>
+  <div class="text-center">
+    <pagination-controls (pageChange)="juniorTeamsCurrentPageNumber = $event" id="juniorTeamsList"></pagination-controls>
+  </div>
+</div>
+<hr/>
+<h5>Submit Teams</h5>
+<div class="loading" *ngIf="loadingIndicator.preview">
+  <app-spinner></app-spinner>
+</div>
+<div *ngIf="!loadingIndicator.preview">
   <form #sendDeclarations="ngForm" (ngSubmit)="send();">
     <div class="form-row">
       <div class="form-group col-md-10">
         <label for="email">Email</label>
-        <input id="email" type="text" class="form-control" name="email" [(ngModel)]="email.email" #email="ngModel" required />
+        <input id="email" type="email" class="form-control" name="email" [(ngModel)]="download.email" #email="ngModel" required />
         <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
           <div *ngIf="email.errors.required">
             Destination email is required.
@@ -27,7 +84,10 @@
     </div>
   </form>
   <h6>Senior Teams</h6>
-  <table class="table table-striped">
+  <p>Preview of what we be sent as a CSV attachment to the requested email for the senior teams. On team that have been allocated
+    a
+    <strong>Team Number</strong> are included.</p>
+  <table class="table table-striped table-sm">
     <tbody>
       <tr *ngFor="let row of seniorData | paginate: { itemsPerPage: 10, currentPage: seniorsCurrentPageNumber, id: 'seniors'}">
         <td *ngFor="let header of seniorHeaders">{{row[header]}}</td>
@@ -39,7 +99,10 @@
     <pagination-controls (pageChange)="seniorsCurrentPageNumber = $event" id="seniors"></pagination-controls>
   </div>
   <h6>Junior Teams</h6>
-  <table class="table table-striped">
+  <p>Preview of what we be sent as a CSV attachment to the requested email for the junior teams. On team that have been allocated
+    a
+    <strong>Team Number</strong> are included.</p>
+  <table class="table table-striped table-sm">
     <tbody>
       <tr *ngFor="let row of juniorData| paginate: { itemsPerPage: 10, currentPage: juniorsCurrentPageNumber, id: 'juniors' }">
         <td *ngFor="let header of juniorHeaders">{{row[header]}}</td>
