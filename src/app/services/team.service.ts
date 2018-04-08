@@ -91,6 +91,20 @@ export class TeamService {
     );
   }
 
+  updateTeamNumbers(teams: Team[], race: string): Observable<any> {
+    const url = `${this.teamsUrl}/teams/numbers`;
+
+    const teamNumbers: any[] = [];
+    for (let i = 0; i < teams.length; i++) {
+      teamNumbers.push({id: teams[i].id, number: teams[i].number});
+    }
+
+    return this.http.post(url, {'teams' : teamNumbers, 'race': race}, this.httpOptions).pipe(
+      tap(_ => this.log(`updated team numbers`)),
+      catchError(this.handleError<any>('updateTeamNumbers'))
+    );
+  }
+
   /** POST: add a new team to the server */
   addTeam(team: Team): Observable<Team> {
     const url = `${this.teamsUrl}/teams`;

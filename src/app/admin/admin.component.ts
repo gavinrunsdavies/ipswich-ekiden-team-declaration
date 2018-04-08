@@ -95,4 +95,31 @@ export class AdminComponent implements OnInit {
       );
   }
 
+  updateSeniorTeamNumbers(): void {
+    this.teamService.updateTeamNumbers(this.seniorTeams, 'seniors')
+      .subscribe(
+        teams => {
+          this.seniorTeams = teams;
+          // response is updated teams
+          this.messageService.success(`Senior team numbers updated.`, true);
+        },
+        error => {
+          this.messageService.error(`Error updating senior team numbers.`, true);
+        }
+      );
+  }
+
+  updateJuniorTeamNumbers(): void {
+    this.teamService.updateTeamNumbers(this.juniorTeams, 'juniors')
+      .subscribe(
+        teams => {
+          this.juniorTeams = teams;
+          this.messageService.success(`Junior team numbers updated.`, true);
+        },
+        error => {
+          this.messageService.error(`Error updating senior team numbers.`, true);
+        }
+      );
+  }
+
 }

@@ -9,24 +9,34 @@
 </div>
 <div *ngIf="!loadingIndicator.seniors">
   <h6>Senior Teams</h6>
-  <table class="table table-striped table-sm">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Number</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let team of seniorTeams | paginate: { itemsPerPage: 10, currentPage: seniorTeamsCurrentPageNumber, id: 'seniorTeamsList'}">
-        <td>{{team.name}} - (
-          <em>{{team.clubName}})</em>
-        </td>
-        <td>
-          <input autofocus type="number" [(ngModel)]="team.number" name="number-{{team.id}}" />
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <form #saveTeamNumbers="ngForm" (ngSubmit)="updateSeniorTeamNumbers();">
+    <table class="table table-striped table-sm">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Number</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let team of seniorTeams | paginate: { itemsPerPage: 10, currentPage: seniorTeamsCurrentPageNumber, id: 'seniorTeamsList'}">
+          <td>{{team.name}} - (
+            <em>{{team.clubName}})</em>
+          </td>
+          <td>
+            <input autofocus type="number" [(ngModel)]="team.number" name="number-{{team.id}}" />
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td></td>
+          <td>
+            <button type="submit" class="form-control btn btn-primary">Save</button>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </form>
   <br>
   <div class="text-center">
     <pagination-controls (pageChange)="seniorTeamsCurrentPageNumber = $event" id="seniorTeamsList"></pagination-controls>
@@ -37,22 +47,34 @@
 </div>
 <div *ngIf="!loadingIndicator.juniors">
   <h6>Junior Teams</h6>
-  <table class="table table-striped table-sm">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Number</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let team of juniorTeams | paginate: { itemsPerPage: 10, currentPage: juniorTeamsCurrentPageNumber, id: 'juniorTeamsList'}">
-        <td>{{team.name}} - (
-          <em>{{team.clubName}})</em>
-        </td>
-        <td>{{team.number}}</td>
-      </tr>
-    </tbody>
-  </table>
+  <form #saveTeamNumbers="ngForm" (ngSubmit)="updateJuniorTeamNumbers();">
+    <table class="table table-striped table-sm">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Number</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let team of juniorTeams | paginate: { itemsPerPage: 10, currentPage: juniorTeamsCurrentPageNumber, id: 'juniorTeamsList'}">
+          <td>{{team.name}} - (
+            <em>{{team.clubName}})</em>
+          </td>
+          <td>
+            <input autofocus type="number" [(ngModel)]="team.number" name="number-{{team.id}}" />
+          </td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <td></td>
+          <td>
+            <button type="submit" class="form-control btn btn-primary">Save</button>
+          </td>
+        </tr>
+      </tfoot>
+    </table>
+  </form>
   <br>
   <div class="text-center">
     <pagination-controls (pageChange)="juniorTeamsCurrentPageNumber = $event" id="juniorTeamsList"></pagination-controls>
@@ -84,7 +106,7 @@
     </div>
   </form>
   <h6>Senior Teams</h6>
-  <p>Preview of what we be sent as a CSV attachment to the requested email for the senior teams. On team that have been allocated
+  <p>Preview of what we be sent as a CSV attachment to the requested email for the senior teams. Only teams that have been allocated
     a
     <strong>Team Number</strong> are included.</p>
   <table class="table table-striped table-sm">
@@ -99,7 +121,7 @@
     <pagination-controls (pageChange)="seniorsCurrentPageNumber = $event" id="seniors"></pagination-controls>
   </div>
   <h6>Junior Teams</h6>
-  <p>Preview of what we be sent as a CSV attachment to the requested email for the junior teams. On team that have been allocated
+  <p>Preview of what we be sent as a CSV attachment to the requested email for the junior teams. Only teams that have been allocated
     a
     <strong>Team Number</strong> are included.</p>
   <table class="table table-striped table-sm">
