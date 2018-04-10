@@ -10,7 +10,7 @@ export class EnsureAdminUser implements CanActivate {
     private authenticationService: AuthService) { }
 
   canActivate(): boolean {
-    const localStorageCurrentUser = localStorage.getItem('currentUser');
+    const localStorageCurrentUser = sessionStorage.getItem('currentUser');
     if (localStorageCurrentUser) {
       const user = JSON.parse(localStorageCurrentUser);
       if (user.isAdmin) {

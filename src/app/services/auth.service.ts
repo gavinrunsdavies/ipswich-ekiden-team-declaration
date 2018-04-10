@@ -31,7 +31,7 @@ export class AuthService {
           currentUser.email = user.user_email;
           currentUser.isAdmin = user.isAdmin;
 
-          localStorage.setItem('currentUser', JSON.stringify(currentUser));
+          sessionStorage.setItem('currentUser', JSON.stringify(currentUser));
           this.currentUserSubject.next(currentUser);
         }
 
@@ -41,7 +41,7 @@ export class AuthService {
 
   logout() {
     // remove user from local storage to log user out and clear observable
-    localStorage.removeItem('currentUser');
+    sessionStorage.removeItem('currentUser');
     this.currentUserSubject.next();
 
     this.router.navigateByUrl('/');
@@ -54,7 +54,7 @@ export class AuthService {
   }
 
   ensureAuthenticated() {
-    const localStorageCurrentUser = localStorage.getItem('currentUser');
+    const localStorageCurrentUser = sessionStorage.getItem('currentUser');
 
     if (localStorageCurrentUser) {
       const user = JSON.parse(localStorageCurrentUser);
