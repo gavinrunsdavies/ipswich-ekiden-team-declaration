@@ -29,6 +29,7 @@ export class AuthService {
           currentUser.token = user.token;
           currentUser.displayName = user.user_display_name;
           currentUser.email = user.user_email;
+          currentUser.isAdmin = user.isAdmin;
 
           localStorage.setItem('currentUser', JSON.stringify(currentUser));
           this.currentUserSubject.next(currentUser);

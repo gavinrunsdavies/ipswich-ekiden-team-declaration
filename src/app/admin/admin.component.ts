@@ -40,13 +40,13 @@ export class AdminComponent implements OnInit {
     this.authenticationService.ensureAuthenticated()
       .subscribe(
         user => {
-          //  if (user.isAdmin) {
-          this.getPreview();
-          this.getTeams('seniors', this.seniorTeams);
-          this.getTeams('juniors', this.juniorTeams);
-          //      } else {
-          //      this.router.navigate(['/']);
-          //    }
+          if (user.isAdmin) {
+            this.getPreview();
+            this.getTeams('seniors', this.seniorTeams);
+            this.getTeams('juniors', this.juniorTeams);
+          } else {
+            this.router.navigate(['/']);
+          }
         },
         error => {
           this.router.navigate(['/']);
@@ -100,7 +100,6 @@ export class AdminComponent implements OnInit {
       .subscribe(
         teams => {
           this.seniorTeams = teams;
-          // response is updated teams
           this.messageService.success(`Senior team numbers updated.`, true);
         },
         error => {

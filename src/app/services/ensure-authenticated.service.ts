@@ -8,7 +8,7 @@ export class EnsureAuthenticated implements CanActivate {
   constructor(private router: Router,
               private authenticationService: AuthService) {}
   canActivate(): boolean {
-    if (localStorage.getItem('currentUser')) {
+    if (sessionStorage.getItem('currentUser')) {
       return true;
     } else {
       this.authenticationService.logout();

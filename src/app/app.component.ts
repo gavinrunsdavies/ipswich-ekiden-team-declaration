@@ -19,7 +19,7 @@ export class AppComponent {
     constructor(private authenticationService: AuthService) {
         this.userStatusSubscription = this.authenticationService.getCurrentUser().subscribe(user => {
             this.isLoggedIn = (user != null);
-            this.isAdmin = user != null; // && user.isAdmin;
+            this.isAdmin = user.isAdmin;
         });
     }
 }
