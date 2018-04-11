@@ -16,7 +16,12 @@ export class MessagesComponent implements OnInit {
   ngOnInit() {
     this.messageService.getMessage().subscribe(message => {
       this.message = message;
-      setTimeout(() => this.message = null, 5000);
+      let timeout = 5000;
+      if (message && message.timeout > 0) {
+        timeout = message.timeout * 1000;
+      }
+
+      setTimeout(() => this.message = null, timeout);
     });
   }
 }

@@ -23,14 +23,14 @@ export class MessageService {
         });
     }
 
-    success(message: string, keepAfterNavigationChange = false) {
+    success(message: string, keepAfterNavigationChange = false, timeout: number = 5) {
         this.keepAfterNavigationChange = keepAfterNavigationChange;
-        this.subject.next({ type: 'success', text: message });
+        this.subject.next({ type: 'success', text: message, timeout: timeout });
     }
 
-    error(message: string, keepAfterNavigationChange = false) {
+    error(message: string, keepAfterNavigationChange = false, timeout: number = 5) {
         this.keepAfterNavigationChange = keepAfterNavigationChange;
-        this.subject.next({ type: 'error', text: message });
+        this.subject.next({ type: 'error', text: message, timeout: timeout });
     }
 
     getMessage(): Observable<any> {

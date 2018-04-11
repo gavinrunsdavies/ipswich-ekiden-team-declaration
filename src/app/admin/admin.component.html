@@ -7,8 +7,14 @@
 <div class="loading" *ngIf="loadingIndicator.seniors">
   <app-spinner></app-spinner>
 </div>
-<div *ngIf="!loadingIndicator.seniors">
+<div *ngIf="!loadingIndicator.seniors" class="container">
   <h6>Senior Teams</h6>
+  <div class="input-group mb-2">
+    <div class="input-group-prepend">
+      <span class="input-group-text">Search</span>
+    </div>
+    <input type="text" class="form-control" placeholder="Team name or club name" [(ngModel)]="seniorsSearchString">
+  </div>
   <form #saveTeamNumbers="ngForm" (ngSubmit)="updateSeniorTeamNumbers();">
     <table class="table table-striped table-sm">
       <thead>
@@ -18,7 +24,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let team of seniorTeams | paginate: { itemsPerPage: 10, currentPage: seniorTeamsCurrentPageNumber, id: 'seniorTeamsList'}">
+        <tr *ngFor="let team of seniorTeams | FilterPipe: seniorsSearchString : searchableList | paginate: { itemsPerPage: 10, currentPage: seniorTeamsCurrentPageNumber, id: 'seniorTeamsList'}">
           <td>{{team.name}} - (
             <em>{{team.clubName}})</em>
           </td>
@@ -47,6 +53,12 @@
 </div>
 <div *ngIf="!loadingIndicator.juniors">
   <h6>Junior Teams</h6>
+  <div class="input-group mb-2">
+    <div class="input-group-prepend">
+      <span class="input-group-text">Search</span>
+    </div>
+    <input type="text" class="form-control" placeholder="Team name or club name" [(ngModel)]="juniorsSearchString">
+  </div>
   <form #saveTeamNumbers="ngForm" (ngSubmit)="updateJuniorTeamNumbers();">
     <table class="table table-striped table-sm">
       <thead>
@@ -56,7 +68,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let team of juniorTeams | paginate: { itemsPerPage: 10, currentPage: juniorTeamsCurrentPageNumber, id: 'juniorTeamsList'}">
+        <tr *ngFor="let team of juniorTeams | FilterPipe: juniorsSearchString : searchableList | paginate: { itemsPerPage: 10, currentPage: juniorTeamsCurrentPageNumber, id: 'juniorTeamsList'}">
           <td>{{team.name}} - (
             <em>{{team.clubName}})</em>
           </td>

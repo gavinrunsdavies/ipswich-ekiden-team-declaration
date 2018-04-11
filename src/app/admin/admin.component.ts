@@ -7,6 +7,7 @@ import { Team } from '../models/team';
 import { AuthService } from '../services/auth.service';
 import { TeamService } from '../services/team.service';
 import { MessageService } from '../services/message.service';
+import { FilterPipe } from '../filter.pipe';
 
 @Component({
   selector: 'app-admin',
@@ -19,7 +20,9 @@ export class AdminComponent implements OnInit {
   juniorsCurrentPageNumber = 1;
   seniorTeamsCurrentPageNumber = 1;
   juniorTeamsCurrentPageNumber = 1;
-
+  seniorsSearchString: string;
+  juniorsSearchString: string;
+  searchableList = ['name', 'clubName'];
   seniorData: any[];
   juniorData: any[];
   seniorTeams: Team[];
@@ -96,6 +99,11 @@ export class AdminComponent implements OnInit {
   }
 
   updateSeniorTeamNumbers(): void {
+    const duplicates = this.validateTeamNumbers(this.juniorTeams);
+    if (duplicates.length > 0) {
+      this.messageService.error(`Invalid team numbers. Duplicate team numbers declared: ${duplicates.join(', ')}.`, true, 60);
+      return;
+    }
     this.teamService.updateTeamNumbers(this.seniorTeams, 'seniors')
       .subscribe(
         teams => {
@@ -109,6 +117,11 @@ export class AdminComponent implements OnInit {
   }
 
   updateJuniorTeamNumbers(): void {
+    const duplicates = this.validateTeamNumbers(this.juniorTeams);
+    if (duplicates.length > 0) {
+      this.messageService.error(`Invalid team numbers. Duplicate team numbers declared: ${duplicates.join(', ')}.`, true, 60);
+      return;
+    }
     this.teamService.updateTeamNumbers(this.juniorTeams, 'juniors')
       .subscribe(
         teams => {
@@ -121,4 +134,16 @@ export class AdminComponent implements OnInit {
       );
   }
 
+  private validateTeamNumbers(teams: Team[]) {
+    const duplicates: number[] = [];
+    for (let i = 0; i < teams.length - 1; i++) {
+      for (let j = i + 1; j < teams.length; j++) {
+        if (i !== j && teams[i].number == teams[j].number) {
+          duplicates.push(teams[i].number);
+        }
+      }
+    }
+
+    return duplicates;
+  }
 }
