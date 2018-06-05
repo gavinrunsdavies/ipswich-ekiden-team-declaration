@@ -99,7 +99,7 @@ export class AdminComponent implements OnInit {
   }
 
   updateSeniorTeamNumbers(): void {
-    const duplicates = this.validateTeamNumbers(this.juniorTeams);
+    const duplicates = this.validateTeamNumbers(this.seniorTeams);
     if (duplicates.length > 0) {
       this.messageService.error(`Invalid team numbers. Duplicate team numbers declared: ${duplicates.join(', ')}.`, true, 60);
       return;
@@ -138,7 +138,7 @@ export class AdminComponent implements OnInit {
     const duplicates: number[] = [];
     for (let i = 0; i < teams.length - 1; i++) {
       for (let j = i + 1; j < teams.length; j++) {
-        if (i !== j && teams[i].number == teams[j].number) {
+        if (i !== j && teams[i].number == teams[j].number && teams[i].number != 0) {
           duplicates.push(teams[i].number);
         }
       }
