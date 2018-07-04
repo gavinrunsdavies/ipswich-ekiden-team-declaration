@@ -72,8 +72,10 @@
     <div class="card-header">
       <div class="row">
         <div class="col-md-8">
-          <h4>{{team.name}}
-            <small *ngIf="team.complete">:{{team.category}}</small>
+          <h4>
+            <small *ngIf="team.number > 0">{{team.number}}</small>
+            {{team.name}}
+            <small *ngIf="team.complete">{{team.category}}</small>           
             <span class="badge " [ngClass]="(team.complete) ? 'badge-success' : 'badge-warning'">{{team.complete ? 'Complete' : 'Incomplete'}}</span>
           </h4>
         </div>
@@ -161,8 +163,10 @@
     <div class="card-header">
       <div class="row">
         <div class="col-md-8">
-          <h4>{{team.name}}
-            <small *ngIf="team.complete">:{{team.category}}</small>
+          <h4>
+            <small *ngIf="team.number > 0">{{team.number}}</small>
+            {{team.name}}
+            <small *ngIf="team.complete">{{team.category}}</small>
             <span class="badge " [ngClass]="(team.complete) ? 'badge-success' : 'badge-warning'">{{team.complete ? 'Complete' : 'Incomplete'}}</span>
           </h4>
         </div>
