@@ -38,4 +38,18 @@ export class TeamDetailComponent implements OnInit {
       return runner[prop];
     }
   }
+
+  getLegDistance(leg: number) {
+    switch (leg) {
+      case 1 :
+        return "7.2K";
+        case 2 :
+        case 4 :
+        case 6 :
+        return "5K";
+        case 3 :
+        case 5 :
+        return "10K";
+    }
+  }
 }

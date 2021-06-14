@@ -75,7 +75,7 @@
           <h4>
             <small *ngIf="team.number > 0">{{team.number}}</small>
             {{team.name}}
-            <small *ngIf="team.complete">{{team.category}}</small>           
+            <small *ngIf="team.complete">{{team.category}}</small>
             <span class="badge " [ngClass]="(team.complete) ? 'badge-success' : 'badge-warning'">{{team.complete ? 'Complete' : 'Incomplete'}}</span>
           </h4>
         </div>
@@ -125,7 +125,7 @@
           </thead>
           <tbody *ngIf="team">
             <tr *ngFor="let runner of team.runners; let index = index;">
-              <th scope="row">{{runner.leg}}</th>
+              <th scope="row">{{runner.leg}} - {{getLegDistance(runner.leg)}}</th>
               <td>
                 <span *ngIf="!editing[team.id]">{{runner.name}}</span>
                 <input autofocus *ngIf="editing[team.id]" type="text" [(ngModel)]="team.runners[index].name" name="name-{{index}}" />

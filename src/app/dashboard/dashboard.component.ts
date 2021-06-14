@@ -246,4 +246,22 @@ export class DashboardComponent implements OnInit {
     }
     return 0;
   }
+
+  getLegDistance(leg: number, isJuniorTeam: boolean) {
+    if (isJuniorTeam) {
+      return "1Mile";
+    }
+
+    switch (leg) {
+      case 1 :
+        return "7.2K";
+        case 2 :
+        case 4 :
+        case 6 :
+        return "5K";
+        case 3 :
+        case 5 :
+        return "10K";
+    }
+  }
 }
