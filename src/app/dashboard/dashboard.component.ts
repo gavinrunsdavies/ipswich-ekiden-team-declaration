@@ -247,11 +247,7 @@ export class DashboardComponent implements OnInit {
     return 0;
   }
 
-  getLegDistance(leg: number, isJuniorTeam: boolean) {
-    if (isJuniorTeam) {
-      return "1Mile";
-    }
-
+  getLegDistance(leg: number) {
     switch (leg) {
       case 1 :
         return "7.2K";

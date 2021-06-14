@@ -39,7 +39,11 @@ export class TeamDetailComponent implements OnInit {
     }
   }
 
-  getLegDistance(leg: number) {
+  getLegDistance(leg: number, isJuniorTeam: boolean) {
+    if (isJuniorTeam) {
+      return "1Mile";
+    }
+
     switch (leg) {
       case 1 :
         return "7.2K";
