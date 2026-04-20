@@ -1,10 +1,16 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Team } from '../models/team';
 import { TeamService } from '../services/team.service';
 import { FilterPipe } from '../filter.pipe';
+import { TeamDetailComponent } from '../team-detail/team-detail.component';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-teams',
+  standalone: true,
+  imports: [CommonModule, FormsModule, FilterPipe, TeamDetailComponent, SpinnerComponent],
   templateUrl: './teams.component.html',
   styleUrls: ['./teams.component.css']
 })

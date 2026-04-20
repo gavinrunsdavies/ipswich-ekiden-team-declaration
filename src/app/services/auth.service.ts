@@ -5,14 +5,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Router } from '@angular/router';
 import { User } from '../models/user';
-import { Observable ,  Subject } from 'rxjs';
+import { Observable ,  Subject, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable()
 export class AuthService {
   private headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-  private currentUserSubject: Subject<User>;
+  private currentUserSubject: Subject<User | null>;
 
   constructor(private router: Router,
     private http: HttpClient) {
@@ -43,7 +43,7 @@ export class AuthService {
   logout() {
     // remove user from local storage to log user out and clear observable
     sessionStorage.removeItem('currentUser');
-    this.currentUserSubject.next();
+    this.currentUserSubject.next(null);
 
     this.router.navigateByUrl('/');
 
@@ -71,7 +71,9 @@ export class AuthService {
             this.currentUserSubject.next(user);
             return user;
           }
+          return null;
         }));
     }
+    return of(null);
   }
 }

@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription ,  Subject } from 'rxjs';
 
@@ -8,6 +11,8 @@ import { MessageService } from '../services/message.service';
 
 @Component({
   selector: 'app-status',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './status.component.html',
   styleUrls: ['./status.component.css']
 })

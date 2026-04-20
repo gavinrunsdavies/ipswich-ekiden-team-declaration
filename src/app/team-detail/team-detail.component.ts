@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 
@@ -7,6 +8,8 @@ import { TeamService } from '../services/team.service';
 
 @Component({
   selector: 'app-team-detail',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './team-detail.component.html',
   styleUrls: ['./team-detail.component.css']
 })
@@ -47,13 +50,15 @@ export class TeamDetailComponent implements OnInit {
     switch (leg) {
       case 1 :
         return "7.2K";
-        case 2 :
-        case 4 :
-        case 6 :
+      case 2 :
+      case 4 :
+      case 6 :
         return "5K";
-        case 3 :
-        case 5 :
+      case 3 :
+      case 5 :
         return "10K";
+      default:
+        return '';
     }
   }
 }

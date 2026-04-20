@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { RecaptchaModule } from 'ng-recaptcha';
 import { Router } from '@angular/router';
-import { RecaptchaFormsModule } from 'ng-recaptcha/forms';
 
 import { AuthService } from '../services/auth.service';
 import { MessageService } from '../services/message.service';
@@ -8,6 +11,8 @@ import { UserService } from '../services/user.service';
 
 @Component({
     selector: 'app-register',
+    standalone: true,
+    imports: [CommonModule, FormsModule, RouterModule, RecaptchaModule],
     templateUrl: 'register.component.html'
 })
 

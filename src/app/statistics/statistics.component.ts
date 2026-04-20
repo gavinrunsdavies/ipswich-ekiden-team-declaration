@@ -1,12 +1,14 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TeamService } from '../services/team.service';
 import { Statistics, StatisticItem } from '../models/statistics';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-statistics',
+  standalone: true,
+  imports: [CommonModule, NgxChartsModule, SpinnerComponent],
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.css']
 })

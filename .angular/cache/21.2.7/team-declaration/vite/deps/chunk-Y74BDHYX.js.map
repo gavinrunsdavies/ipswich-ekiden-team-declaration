@@ -1,0 +1,7 @@
+{
+  "version": 3,
+  "sources": ["../../../../../../node_modules/@ng-bootstrap/ng-bootstrap/fesm2022/ng-bootstrap-ng-bootstrap-config.mjs"],
+  "sourcesContent": ["import * as i0 from '@angular/core';\nimport { Injectable } from '@angular/core';\n\n/**\n * Global ng-bootstrap config\n *\n * @since 8.0.0\n */\nclass NgbConfig {\n  constructor() {\n    this.animation = true;\n  }\n  static {\n    this.ɵfac = function NgbConfig_Factory(__ngFactoryType__) {\n      return new (__ngFactoryType__ || NgbConfig)();\n    };\n  }\n  static {\n    this.ɵprov = /* @__PURE__ */i0.ɵɵdefineInjectable({\n      token: NgbConfig,\n      factory: NgbConfig.ɵfac,\n      providedIn: 'root'\n    });\n  }\n}\n(() => {\n  (typeof ngDevMode === \"undefined\" || ngDevMode) && i0.ɵsetClassMetadata(NgbConfig, [{\n    type: Injectable,\n    args: [{\n      providedIn: 'root'\n    }]\n  }], null, null);\n})();\n\n/**\n * Generated bundle index. Do not edit.\n */\n\nexport { NgbConfig };\n"],
+  "mappings": ";;;;;;;AAQA,IAAM,YAAN,MAAM,WAAU;AAAA,EACd,cAAc;AACZ,SAAK,YAAY;AAAA,EACnB;AAAA,EACA,OAAO;AACL,SAAK,OAAO,SAAS,kBAAkB,mBAAmB;AACxD,aAAO,KAAK,qBAAqB,YAAW;AAAA,IAC9C;AAAA,EACF;AAAA,EACA,OAAO;AACL,SAAK,QAA0B,mBAAmB;AAAA,MAChD,OAAO;AAAA,MACP,SAAS,WAAU;AAAA,MACnB,YAAY;AAAA,IACd,CAAC;AAAA,EACH;AACF;AAAA,CACC,MAAM;AACL,GAAC,OAAO,cAAc,eAAe,cAAiB,iBAAkB,WAAW,CAAC;AAAA,IAClF,MAAM;AAAA,IACN,MAAM,CAAC;AAAA,MACL,YAAY;AAAA,IACd,CAAC;AAAA,EACH,CAAC,GAAG,MAAM,IAAI;AAChB,GAAG;",
+  "names": []
+}

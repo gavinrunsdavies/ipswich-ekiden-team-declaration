@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -8,9 +11,12 @@ import { AuthService } from '../services/auth.service';
 import { TeamService } from '../services/team.service';
 import { MessageService } from '../services/message.service';
 import { FilterPipe } from '../filter.pipe';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-admin',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule, FilterPipe, SpinnerComponent],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })

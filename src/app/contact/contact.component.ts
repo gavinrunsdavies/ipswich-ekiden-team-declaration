@@ -1,10 +1,16 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { RecaptchaModule } from 'ng-recaptcha';
 
 import { MessageService } from '../services/message.service';
 import { ContactService } from '../services/contact.service';
 
 @Component({
     selector: 'app-contact',
+    standalone: true,
+    imports: [CommonModule, FormsModule, RouterModule, RecaptchaModule],
     templateUrl: './contact.component.html',
     styleUrls: ['./contact.component.css']
 })

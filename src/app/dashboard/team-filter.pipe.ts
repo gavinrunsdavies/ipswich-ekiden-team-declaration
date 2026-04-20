@@ -3,7 +3,8 @@ import { Team } from '../models/team';
 
 @Pipe({
     name: 'TeamFilterPipe',
-    pure: false
+    pure: false,
+    standalone: true
 })
 export class TeamFilterPipe implements PipeTransform {
     transform(teams: Team[], isJuniorTeam: boolean): any {

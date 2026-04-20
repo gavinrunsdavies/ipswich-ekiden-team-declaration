@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 
@@ -13,9 +17,13 @@ import { Club } from '../models/club';
 import { AuthService } from '../services/auth.service';
 import { TeamService } from '../services/team.service';
 import { MessageService } from '../services/message.service';
+import { TeamFilterPipe } from './team-filter.pipe';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-dashboard',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule, NgbModule, TeamFilterPipe, SpinnerComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
@@ -258,6 +266,8 @@ export class DashboardComponent implements OnInit {
       case "3" :
       case "5" :
         return "10K";
+      default:
+        return '';
     }
   }
 }
