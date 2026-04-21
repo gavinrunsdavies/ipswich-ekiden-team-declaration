@@ -5,14 +5,14 @@ import {
   NgbConfig
 } from "./chunk-Y74BDHYX.js";
 import {
-  NgTemplateOutlet,
-  isPlatformBrowser
-} from "./chunk-WGIH4H76.js";
-import {
   ngbCompleteTransition,
   ngbRunTransition,
   reflow
 } from "./chunk-T3UYF4PN.js";
+import {
+  NgTemplateOutlet,
+  isPlatformBrowser
+} from "./chunk-TRMZSHJ7.js";
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -812,4 +812,4 @@ export {
   NgbSlideEventSource,
   NgbCarouselModule
 };
-//# sourceMappingURL=chunk-5BCPT3AA.js.map
+//# sourceMappingURL=chunk-HIIQW77B.js.map

@@ -5,13 +5,13 @@ import {
   NgbConfig
 } from "./chunk-Y74BDHYX.js";
 import {
-  NgTemplateOutlet
-} from "./chunk-WGIH4H76.js";
-import {
   isDefined,
   ngbRunTransition,
   reflow
 } from "./chunk-T3UYF4PN.js";
+import {
+  NgTemplateOutlet
+} from "./chunk-TRMZSHJ7.js";
 import {
   Attribute,
   ChangeDetectionStrategy,
@@ -939,4 +939,4 @@ export {
   NgbNavOutlet,
   NgbNavModule
 };
-//# sourceMappingURL=chunk-2IADZGJV.js.map
+//# sourceMappingURL=chunk-PCWH37BR.js.map

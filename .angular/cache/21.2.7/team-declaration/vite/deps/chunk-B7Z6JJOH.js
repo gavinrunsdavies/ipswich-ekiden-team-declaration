@@ -2,11 +2,11 @@ import {
   takeUntilDestroyed
 } from "./chunk-MGCNT23V.js";
 import {
-  isPlatformBrowser
-} from "./chunk-WGIH4H76.js";
-import {
   isString
 } from "./chunk-T3UYF4PN.js";
+import {
+  isPlatformBrowser
+} from "./chunk-TRMZSHJ7.js";
 import {
   ChangeDetectorRef,
   ContentChildren,
@@ -736,4 +736,4 @@ export {
   NgbScrollSpyFragment,
   NgbScrollSpyModule
 };
-//# sourceMappingURL=chunk-VFJZWPP4.js.map
+//# sourceMappingURL=chunk-B7Z6JJOH.js.map

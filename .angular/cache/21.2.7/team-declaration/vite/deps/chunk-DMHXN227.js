@@ -2,9 +2,6 @@ import {
   NgbConfig
 } from "./chunk-Y74BDHYX.js";
 import {
-  NgTemplateOutlet
-} from "./chunk-WGIH4H76.js";
-import {
   PopupService,
   addPopperOffset,
   isString,
@@ -13,6 +10,9 @@ import {
   ngbCompleteTransition,
   ngbPositioning
 } from "./chunk-T3UYF4PN.js";
+import {
+  NgTemplateOutlet
+} from "./chunk-TRMZSHJ7.js";
 import {
   ChangeDetectionStrategy,
   ChangeDetectorRef,
@@ -529,4 +529,4 @@ export {
   NgbPopover,
   NgbPopoverModule
 };
-//# sourceMappingURL=chunk-UJVT5T5L.js.map
+//# sourceMappingURL=chunk-DMHXN227.js.map

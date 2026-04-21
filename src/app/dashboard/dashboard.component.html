@@ -120,12 +120,13 @@
               <th scope="col">Leg</th>
               <th scope="col">Name</th>
               <th scope="col">Gender</th>
-              <th scope="col">Category</th>
+              <th scope="col">Date Of Birth</th>
+              <th scope="col">Medical Information</th>
             </tr>
           </thead>
           <tbody *ngIf="team">
             <tr *ngFor="let runner of team.runners; let index = index;">
-              <th scope="row">{{runner.leg}} - {{getLegDistance(runner.leg)}}</th>
+              <td scope="row">{{runner.leg}} - {{getLegDistance(runner.leg)}}</td>
               <td>
                 <span *ngIf="!editing[team.id]">{{runner.name}}</span>
                 <input autofocus *ngIf="editing[team.id]" type="text" [(ngModel)]="team.runners[index].name" name="name-{{index}}" />
@@ -137,11 +138,14 @@
                 </select>
               </td>
               <td>
-                <span *ngIf="!editing[team.id]">{{runner.ageCategory}}</span>
-                <select *ngIf="editing[team.id]" [(ngModel)]="team.runners[index].ageCategory" name="ageCategory-{{index}}">
-                  <option [disabled]="'Male' == team.runners[index].gender && (key == 'V35' || key == 'V45')" *ngFor="let key of ageCategoriesKeys"
-                    [value]="key">{{ageCategory[key]}}</option>
-                </select>
+                <!-- TODO change to DOB -->
+                <span *ngIf="!editing[team.id]">{{runner.dateOfBirth}}</span>
+                <input *ngIf="editing[team.id]" type="date" [(ngModel)]="team.runners[index].dateOfBirth" name="dateOfBirth-{{index}}" />
+              </td>
+              <td>
+                <!-- TODO add to Medical Information -->
+                <span *ngIf="!editing[team.id]">{{runner.medicalInfo}}</span>
+                <input *ngIf="editing[team.id]" type="text" [(ngModel)]="team.runners[index].medicalInfo" name="medicalInfo-{{index}}" />
               </td>
             </tr>
           </tbody>
@@ -153,7 +157,7 @@
         <div class="btn-form" *ngIf="inEditMode(team.id)">
           <button type="submit" *ngIf="inEditMode(team.id)" class="btn btn-primary">save</button>
           <button type="button" *ngIf="inEditMode(team.id)" class="btn btn-default" (click)="cancelTeamEdit(team)">cancel</button>
-          Please enter the runner's full name, gender and age category. Note, V35 and V45 age categores are only allowed for females.
+          Please enter the runner's full name, gender, date of birth and any medical information.
         </div>
       </form>
     </div>
@@ -211,12 +215,13 @@
               <th scope="col">Leg</th>
               <th scope="col">Name</th>
               <th scope="col">Gender</th>
-              <th scope="col">Category</th>
+              <th scope="col">Date of Birth</th>
+              <th scope="col">Medical Information</th>
             </tr>
           </thead>
           <tbody *ngIf="team">
             <tr *ngFor="let runner of team.runners; let index = index;">
-              <th scope="row">{{runner.leg}}</th>
+              <td scope="row">{{runner.leg}}</td>
               <td>
                 <span *ngIf="!editing[team.id]">{{runner.name}}</span>
                 <input autofocus *ngIf="editing[team.id]" type="text" [(ngModel)]="team.runners[index].name" name="name-{{index}}" />
@@ -228,10 +233,12 @@
                 </select>
               </td>
               <td>
-                <span *ngIf="!editing[team.id]">{{runner.ageCategory}}</span>
-                <select *ngIf="editing[team.id]" [(ngModel)]="team.runners[index].ageCategory" name="juniorAgeCategory-{{index}}">
-                  <option *ngFor="let key of juniorAgeCategoriesKeys" [value]="key">{{juniorAgeCategory[key]}}</option>
-                </select>
+                <span *ngIf="!editing[team.id]">{{runner.dateOfBirth}}</span>
+                <input *ngIf="editing[team.id]" type="date" [(ngModel)]="team.runners[index].dateOfBirth" name="dateOfBirth-{{index}}" />
+              </td>
+              <td>
+                <span *ngIf="!editing[team.id]">{{runner.medicalInfo}}</span>
+                <input *ngIf="editing[team.id]" type="text" [(ngModel)]="team.runners[index].medicalInfo" name="medicalInfo-{{index}}" />
               </td>
             </tr>
           </tbody>
@@ -243,7 +250,7 @@
         <div class="btn-form" *ngIf="inEditMode(team.id)">
           <button type="submit" *ngIf="inEditMode(team.id)" class="btn btn-primary">save</button>
           <button type="button" *ngIf="inEditMode(team.id)" class="btn btn-default" (click)="cancelTeamEdit(team)">cancel</button>
-          Please enter the runner's full name, gender and age category.
+          Please enter the runner's full name, gender, date of birth and any medical information.
         </div>
       </form>
     </div>
