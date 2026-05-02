@@ -120,7 +120,7 @@
               <th scope="col">Leg</th>
               <th scope="col">Name</th>
               <th scope="col">Gender</th>
-              <th scope="col">Date Of Birth</th>
+              <th scope="col">Age Category</th>
               <th scope="col">Medical Information</th>
             </tr>
           </thead>
@@ -138,12 +138,13 @@
                 </select>
               </td>
               <td>
-                <!-- TODO change to DOB -->
-                <span *ngIf="!editing[team.id]">{{runner.dateOfBirth}}</span>
-                <input *ngIf="editing[team.id]" type="date" [(ngModel)]="team.runners[index].dateOfBirth" name="dateOfBirth-{{index}}" />
+                <span *ngIf="!editing[team.id]">{{runner.ageCategory}}</span>
+                <select *ngIf="editing[team.id]" [(ngModel)]="team.runners[index].ageCategory" name="ageCategory-{{index}}">
+                  <option [disabled]="'Male' == team.runners[index].gender && (key == 'V35' || key == 'V45')" *ngFor="let key of ageCategoriesKeys"
+                    [value]="key">{{ageCategory[key]}}</option>
+                </select>
               </td>
               <td>
-                <!-- TODO add to Medical Information -->
                 <span *ngIf="!editing[team.id]">{{runner.medicalInfo}}</span>
                 <input *ngIf="editing[team.id]" type="text" [(ngModel)]="team.runners[index].medicalInfo" name="medicalInfo-{{index}}" />
               </td>
@@ -157,7 +158,7 @@
         <div class="btn-form" *ngIf="inEditMode(team.id)">
           <button type="submit" *ngIf="inEditMode(team.id)" class="btn btn-primary">save</button>
           <button type="button" *ngIf="inEditMode(team.id)" class="btn btn-default" (click)="cancelTeamEdit(team)">cancel</button>
-          Please enter the runner's full name, gender, date of birth and any medical information.
+          Please enter the runner's full name, gender, age category and any medical information.
         </div>
       </form>
     </div>
