@@ -1,10 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
 
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -50,7 +50,8 @@ export class DashboardComponent implements OnInit {
     private authenticationService: AuthService,
     private teamService: TeamService,
     private messageService: MessageService,
-    private modalService: NgbModal) {
+    private modalService: NgbModal,
+    private cdr: ChangeDetectorRef) {
     this.ageCategoriesKeys = Object.keys(this.ageCategory);
     this.juniorAgeCategoriesKeys = Object.keys(this.juniorAgeCategory);
     this.genderKeys = Object.keys(this.gender);
@@ -58,38 +59,50 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.authenticationService.ensureAuthenticated()
-      .subscribe(
-      success => {
-        this.getMyTeams();
-        this.getClubs();
+      .subscribe({
+      next: success => {
+        this.loadDashboardData();
       },
-      error => {
+      error: error => {
+        this.loadingIndicator = false;
         this.router.navigate(['/']);
-      });
+      }});
   }
 
-  getMyTeams(): void {
+  loadDashboardData(): void {
     this.loadingIndicator = true;
+
     this.teamService.getMyTeams()
-      .subscribe(teams => {
-        this.teams = teams;
+      .pipe(finalize(() => {
+        console.log('getMyTeams finalize: setting loadingIndicator to false');
+        this.loadingIndicator = false;
+        this.cdr.detectChanges();
+      }))
+      .subscribe({
+      next: teams => {
+        console.log('getMyTeams next: received teams', teams);
+        this.teams = teams || [];
 
         // Add placeholders for runner legs
         for (let i = 0; i < this.teams.length; i++) {
           this.addRunnerPlaceHolders(this.teams[i]);
         }
+      },
+      error: error => {
+        console.log('getMyTeams error:', error);
+        console.error('Error loading teams:', error);
+      }});
 
-        this.loadingIndicator = false;
-      }
-      );
-  }
-
-  getClubs(): void {
     this.teamService.getClubs()
-      .subscribe(clubs => {
-        this.clubs = clubs;
-      }
-      );
+      .subscribe({
+      next: clubs => {
+        console.log('getClubs next: received clubs', clubs);
+        this.clubs = clubs || [];
+      },
+      error: error => {
+        console.log('getClubs error:', error);
+        console.error('Error loading clubs:', error);
+      }});
   }
 
   showTeam(team): void {
@@ -121,9 +134,13 @@ export class DashboardComponent implements OnInit {
     try {
       this.formSubmittedIndicator = true;
       this.teamService.addTeam(this.newTeam)
-        .subscribe(
-        team => {
-          if (team && team.id > 0) {
+        .pipe(finalize(() => {
+          this.formSubmittedIndicator = false;
+          this.cdr.detectChanges();
+        }))
+        .subscribe({
+        next: team => {
+          if (team) {
             let newRunner: Runner;
             let legs = 6;
             if (team.isJuniorTeam) {
@@ -138,13 +155,13 @@ export class DashboardComponent implements OnInit {
 
             this.teams.push(team);
             this.messageService.success(`Team ${team.name} created`, true);
-            this.formSubmittedIndicator = false;
+          } else {
+            this.messageService.error('Team creation returned no team object');
           }
         },
-        error => {
+        error: error => {
           this.messageService.error(error);
-          this.formSubmittedIndicator = false;
-        });
+        }});
     } catch (e) {
       this.formSubmittedIndicator = false;
       console.log('Error: ', e);
@@ -155,8 +172,8 @@ export class DashboardComponent implements OnInit {
     // Save team, Update, set to view mode.
 
     this.teamService.updateTeam(team)
-      .subscribe(
-      updatedTeam => {
+      .subscribe({
+      next: updatedTeam => {
 
         this.addRunnerPlaceHolders(updatedTeam);
 
@@ -172,9 +189,9 @@ export class DashboardComponent implements OnInit {
         this.messageService.success(`Team ${updatedTeam.name} updated`, true);
 
       },
-      error => {
+      error: error => {
         this.messageService.error(error);
-      });
+      }});
 
     this.editing[team.id] = false;
   }
@@ -202,8 +219,8 @@ export class DashboardComponent implements OnInit {
 
   deleteTeam() {
     this.teamService.deleteTeam(this.selectedDeleteTeam)
-      .subscribe(
-      success => {
+      .subscribe({
+      next: success => {
 
         for (let i = this.teams.length - 1; i >= 0; i--) {
           if (this.teams[i].id == this.selectedDeleteTeam.id) {
@@ -215,9 +232,9 @@ export class DashboardComponent implements OnInit {
         this.messageService.success(`Team ${this.selectedDeleteTeam.name} deleted`, true);
 
       },
-      error => {
+      error: error => {
         this.messageService.error(error);
-      });
+      }});
   }
 
   addRunnerPlaceHolders(team) {

@@ -54,17 +54,19 @@ export class AuthService {
     return this.currentUserSubject.asObservable();
   }
 
-  ensureAuthenticated() {
+  ensureAuthenticated(): Observable<User | null> {
     const localStorageCurrentUser = sessionStorage.getItem('currentUser');
 
     if (localStorageCurrentUser) {
       const user = JSON.parse(localStorageCurrentUser);
+      this.currentUserSubject.next(user);
+      
       const url = `${environment.baseUrl}/wp-json/jwt-auth/v1/token/Validate`;
       const headers: HttpHeaders = new HttpHeaders({
         'Content-Type': 'application/json',
         Authorization: `Bearer ${user.token}`
       });
-      return this.http.post<any>(url, { headers: headers }).pipe(
+      return this.http.post<any>(url, {}, { headers: headers }).pipe(
         map(validateResponse => {
           // tslint:disable-next-line:triple-equals
           if (validateResponse.data.status == '200') {

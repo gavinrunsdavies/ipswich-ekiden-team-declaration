@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { NgbCollapseModule } from '@ng-bootstrap/ng-bootstrap';
@@ -22,10 +22,14 @@ export class AppComponent {
     navbarCollapsed = true;
     userStatusSubscription: Subscription;
 
-    constructor(private authenticationService: AuthService) {
+    constructor(private authenticationService: AuthService,
+        private cdr: ChangeDetectorRef) {
         this.userStatusSubscription = this.authenticationService.getCurrentUser().subscribe(user => {
-            this.isLoggedIn = (user != null);
-            this.isAdmin = user.isAdmin;
+            Promise.resolve().then(() => {
+                this.isLoggedIn = (user != null);
+                this.isAdmin = user ? user.isAdmin : false;
+                this.cdr.detectChanges();
+            });
         });
     }
 }

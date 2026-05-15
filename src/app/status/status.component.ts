@@ -37,12 +37,12 @@ export class StatusComponent {
   login(): void {
     this.loading = true;
     this.authenticationService.login(this.model.email, this.model.password)
-      .subscribe(
-        data => {
+      .subscribe({
+        next: data => {
           this.loading = false;
           this.router.navigate(['/dashboard']);
         },
-        error => {
+        error: error => {
           let message = 'ERROR: Login failed. Please try again.';
           if (error.status == 403) {
             message = 'ERROR: Incorrect email or password.';
@@ -51,7 +51,7 @@ export class StatusComponent {
 
           this.messageService.error(message);
           this.loading = false;
-        });
+        }});
   }
 
   logout(): void {

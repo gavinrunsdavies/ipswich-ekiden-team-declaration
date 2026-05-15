@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { RecaptchaModule } from 'ng-recaptcha';
+import { finalize } from 'rxjs/operators';
 
 import { MessageService } from '../services/message.service';
 import { ContactService } from '../services/contact.service';
@@ -26,15 +27,16 @@ export class ContactComponent {
     send() {
         this.loading = true;
         this.contactService.message(this.model)
-            .subscribe(
-            data => {
-                this.messageService.success('Message sent. Thank you.', false);
+            .pipe(finalize(() => {
                 this.loading = false;
+            }))
+            .subscribe({
+            next: data => {
+                this.messageService.success('Message sent. Thank you.', false);
             },
-            error => {
+            error: error => {
                 const message = 'ERROR: Failed to send message. Please try again.';
                 this.messageService.error(message);
-                this.loading = false;
-            });
+            }});
     }
 }

@@ -28,13 +28,13 @@ export class RegisterComponent {
     register() {
         this.loading = true;
         this.userService.create(this.model)
-            .subscribe(
-                data => {
+            .subscribe({
+                next: data => {
                     // set success message and pass true parameter to persist the message after redirecting to the login page
                     this.messageService.success('Registration successful. Please check your emails for confirmation and login.', true);
                     this.router.navigate(['/']);
                 },
-                error => {
+                error: error => {
                     let message = 'ERROR: Registration failed. Please try again.';
                     if (error.status === 400) {
                         message = 'ERROR: Email already registered:';
@@ -42,6 +42,6 @@ export class RegisterComponent {
                     }
                     this.messageService.error(message);
                     this.loading = false;
-                });
+                }});
     }
 }

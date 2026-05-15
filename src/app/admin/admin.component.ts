@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { Router, ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
+import { finalize } from 'rxjs/operators';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 import { Team } from '../models/team';
@@ -16,7 +18,7 @@ import { SpinnerComponent } from '../spinner/spinner.component';
 @Component({
   selector: 'app-admin',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterModule, FilterPipe, SpinnerComponent],
+  imports: [CommonModule, FormsModule, RouterModule, NgxPaginationModule, FilterPipe, SpinnerComponent],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
@@ -29,13 +31,17 @@ export class AdminComponent implements OnInit {
   seniorsSearchString: string;
   juniorsSearchString: string;
   searchableList = ['name', 'clubName'];
-  seniorData: any[];
-  juniorData: any[];
-  seniorTeams: Team[];
-  juniorTeams: Team[];
-  juniorHeaders: string[];
-  seniorHeaders: string[];
-  loadingIndicator: any = {};
+  seniorData: any[] = [];
+  juniorData: any[] = [];
+  seniorTeams: Team[] = [];
+  juniorTeams: Team[] = [];
+  juniorHeaders: string[] = [];
+  seniorHeaders: string[] = [];
+  loadingIndicator: { seniors: boolean; juniors: boolean; preview: boolean } = {
+    seniors: false,
+    juniors: false,
+    preview: false
+  };
   formSubmittedIndicator = false;
   download: any = {};
 
@@ -43,12 +49,13 @@ export class AdminComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthService,
     private messageService: MessageService,
-    private teamService: TeamService) { }
+    private teamService: TeamService,
+    private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.authenticationService.ensureAuthenticated()
-      .subscribe(
-        user => {
+      .subscribe({
+        next: user => {
           if (user.isAdmin) {
             this.getPreview();
             this.getTeams('seniors', this.seniorTeams);
@@ -57,27 +64,35 @@ export class AdminComponent implements OnInit {
             this.router.navigate(['/']);
           }
         },
-        error => {
+        error: error => {
           this.router.navigate(['/']);
-        });
+        }});
   }
 
   getTeams(race: string, data: Team[]): void {
     this.loadingIndicator[race] = true;
     this.teamService.getTeams(race)
+      .pipe(finalize(() => {
+        console.log(`getTeams finalize: setting loadingIndicator[${race}] to false`);
+        this.loadingIndicator[race] = false;
+        this.cdr.detectChanges();
+      }))
       .subscribe(teams => {
         if (race == 'seniors') {
           this.seniorTeams = teams;
         } else {
           this.juniorTeams = teams;
         }
-        this.loadingIndicator[race] = false;
       });
   }
 
   getPreview(): void {
-    this.loadingIndicator['preview'] = true;
+    this.loadingIndicator.preview = true;
     this.teamService.getTeamDeclartionPreview()
+      .pipe(finalize(() => {
+        this.loadingIndicator.preview = false;
+        this.cdr.detectChanges();
+      }))
       .subscribe(data => {
         this.seniorData = data.seniors;
         if (data.seniors.length > 0) {
@@ -88,20 +103,19 @@ export class AdminComponent implements OnInit {
         if (data.juniors.length > 0) {
           this.juniorHeaders = Object.getOwnPropertyNames(data.juniors[0]);
         }
-
-        this.loadingIndicator['preview'] = false;
-      }
-      );
+      });
   }
 
   send(): void {
     this.formSubmittedIndicator = true;
     this.teamService.sendTeamDeclarations(this.download.email)
+      .pipe(finalize(() => {
+        this.formSubmittedIndicator = false;
+        this.cdr.detectChanges();
+      }))
       .subscribe(data => {
         this.messageService.success(`Email sent to ${this.download.email} with team declaratiosn attached.`, true);
-        this.formSubmittedIndicator = false;
-      }
-      );
+      });
   }
 
   updateSeniorTeamNumbers(): void {
@@ -111,15 +125,15 @@ export class AdminComponent implements OnInit {
       return;
     }
     this.teamService.updateTeamNumbers(this.seniorTeams, 'seniors')
-      .subscribe(
-        teams => {
+      .subscribe({
+        next: teams => {
           this.seniorTeams = teams;
           this.messageService.success(`Senior team numbers updated.`, true);
         },
-        error => {
+        error: error => {
           this.messageService.error(`Error updating senior team numbers.`, true);
         }
-      );
+      });
   }
 
   updateJuniorTeamNumbers(): void {
@@ -129,15 +143,15 @@ export class AdminComponent implements OnInit {
       return;
     }
     this.teamService.updateTeamNumbers(this.juniorTeams, 'juniors')
-      .subscribe(
-        teams => {
+      .subscribe({
+        next: teams => {
           this.juniorTeams = teams;
           this.messageService.success(`Junior team numbers updated.`, true);
         },
-        error => {
+        error: error => {
           this.messageService.error(`Error updating senior team numbers.`, true);
         }
-      );
+      });
   }
 
   private validateTeamNumbers(teams: Team[]) {
