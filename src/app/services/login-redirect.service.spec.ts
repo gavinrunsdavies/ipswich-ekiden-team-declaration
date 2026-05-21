@@ -1,15 +1,16 @@
 import { TestBed, inject } from '@angular/core/testing';
 
-import { LoginRedirectService } from './login-redirect.service';
+import { LoginRedirect } from './login-redirect.service';
 
-describe('LoginRedirectService', () => {
+describe('LoginRedirect', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [LoginRedirectService]
+      providers: [LoginRedirect]
     });
   });
 
-  it('should be created', inject([LoginRedirectService], (service: LoginRedirectService) => {
+  it('should be created', inject([LoginRedirect], (service: LoginRedirect) => {
     expect(service).toBeTruthy();
   }));
 });
+

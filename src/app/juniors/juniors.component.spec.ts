@@ -1,4 +1,4 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import { waitForAsync, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { JuniorsComponent } from './juniors.component';
 
@@ -6,7 +6,7 @@ describe('JuniorsComponent', () => {
   let component: JuniorsComponent;
   let fixture: ComponentFixture<JuniorsComponent>;
 
-  beforeEach(async(() => {
+  beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
       declarations: [ JuniorsComponent ]
     })
@@ -23,3 +23,4 @@ describe('JuniorsComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+

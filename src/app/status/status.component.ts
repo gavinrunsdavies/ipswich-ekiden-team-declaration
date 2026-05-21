@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription ,  Subject } from 'rxjs';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { User } from '../models/user';
 import { AuthService } from '../services/auth.service';
@@ -24,7 +24,6 @@ export class StatusComponent {
   model: any = {};
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthService,
     private messageService: MessageService) {
@@ -38,7 +37,7 @@ export class StatusComponent {
     this.loading = true;
     this.authenticationService.login(this.model.email, this.model.password)
       .subscribe({
-        next: data => {
+        next: () => {
           this.loading = false;
           this.router.navigate(['/dashboard']);
         },

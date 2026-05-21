@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
-import { Subject } from 'rxjs';
 import { MessageService } from '../services/message.service';
 
 @Component({

@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 
 
@@ -60,10 +60,10 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.authenticationService.ensureAuthenticated()
       .subscribe({
-      next: success => {
+      next: () => {
         this.loadDashboardData();
       },
-      error: error => {
+      error: () => {
         this.loadingIndicator = false;
         this.router.navigate(['/']);
       }});
@@ -109,18 +109,8 @@ export class DashboardComponent implements OnInit {
     team.isShown = !team.isShown;
   }
 
-  trackById(index, team) {
+  trackById(_index, team) {
     return team.id;
-  }
-
-  public onAffiliationChange(event): void {
-    const Unattached = 989;
-    const newAffiliationValue = event.target.value;
-    if (newAffiliationValue == 0) {
-      this.newTeam.clubId = Unattached;
-    } else {
-      this.newTeam.clubId = '';
-    }
   }
 
   public onGenderChange(runner, event): void {
@@ -210,9 +200,9 @@ export class DashboardComponent implements OnInit {
 
   openDeleteTeamModal(deleteTeamModal, team) {
     this.selectedDeleteTeam = team;
-    this.modalService.open(deleteTeamModal).result.then((result) => {
+    this.modalService.open(deleteTeamModal).result.then(() => {
       // Closed
-    }, (reason) => {
+    }, () => {
       // Dismissed
     });
   }
@@ -220,7 +210,7 @@ export class DashboardComponent implements OnInit {
   deleteTeam() {
     this.teamService.deleteTeam(this.selectedDeleteTeam)
       .subscribe({
-      next: success => {
+      next: () => {
 
         for (let i = this.teams.length - 1; i >= 0; i--) {
           if (this.teams[i].id == this.selectedDeleteTeam.id) {

@@ -18,33 +18,21 @@
   </div>
   <div class="form-row">
     <div class="form-group col-md-2">
-      <label for="affiliation">Affiliation Status</label>
-      <select id="affiliation" class="form-control" [(ngModel)]="newTeam.isAffiliated" #isAffiliated="ngModel" required name="isAffiliated"
-        (change)="onAffiliationChange($event)">
-        <option value="-1" selected>Choose...</option>
-        <option value="0">Unaffiliated</option>
-        <option value="1">UKA affiliated</option>
-      </select>
-      <div *ngIf="isAffiliated.errors && isAffiliated.touched" class="alert alert-danger">
-        <div *ngIf="isAffiliated.errors.required">Affiliation status is required.</div>
-      </div>
-    </div>
-    <div class="form-group col-md-2">
       <label for="race">Senior / Junior Team</label>
       <select id="race" class="form-control" [(ngModel)]="newTeam.isJuniorTeam" #isJuniorTeam="ngModel" required name="isJuniorTeam">
         <option value="0" selected>Senior</option>
         <option value="1">Junior</option>
       </select>
     </div>
-    <div class="form-group col-md-4">
-      <label for="club">UKA Club</label>
-      <select id="club" class="form-control" [disabled]="newTeam.isAffiliated != '1'" [(ngModel)]="newTeam.clubId" #club="ngModel"
-        required name="club">
+    <div class="form-group col-md-6">
+      <label for="club">UKA Club / Unaffiliated</label>
+      <select id="club" class="form-control" [(ngModel)]="newTeam.clubId" #club="ngModel" required name="club">
         <option value="" selected>Choose...</option>
+        <option value="989">Unaffiliated</option>
         <option *ngFor="let club of clubs" [value]="club.id">{{club.name}}</option>
       </select>
       <div *ngIf="club.errors && club.touched" class="alert alert-danger">
-        Club is required for affiliated club entries.
+        Club/Unaffiliated is required for all entries.
       </div>
     </div>
     <div class="form-group col-md-2">

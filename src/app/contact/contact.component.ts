@@ -31,10 +31,10 @@ export class ContactComponent {
                 this.loading = false;
             }))
             .subscribe({
-            next: data => {
+            next: () => {
                 this.messageService.success('Message sent. Thank you.', false);
             },
-            error: error => {
+            error: () => {
                 const message = 'ERROR: Failed to send message. Please try again.';
                 this.messageService.error(message);
             }});

@@ -2,8 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 import { finalize } from 'rxjs/operators';
 import { NgxPaginationModule } from 'ngx-pagination';
 
@@ -58,18 +57,18 @@ export class AdminComponent implements OnInit {
         next: user => {
           if (user.isAdmin) {
             this.getPreview();
-            this.getTeams('seniors', this.seniorTeams);
-            this.getTeams('juniors', this.juniorTeams);
+            this.getTeams('seniors');
+            this.getTeams('juniors');
           } else {
             this.router.navigate(['/']);
           }
         },
-        error: error => {
+        error: () => {
           this.router.navigate(['/']);
         }});
   }
 
-  getTeams(race: string, data: Team[]): void {
+  getTeams(race: string): void {
     this.loadingIndicator[race] = true;
     this.teamService.getTeams(race)
       .pipe(finalize(() => {
@@ -113,7 +112,7 @@ export class AdminComponent implements OnInit {
         this.formSubmittedIndicator = false;
         this.cdr.detectChanges();
       }))
-      .subscribe(data => {
+      .subscribe(() => {
         this.messageService.success(`Email sent to ${this.download.email} with team declaratiosn attached.`, true);
       });
   }
@@ -130,7 +129,7 @@ export class AdminComponent implements OnInit {
           this.seniorTeams = teams;
           this.messageService.success(`Senior team numbers updated.`, true);
         },
-        error: error => {
+        error: () => {
           this.messageService.error(`Error updating senior team numbers.`, true);
         }
       });
@@ -148,7 +147,7 @@ export class AdminComponent implements OnInit {
           this.juniorTeams = teams;
           this.messageService.success(`Junior team numbers updated.`, true);
         },
-        error: error => {
+        error: () => {
           this.messageService.error(`Error updating senior team numbers.`, true);
         }
       });

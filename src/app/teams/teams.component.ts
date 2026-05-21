@@ -35,9 +35,10 @@ export class TeamsComponent implements OnInit {
     this.getTeams(this.race);
   }
 
-  getTeams(race): void {
+  getTeams(race?: string): void {
     this.loadingIndicator = true;
-    this.teamService.getTeams(this.race)
+    const raceToUse = race ?? this.race;
+    this.teamService.getTeams(raceToUse)
       .subscribe({
         next: (teams) => {
           this.teams = teams;
