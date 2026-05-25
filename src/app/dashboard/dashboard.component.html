@@ -70,7 +70,7 @@
         <div class="col-md-4 text-right">
           <span class="btn-group pull-right">
             <button class="btn btn-primary " (click)="showTeam(team)">{{team.isShown ? 'Hide' : 'Show'}}</button>
-            <button type="button" class="btn btn-danger" (click)="openDeleteTeamModal(deleteTeamModal, team)">Delete?</button>
+            <button type="button" class="btn btn-danger" (click)="openDeleteTeamModal(deleteTeamModal, team)">Delete</button>
           </span>
         </div>
       </div>
@@ -141,11 +141,13 @@
         </table>
         <!-- buttons -->
         <div class="btn-edit">
-          <button type="button" class="btn btn-default" *ngIf="!inEditMode(team.id)" (click)="editTeam(team.id)">edit</button>
+          <button type="button" class="btn btn-secondary" *ngIf="!inEditMode(team.id)" (click)="editTeam(team.id)">edit</button>
         </div>
         <div class="btn-form" *ngIf="inEditMode(team.id)">
-          <button type="submit" *ngIf="inEditMode(team.id)" class="btn btn-primary">save</button>
-          <button type="button" *ngIf="inEditMode(team.id)" class="btn btn-default" (click)="cancelTeamEdit(team)">cancel</button>
+          <span class="btn-group pull-left">
+            <button type="submit" *ngIf="inEditMode(team.id)" class="btn btn-primary">save</button>
+            <button type="button" *ngIf="inEditMode(team.id)" class="btn btn-secondary" (click)="cancelTeamEdit(team)">cancel</button>
+          </span>
           Please enter the runner's full name, gender, age category and any medical information.
         </div>
       </form>
@@ -166,7 +168,7 @@
         <div class="col-md-4 text-right">
           <span class="btn-group pull-right">
             <button class="btn btn-primary " (click)="showTeam(team)">{{team.isShown ? 'Hide' : 'Show'}}</button>
-            <button type="button" class="btn btn-danger" (click)="openDeleteTeamModal(deleteTeamModal, team)">Delete?</button>
+            <button type="button" class="btn btn-danger" (click)="openDeleteTeamModal(deleteTeamModal, team)">Delete</button>
           </span>
         </div>
       </div>
@@ -233,12 +235,14 @@
           </tbody>
         </table>
         <!-- buttons -->
-        <div class="btn-edit">
-          <button type="button" class="btn btn-default" *ngIf="!inEditMode(team.id)" (click)="editTeam(team.id)">edit</button>
+        <div class="btn-group">
+          <button type="button" class="btn btn-secondary" *ngIf="!inEditMode(team.id)" (click)="editTeam(team.id)">edit</button>
         </div>
         <div class="btn-form" *ngIf="inEditMode(team.id)">
-          <button type="submit" *ngIf="inEditMode(team.id)" class="btn btn-primary">save</button>
-          <button type="button" *ngIf="inEditMode(team.id)" class="btn btn-default" (click)="cancelTeamEdit(team)">cancel</button>
+          <span class="btn-group pull-left">
+            <button type="submit" *ngIf="inEditMode(team.id)" class="btn btn-primary">save</button>
+            <button type="button" *ngIf="inEditMode(team.id)" class="btn btn-secondary" (click)="cancelTeamEdit(team)">cancel</button>
+          </span>
           Please enter the runner's full name, gender, date of birth and any medical information.
         </div>
       </form>
@@ -257,7 +261,7 @@
     <p>Are you sure?</p>
   </div>
   <div class="modal-footer">
-    <button type="button" class="btn btn-primary" (click)="deleteTeam(); c()">Yes</button>
+    <button type="button" class="btn btn-primary" (click)="c('confirm')">Yes</button>
     <button type="button" class="btn btn-secondary" (click)="d()">No</button>
   </div>
 </ng-template>

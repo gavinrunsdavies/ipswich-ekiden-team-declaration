@@ -60,13 +60,14 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.authenticationService.ensureAuthenticated()
       .subscribe({
-      next: () => {
-        this.loadDashboardData();
-      },
-      error: () => {
-        this.loadingIndicator = false;
-        this.router.navigate(['/']);
-      }});
+        next: () => {
+          this.loadDashboardData();
+        },
+        error: () => {
+          this.loadingIndicator = false;
+          this.router.navigate(['/']);
+        }
+      });
   }
 
   loadDashboardData(): void {
@@ -79,30 +80,32 @@ export class DashboardComponent implements OnInit {
         this.cdr.detectChanges();
       }))
       .subscribe({
-      next: teams => {
-        console.log('getMyTeams next: received teams', teams);
-        this.teams = teams || [];
+        next: teams => {
+          console.log('getMyTeams next: received teams', teams);
+          this.teams = teams || [];
 
-        // Add placeholders for runner legs
-        for (let i = 0; i < this.teams.length; i++) {
-          this.addRunnerPlaceHolders(this.teams[i]);
+          // Add placeholders for runner legs
+          for (let i = 0; i < this.teams.length; i++) {
+            this.addRunnerPlaceHolders(this.teams[i]);
+          }
+        },
+        error: error => {
+          console.log('getMyTeams error:', error);
+          console.error('Error loading teams:', error);
         }
-      },
-      error: error => {
-        console.log('getMyTeams error:', error);
-        console.error('Error loading teams:', error);
-      }});
+      });
 
     this.teamService.getClubs()
       .subscribe({
-      next: clubs => {
-        console.log('getClubs next: received clubs', clubs);
-        this.clubs = clubs || [];
-      },
-      error: error => {
-        console.log('getClubs error:', error);
-        console.error('Error loading clubs:', error);
-      }});
+        next: clubs => {
+          console.log('getClubs next: received clubs', clubs);
+          this.clubs = clubs || [];
+        },
+        error: error => {
+          console.log('getClubs error:', error);
+          console.error('Error loading clubs:', error);
+        }
+      });
   }
 
   showTeam(team): void {
@@ -129,29 +132,31 @@ export class DashboardComponent implements OnInit {
           this.cdr.detectChanges();
         }))
         .subscribe({
-        next: team => {
-          if (team) {
-            let newRunner: Runner;
-            let legs = 6;
-            if (team.isJuniorTeam) {
-              legs = 4;
-            }
+          next: team => {
+            if (team) {
+              let newRunner: Runner;
+              let legs = 6;
+              if (team.isJuniorTeam) {
+                legs = 4;
+              }
 
-            for (let i = 1; i <= legs; i++) {
-              newRunner = new Runner();
-              newRunner.leg = i;
-              team.runners.push(newRunner);
-            }
+              for (let i = 1; i <= legs; i++) {
+                newRunner = new Runner();
+                newRunner.leg = i;
+                team.runners.push(newRunner);
+              }
 
-            this.teams.push(team);
-            this.messageService.success(`Team ${team.name} created`, true);
-          } else {
-            this.messageService.error('Team creation returned no team object');
+              this.teams.push(team);
+              this.cdr.detectChanges(); 
+              this.messageService.success(`Team ${team.name} created`, true);
+            } else {
+              this.messageService.error('Team creation returned no team object');
+            }
+          },
+          error: error => {
+            this.messageService.error(error);
           }
-        },
-        error: error => {
-          this.messageService.error(error);
-        }});
+        });
     } catch (e) {
       this.formSubmittedIndicator = false;
       console.log('Error: ', e);
@@ -163,25 +168,26 @@ export class DashboardComponent implements OnInit {
 
     this.teamService.updateTeam(team)
       .subscribe({
-      next: updatedTeam => {
+        next: updatedTeam => {
 
-        this.addRunnerPlaceHolders(updatedTeam);
+          this.addRunnerPlaceHolders(updatedTeam);
 
-        // Update array
-        for (let i = 0; i < this.teams.length; i++) {
-          if (this.teams[i].id == updatedTeam.id) {
-            this.teams[i] = updatedTeam;
-            this.teams[i].isShown = true;
-            break;
+          // Update array
+          for (let i = 0; i < this.teams.length; i++) {
+            if (this.teams[i].id == updatedTeam.id) {
+              this.teams[i] = updatedTeam;
+              this.teams[i].isShown = true;
+              break;
+            }
           }
+
+          this.messageService.success(`Team ${updatedTeam.name} updated`, true);
+
+        },
+        error: error => {
+          this.messageService.error(error);
         }
-
-        this.messageService.success(`Team ${updatedTeam.name} updated`, true);
-
-      },
-      error: error => {
-        this.messageService.error(error);
-      }});
+      });
 
     this.editing[team.id] = false;
   }
@@ -200,31 +206,44 @@ export class DashboardComponent implements OnInit {
 
   openDeleteTeamModal(deleteTeamModal, team) {
     this.selectedDeleteTeam = team;
-    this.modalService.open(deleteTeamModal).result.then(() => {
-      // Closed
-    }, () => {
-      // Dismissed
+    const modalRef = this.modalService.open(
+      deleteTeamModal,
+      { container: 'body', backdrop: true, windowClass: 'modal-above-all' }
+    );
+
+    modalRef.result.then(
+      () => {
+        this.deleteTeam();
+        this.cdr.detectChanges();
+      },
+      () => {
+        // dismissed, do nothing
+      }
+    ).finally(() => {
+      // Force cleanup any lingering backdrop
+      document.querySelectorAll('ngb-modal-backdrop').forEach(el => el.remove());
     });
   }
 
   deleteTeam() {
     this.teamService.deleteTeam(this.selectedDeleteTeam)
       .subscribe({
-      next: () => {
+        next: () => {
 
-        for (let i = this.teams.length - 1; i >= 0; i--) {
-          if (this.teams[i].id == this.selectedDeleteTeam.id) {
-            this.teams.splice(i, 1);
-            break;
+          for (let i = this.teams.length - 1; i >= 0; i--) {
+            if (this.teams[i].id == this.selectedDeleteTeam.id) {
+              this.teams.splice(i, 1);
+              break;
+            }
           }
+          this.cdr.detectChanges();
+          this.messageService.success(`Team ${this.selectedDeleteTeam.name} deleted`, true);
+
+        },
+        error: error => {
+          this.messageService.error(error);
         }
-
-        this.messageService.success(`Team ${this.selectedDeleteTeam.name} deleted`, true);
-
-      },
-      error: error => {
-        this.messageService.error(error);
-      }});
+      });
   }
 
   addRunnerPlaceHolders(team) {
@@ -264,14 +283,14 @@ export class DashboardComponent implements OnInit {
 
   getLegDistance(leg: any) {
     switch (String(leg)) {
-      case "1" :
+      case "1":
         return "7.2K";
-      case "2" :
-      case "4" :
-      case "6" :
+      case "2":
+      case "4":
+      case "6":
         return "5K";
-      case "3" :
-      case "5" :
+      case "3":
+      case "5":
         return "10K";
       default:
         return '';

@@ -5,7 +5,6 @@ import { RegisterComponent } from './register/register.component';
 import { HomeComponent } from './home/home.component';
 import { JuniorsComponent } from './juniors/juniors.component';
 import { SeniorsComponent } from './seniors/seniors.component';
-import { ContactComponent } from './contact/contact.component';
 import { AdminComponent } from './admin/admin.component';
 import { StatisticsComponent } from './statistics/statistics.component';
 import { LoginRedirect } from './services/login-redirect.service';
@@ -19,7 +18,6 @@ export const routes: Routes = [
   { path: 'juniors', component: JuniorsComponent },
   { path: 'statistics', component: StatisticsComponent },
   { path: 'admin', component: AdminComponent, canActivate: [EnsureAdminUser] },
-  { path: 'contact', component: ContactComponent },
   { path: 'home', component: HomeComponent },
   { path: '', redirectTo: '/home', pathMatch: 'full' },
   { path: '**', redirectTo: '/home' }

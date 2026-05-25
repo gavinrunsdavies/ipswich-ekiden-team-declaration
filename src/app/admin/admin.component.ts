@@ -42,7 +42,6 @@ export class AdminComponent implements OnInit {
     preview: false
   };
   formSubmittedIndicator = false;
-  download: any = {};
 
   constructor(
     private router: Router,
@@ -105,16 +104,88 @@ export class AdminComponent implements OnInit {
       });
   }
 
-  send(): void {
+  download(): void {
     this.formSubmittedIndicator = true;
-    this.teamService.sendTeamDeclarations(this.download.email)
-      .pipe(finalize(() => {
-        this.formSubmittedIndicator = false;
-        this.cdr.detectChanges();
-      }))
-      .subscribe(() => {
-        this.messageService.success(`Email sent to ${this.download.email} with team declaratiosn attached.`, true);
-      });
+    console.log('download called');
+    this.downloadCsv(this.seniorData, 'senior-teams.csv');
+    this.downloadCsv(this.juniorData, 'junior-teams.csv');
+    this.formSubmittedIndicator = false;
+  }
+
+  downloadCsv(
+  rows: Record<string, any>[],
+  fileName: string
+): void {
+
+  if (!rows || rows.length === 0) {
+    return;
+  }
+
+  // Get headers from first object
+  const headers = Object.keys(rows[0]);
+
+  // Convert objects to csv rows
+  const csvRows = rows.map(row =>
+    headers.map(header => row[header])
+  );
+
+  // Build final csv
+  const csvContent = [
+    headers,
+    ...csvRows
+  ]
+    .map(row =>
+      row
+        .map(value =>
+          `"${String(value ?? '').replace(/"/g, '""')}"`
+        )
+        .join(',')
+    )
+    .join('\n');
+
+  // Create file
+  const blob = new Blob([csvContent], {
+    type: 'text/csv;charset=utf-8;'
+  });
+
+  const url = window.URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = fileName;
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  window.URL.revokeObjectURL(url);
+}
+
+  createCsv(data: string[], fileName: string): void {
+
+    const csvContent = [
+      data
+    ]
+      .map(row =>
+        row
+          .map(value => `"${String(value).replace(/"/g, '""')}"`)
+          .join(',')
+      )
+      .join('\n');
+
+    const blob = new Blob([csvContent], {
+      type: 'text/csv;charset=utf-8;'
+    });
+
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+
+    link.click();
+
+    window.URL.revokeObjectURL(url);
   }
 
   updateSeniorTeamNumbers(): void {
