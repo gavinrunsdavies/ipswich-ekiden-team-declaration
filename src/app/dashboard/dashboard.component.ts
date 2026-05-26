@@ -147,7 +147,7 @@ export class DashboardComponent implements OnInit {
               }
 
               this.teams.push(team);
-              this.cdr.detectChanges(); 
+              this.cdr.detectChanges();
               this.messageService.success(`Team ${team.name} created`, true);
             } else {
               this.messageService.error('Team creation returned no team object');
@@ -295,5 +295,19 @@ export class DashboardComponent implements OnInit {
       default:
         return '';
     }
+  }
+
+  getJuniorMinDate(): string {
+    const year = new Date().getFullYear();
+    const cutoff = new Date(year, 7, 31); // 31 Aug this year
+    cutoff.setFullYear(cutoff.getFullYear() - 15); // 15 years before cutoff
+    return cutoff.toISOString().split('T')[0];
+  }
+
+  getJuniorMaxDate(): string {
+    const year = new Date().getFullYear();
+    const cutoff = new Date(year, 7, 31); // 31 Aug this year
+    cutoff.setFullYear(cutoff.getFullYear() - 5); // 5 years before cutoff
+    return cutoff.toISOString().split('T')[0];
   }
 }

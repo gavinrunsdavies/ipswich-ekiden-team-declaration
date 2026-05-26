@@ -1,12 +1,12 @@
-<br/>
+<br />
 <h3>My Teams</h3>
-<hr/>
+<hr />
 <h5>Add New Team</h5>
 <form #createTeamForm="ngForm" (ngSubmit)="createTeam(); createTeamForm.reset()">
   <div class="form-group">
     <label for="name">Team Name</label>
-    <input id="name" type="text" class="form-control" name="name" [(ngModel)]="newTeam.name" #name="ngModel" required minlength="3"
-    />
+    <input id="name" type="text" class="form-control" name="name" [(ngModel)]="newTeam.name" #name="ngModel" required
+      minlength="3" />
     <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
       <div *ngIf="name.errors.required">
         Team name is required.
@@ -19,7 +19,8 @@
   <div class="form-row">
     <div class="form-group col-md-2">
       <label for="race">Senior / Junior Team</label>
-      <select id="race" class="form-control" [(ngModel)]="newTeam.isJuniorTeam" #isJuniorTeam="ngModel" required name="isJuniorTeam">
+      <select id="race" class="form-control" [(ngModel)]="newTeam.isJuniorTeam" #isJuniorTeam="ngModel" required
+        name="isJuniorTeam">
         <option value="0" selected>Senior</option>
         <option value="1">Junior</option>
       </select>
@@ -37,9 +38,10 @@
     </div>
     <div class="form-group col-md-2">
       <label for="submit">&nbsp;</label>
-      <button *ngIf="!formSubmittedIndicator" id="submit" type="submit" class="form-control btn btn-primary" [disabled]="!createTeamForm.form.valid">Add</button>
-      <img *ngIf="formSubmittedIndicator" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
-      />
+      <button *ngIf="!formSubmittedIndicator" id="submit" type="submit" class="form-control btn btn-primary"
+        [disabled]="!createTeamForm.form.valid">Add</button>
+      <img *ngIf="formSubmittedIndicator"
+        src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
     </div>
     <div class="form-group col-md-2">
       <label for="reset">&nbsp;</label>
@@ -47,7 +49,7 @@
     </div>
   </div>
 </form>
-<hr/>
+<hr />
 <h5>Current Teams</h5>
 <div class="card loading" *ngIf="loadingIndicator">
   <div class="card-body">
@@ -64,13 +66,15 @@
             <small *ngIf="team.number > 0">{{team.number}}</small>
             {{team.name}}
             <small *ngIf="team.complete">{{team.category}}</small>
-            <span class="badge " [ngClass]="(team.complete) ? 'badge-success' : 'badge-warning'">{{team.complete ? 'Complete' : 'Incomplete'}}</span>
+            <span class="badge " [ngClass]="(team.complete) ? 'badge-success' : 'badge-warning'">{{team.complete ?
+              'Complete' : 'Incomplete'}}</span>
           </h4>
         </div>
         <div class="col-md-4 text-right">
           <span class="btn-group pull-right">
             <button class="btn btn-primary " (click)="showTeam(team)">{{team.isShown ? 'Hide' : 'Show'}}</button>
-            <button type="button" class="btn btn-danger" (click)="openDeleteTeamModal(deleteTeamModal, team)">Delete</button>
+            <button type="button" class="btn btn-danger"
+              (click)="openDeleteTeamModal(deleteTeamModal, team)">Delete</button>
           </span>
         </div>
       </div>
@@ -81,8 +85,8 @@
           <div class="col-md-8 mb-3">
             <label for="name{{team.id}}">Team Name</label>
             <h4 *ngIf="!editing[team.id]" id="name{{team.id}}">{{team.name}}</h4>
-            <input *ngIf="editing[team.id]" id="name{{team.id}}" type="text" class="form-control" name="name" [(ngModel)]="team.name"
-              #name="ngModel" required minlength="3" />
+            <input *ngIf="editing[team.id]" id="name{{team.id}}" type="text" class="form-control" name="name"
+              [(ngModel)]="team.name" #name="ngModel" required minlength="3" />
             <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
               <div *ngIf="name.errors.required">
                 Team name is required.
@@ -95,8 +99,8 @@
           <div class="col-md-4 mb-3">
             <label for="clubName{{team.id}}">UKA Club Name / Unattached</label>
             <h4 *ngIf="!editing[team.id]" id="clubName{{team.id}}">{{team.clubName}}</h4>
-            <select *ngIf="editing[team.id]" id="clubName{{team.id}}" class="form-control" [(ngModel)]="team.clubId" required name="club"
-              #club="ngModel">
+            <select *ngIf="editing[team.id]" id="clubName{{team.id}}" class="form-control" [(ngModel)]="team.clubId"
+              required name="club" #club="ngModel">
               <option value="" selected>Choose...</option>
               <option *ngFor="let club of clubs" [value]="club.id">{{club.name}}</option>
             </select>
@@ -117,36 +121,42 @@
               <td scope="row">{{runner.leg}} - {{getLegDistance(runner.leg)}}</td>
               <td>
                 <span *ngIf="!editing[team.id]">{{runner.name}}</span>
-                <input autofocus *ngIf="editing[team.id]" type="text" [(ngModel)]="team.runners[index].name" name="name-{{index}}" />
+                <input autofocus *ngIf="editing[team.id]" type="text" [(ngModel)]="team.runners[index].name"
+                  name="name-{{index}}" />
               </td>
               <td>
                 <span *ngIf="!editing[team.id]">{{runner.gender}}</span>
-                <select *ngIf="editing[team.id]" [(ngModel)]="team.runners[index].gender" name="gender-{{index}}" (change)="onGenderChange(runner, $event)">
+                <select *ngIf="editing[team.id]" [(ngModel)]="team.runners[index].gender" name="gender-{{index}}"
+                  (change)="onGenderChange(runner, $event)">
                   <option *ngFor="let key of genderKeys" [value]="key">{{gender[key]}}</option>
                 </select>
               </td>
               <td>
                 <span *ngIf="!editing[team.id]">{{runner.ageCategory}}</span>
-                <select *ngIf="editing[team.id]" [(ngModel)]="team.runners[index].ageCategory" name="ageCategory-{{index}}">
-                  <option [disabled]="'Male' == team.runners[index].gender && (key == 'V35' || key == 'V45')" *ngFor="let key of ageCategoriesKeys"
-                    [value]="key">{{ageCategory[key]}}</option>
+                <select *ngIf="editing[team.id]" [(ngModel)]="team.runners[index].ageCategory"
+                  name="ageCategory-{{index}}">
+                  <option [disabled]="'Male' == team.runners[index].gender && (key == 'V35' || key == 'V45')"
+                    *ngFor="let key of ageCategoriesKeys" [value]="key">{{ageCategory[key]}}</option>
                 </select>
               </td>
               <td>
                 <span *ngIf="!editing[team.id]">{{runner.medicalInfo}}</span>
-                <input *ngIf="editing[team.id]" type="text" [(ngModel)]="team.runners[index].medicalInfo" name="medicalInfo-{{index}}" />
+                <input *ngIf="editing[team.id]" type="text" [(ngModel)]="team.runners[index].medicalInfo"
+                  name="medicalInfo-{{index}}" />
               </td>
             </tr>
           </tbody>
         </table>
         <!-- buttons -->
         <div class="btn-edit">
-          <button type="button" class="btn btn-secondary" *ngIf="!inEditMode(team.id)" (click)="editTeam(team.id)">edit</button>
+          <button type="button" class="btn btn-secondary" *ngIf="!inEditMode(team.id)"
+            (click)="editTeam(team.id)">edit</button>
         </div>
         <div class="btn-form" *ngIf="inEditMode(team.id)">
           <span class="btn-group pull-left">
             <button type="submit" *ngIf="inEditMode(team.id)" class="btn btn-primary">save</button>
-            <button type="button" *ngIf="inEditMode(team.id)" class="btn btn-secondary" (click)="cancelTeamEdit(team)">cancel</button>
+            <button type="button" *ngIf="inEditMode(team.id)" class="btn btn-secondary"
+              (click)="cancelTeamEdit(team)">cancel</button>
           </span>
           Please enter the runner's full name, gender, age category and any medical information.
         </div>
@@ -162,13 +172,15 @@
             <small *ngIf="team.number > 0">{{team.number}}</small>
             {{team.name}}
             <small *ngIf="team.complete">{{team.category}}</small>
-            <span class="badge " [ngClass]="(team.complete) ? 'badge-success' : 'badge-warning'">{{team.complete ? 'Complete' : 'Incomplete'}}</span>
+            <span class="badge " [ngClass]="(team.complete) ? 'badge-success' : 'badge-warning'">{{team.complete ?
+              'Complete' : 'Incomplete'}}</span>
           </h4>
         </div>
         <div class="col-md-4 text-right">
           <span class="btn-group pull-right">
             <button class="btn btn-primary " (click)="showTeam(team)">{{team.isShown ? 'Hide' : 'Show'}}</button>
-            <button type="button" class="btn btn-danger" (click)="openDeleteTeamModal(deleteTeamModal, team)">Delete</button>
+            <button type="button" class="btn btn-danger"
+              (click)="openDeleteTeamModal(deleteTeamModal, team)">Delete</button>
           </span>
         </div>
       </div>
@@ -179,8 +191,8 @@
           <div class="col-md-8 mb-3">
             <label for="name{{team.id}}">Team Name</label>
             <h4 *ngIf="!editing[team.id]" id="name{{team.id}}">{{team.name}}</h4>
-            <input *ngIf="editing[team.id]" id="name{{team.id}}" type="text" class="form-control" name="name" [(ngModel)]="team.name"
-              #name="ngModel" required minlength="3" />
+            <input *ngIf="editing[team.id]" id="name{{team.id}}" type="text" class="form-control" name="name"
+              [(ngModel)]="team.name" #name="ngModel" required minlength="3" />
             <div *ngIf="name.invalid && (name.dirty || name.touched)" class="alert alert-danger">
               <div *ngIf="name.errors.required">
                 Team name is required.
@@ -193,8 +205,8 @@
           <div class="col-md-4 mb-3">
             <label for="clubName{{team.id}}">UKA Club Name / Unattached</label>
             <h4 *ngIf="!editing[team.id]" id="clubName{{team.id}}">{{team.clubName}}</h4>
-            <select *ngIf="editing[team.id]" id="clubName{{team.id}}" class="form-control" [(ngModel)]="team.clubId" required name="club"
-              #club="ngModel">
+            <select *ngIf="editing[team.id]" id="clubName{{team.id}}" class="form-control" [(ngModel)]="team.clubId"
+              required name="club" #club="ngModel">
               <option value="" selected>Choose...</option>
               <option *ngFor="let club of clubs" [value]="club.id">{{club.name}}</option>
             </select>
@@ -215,33 +227,39 @@
               <td scope="row">{{runner.leg}}</td>
               <td>
                 <span *ngIf="!editing[team.id]">{{runner.name}}</span>
-                <input autofocus *ngIf="editing[team.id]" type="text" [(ngModel)]="team.runners[index].name" name="name-{{index}}" />
+                <input autofocus *ngIf="editing[team.id]" type="text" [(ngModel)]="team.runners[index].name"
+                  name="name-{{index}}" />
               </td>
               <td>
                 <span *ngIf="!editing[team.id]">{{runner.gender}}</span>
-                <select *ngIf="editing[team.id]" [(ngModel)]="team.runners[index].gender" name="gender-{{index}}" (change)="onGenderChange(runner, $event)">
+                <select *ngIf="editing[team.id]" [(ngModel)]="team.runners[index].gender" name="gender-{{index}}"
+                  (change)="onGenderChange(runner, $event)">
                   <option *ngFor="let key of genderKeys" [value]="key">{{gender[key]}}</option>
                 </select>
               </td>
               <td>
                 <span *ngIf="!editing[team.id]">{{runner.dateOfBirth}}</span>
-                <input *ngIf="editing[team.id]" type="date" [(ngModel)]="team.runners[index].dateOfBirth" name="dateOfBirth-{{index}}" />
+                <input *ngIf="editing[team.id]" type="date" [(ngModel)]="team.runners[index].dateOfBirth"
+                  name="dateOfBirth-{{index}}" [min]="getJuniorMinDate()" [max]="getJuniorMaxDate()" />
               </td>
               <td>
                 <span *ngIf="!editing[team.id]">{{runner.medicalInfo}}</span>
-                <input *ngIf="editing[team.id]" type="text" [(ngModel)]="team.runners[index].medicalInfo" name="medicalInfo-{{index}}" />
+                <input *ngIf="editing[team.id]" type="text" [(ngModel)]="team.runners[index].medicalInfo"
+                  name="medicalInfo-{{index}}" />
               </td>
             </tr>
           </tbody>
         </table>
         <!-- buttons -->
         <div class="btn-group">
-          <button type="button" class="btn btn-secondary" *ngIf="!inEditMode(team.id)" (click)="editTeam(team.id)">edit</button>
+          <button type="button" class="btn btn-secondary" *ngIf="!inEditMode(team.id)"
+            (click)="editTeam(team.id)">edit</button>
         </div>
         <div class="btn-form" *ngIf="inEditMode(team.id)">
           <span class="btn-group pull-left">
             <button type="submit" *ngIf="inEditMode(team.id)" class="btn btn-primary">save</button>
-            <button type="button" *ngIf="inEditMode(team.id)" class="btn btn-secondary" (click)="cancelTeamEdit(team)">cancel</button>
+            <button type="button" *ngIf="inEditMode(team.id)" class="btn btn-secondary"
+              (click)="cancelTeamEdit(team)">cancel</button>
           </span>
           Please enter the runner's full name, gender, date of birth and any medical information.
         </div>
