@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 
 import { Team } from '../models/team';
@@ -8,9 +12,12 @@ import { AuthService } from '../services/auth.service';
 import { TeamService } from '../services/team.service';
 import { MessageService } from '../services/message.service';
 import { FilterPipe } from '../filter.pipe';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-admin',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule, NgxPaginationModule, FilterPipe, SpinnerComponent],
   templateUrl: './admin.component.html',
   styleUrls: ['./admin.component.css']
 })
@@ -23,55 +30,67 @@ export class AdminComponent implements OnInit {
   seniorsSearchString: string;
   juniorsSearchString: string;
   searchableList = ['name', 'clubName'];
-  seniorData: any[];
-  juniorData: any[];
-  seniorTeams: Team[];
-  juniorTeams: Team[];
-  juniorHeaders: string[];
-  seniorHeaders: string[];
-  loadingIndicator: any = {};
+  seniorData: any[] = [];
+  juniorData: any[] = [];
+  seniorTeams: Team[] = [];
+  juniorTeams: Team[] = [];
+  juniorHeaders: string[] = [];
+  seniorHeaders: string[] = [];
+  loadingIndicator: { seniors: boolean; juniors: boolean; preview: boolean } = {
+    seniors: false,
+    juniors: false,
+    preview: false
+  };
   formSubmittedIndicator = false;
-  download: any = {};
 
   constructor(
     private router: Router,
     private authenticationService: AuthService,
     private messageService: MessageService,
-    private teamService: TeamService) { }
+    private teamService: TeamService,
+    private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.authenticationService.ensureAuthenticated()
-      .subscribe(
-        user => {
+      .subscribe({
+        next: user => {
           if (user.isAdmin) {
             this.getPreview();
-            this.getTeams('seniors', this.seniorTeams);
-            this.getTeams('juniors', this.juniorTeams);
+            this.getTeams('seniors');
+            this.getTeams('juniors');
           } else {
             this.router.navigate(['/']);
           }
         },
-        error => {
+        error: () => {
           this.router.navigate(['/']);
-        });
+        }});
   }
 
-  getTeams(race: string, data: Team[]): void {
+  getTeams(race: string): void {
     this.loadingIndicator[race] = true;
     this.teamService.getTeams(race)
+      .pipe(finalize(() => {
+        console.log(`getTeams finalize: setting loadingIndicator[${race}] to false`);
+        this.loadingIndicator[race] = false;
+        this.cdr.detectChanges();
+      }))
       .subscribe(teams => {
         if (race == 'seniors') {
           this.seniorTeams = teams;
         } else {
           this.juniorTeams = teams;
         }
-        this.loadingIndicator[race] = false;
       });
   }
 
   getPreview(): void {
-    this.loadingIndicator['preview'] = true;
+    this.loadingIndicator.preview = true;
     this.teamService.getTeamDeclartionPreview()
+      .pipe(finalize(() => {
+        this.loadingIndicator.preview = false;
+        this.cdr.detectChanges();
+      }))
       .subscribe(data => {
         this.seniorData = data.seniors;
         if (data.seniors.length > 0) {
@@ -82,20 +101,91 @@ export class AdminComponent implements OnInit {
         if (data.juniors.length > 0) {
           this.juniorHeaders = Object.getOwnPropertyNames(data.juniors[0]);
         }
-
-        this.loadingIndicator['preview'] = false;
-      }
-      );
+      });
   }
 
-  send(): void {
+  download(): void {
     this.formSubmittedIndicator = true;
-    this.teamService.sendTeamDeclarations(this.download.email)
-      .subscribe(data => {
-        this.messageService.success(`Email sent to ${this.download.email} with team declaratiosn attached.`, true);
-        this.formSubmittedIndicator = false;
-      }
-      );
+    console.log('download called');
+    this.downloadCsv(this.seniorData, 'senior-teams.csv');
+    this.downloadCsv(this.juniorData, 'junior-teams.csv');
+    this.formSubmittedIndicator = false;
+  }
+
+  downloadCsv(
+  rows: Record<string, any>[],
+  fileName: string
+): void {
+
+  if (!rows || rows.length === 0) {
+    return;
+  }
+
+  // Get headers from first object
+  const headers = Object.keys(rows[0]);
+
+  // Convert objects to csv rows
+  const csvRows = rows.map(row =>
+    headers.map(header => row[header])
+  );
+
+  // Build final csv
+  const csvContent = [
+    headers,
+    ...csvRows
+  ]
+    .map(row =>
+      row
+        .map(value =>
+          `"${String(value ?? '').replace(/"/g, '""')}"`
+        )
+        .join(',')
+    )
+    .join('\n');
+
+  // Create file
+  const blob = new Blob([csvContent], {
+    type: 'text/csv;charset=utf-8;'
+  });
+
+  const url = window.URL.createObjectURL(blob);
+
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = fileName;
+
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  window.URL.revokeObjectURL(url);
+}
+
+  createCsv(data: string[], fileName: string): void {
+
+    const csvContent = [
+      data
+    ]
+      .map(row =>
+        row
+          .map(value => `"${String(value).replace(/"/g, '""')}"`)
+          .join(',')
+      )
+      .join('\n');
+
+    const blob = new Blob([csvContent], {
+      type: 'text/csv;charset=utf-8;'
+    });
+
+    const url = window.URL.createObjectURL(blob);
+
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+
+    link.click();
+
+    window.URL.revokeObjectURL(url);
   }
 
   updateSeniorTeamNumbers(): void {
@@ -105,15 +195,15 @@ export class AdminComponent implements OnInit {
       return;
     }
     this.teamService.updateTeamNumbers(this.seniorTeams, 'seniors')
-      .subscribe(
-        teams => {
+      .subscribe({
+        next: teams => {
           this.seniorTeams = teams;
           this.messageService.success(`Senior team numbers updated.`, true);
         },
-        error => {
+        error: () => {
           this.messageService.error(`Error updating senior team numbers.`, true);
         }
-      );
+      });
   }
 
   updateJuniorTeamNumbers(): void {
@@ -123,15 +213,15 @@ export class AdminComponent implements OnInit {
       return;
     }
     this.teamService.updateTeamNumbers(this.juniorTeams, 'juniors')
-      .subscribe(
-        teams => {
+      .subscribe({
+        next: teams => {
           this.juniorTeams = teams;
           this.messageService.success(`Junior team numbers updated.`, true);
         },
-        error => {
+        error: () => {
           this.messageService.error(`Error updating senior team numbers.`, true);
         }
-      );
+      });
   }
 
   private validateTeamNumbers(teams: Team[]) {

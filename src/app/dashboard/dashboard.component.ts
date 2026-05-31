@@ -1,6 +1,10 @@
-import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { Router } from '@angular/router';
+import { finalize } from 'rxjs/operators';
 
 
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -13,9 +17,13 @@ import { Club } from '../models/club';
 import { AuthService } from '../services/auth.service';
 import { TeamService } from '../services/team.service';
 import { MessageService } from '../services/message.service';
+import { TeamFilterPipe } from './team-filter.pipe';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-dashboard',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule, NgbModule, TeamFilterPipe, SpinnerComponent],
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
@@ -42,7 +50,8 @@ export class DashboardComponent implements OnInit {
     private authenticationService: AuthService,
     private teamService: TeamService,
     private messageService: MessageService,
-    private modalService: NgbModal) {
+    private modalService: NgbModal,
+    private cdr: ChangeDetectorRef) {
     this.ageCategoriesKeys = Object.keys(this.ageCategory);
     this.juniorAgeCategoriesKeys = Object.keys(this.juniorAgeCategory);
     this.genderKeys = Object.keys(this.gender);
@@ -50,56 +59,61 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.authenticationService.ensureAuthenticated()
-      .subscribe(
-      success => {
-        this.getMyTeams();
-        this.getClubs();
-      },
-      error => {
-        this.router.navigate(['/']);
+      .subscribe({
+        next: () => {
+          this.loadDashboardData();
+        },
+        error: () => {
+          this.loadingIndicator = false;
+          this.router.navigate(['/']);
+        }
       });
   }
 
-  getMyTeams(): void {
+  loadDashboardData(): void {
     this.loadingIndicator = true;
+
     this.teamService.getMyTeams()
-      .subscribe(teams => {
-        this.teams = teams;
-
-        // Add placeholders for runner legs
-        for (let i = 0; i < this.teams.length; i++) {
-          this.addRunnerPlaceHolders(this.teams[i]);
-        }
-
+      .pipe(finalize(() => {
+        console.log('getMyTeams finalize: setting loadingIndicator to false');
         this.loadingIndicator = false;
-      }
-      );
-  }
+        this.cdr.detectChanges();
+      }))
+      .subscribe({
+        next: teams => {
+          console.log('getMyTeams next: received teams', teams);
+          this.teams = teams || [];
 
-  getClubs(): void {
+          // Add placeholders for runner legs
+          for (let i = 0; i < this.teams.length; i++) {
+            this.addRunnerPlaceHolders(this.teams[i]);
+          }
+        },
+        error: error => {
+          console.log('getMyTeams error:', error);
+          console.error('Error loading teams:', error);
+        }
+      });
+
     this.teamService.getClubs()
-      .subscribe(clubs => {
-        this.clubs = clubs;
-      }
-      );
+      .subscribe({
+        next: clubs => {
+          console.log('getClubs next: received clubs', clubs);
+          this.clubs = clubs || [];
+        },
+        error: error => {
+          console.log('getClubs error:', error);
+          console.error('Error loading clubs:', error);
+        }
+      });
   }
 
   showTeam(team): void {
     team.isShown = !team.isShown;
   }
 
-  trackById(index, team) {
+  trackById(_index, team) {
     return team.id;
-  }
-
-  public onAffiliationChange(event): void {
-    const Unattached = 989;
-    const newAffiliationValue = event.target.value;
-    if (newAffiliationValue == 0) {
-      this.newTeam.clubId = Unattached;
-    } else {
-      this.newTeam.clubId = '';
-    }
   }
 
   public onGenderChange(runner, event): void {
@@ -113,29 +127,35 @@ export class DashboardComponent implements OnInit {
     try {
       this.formSubmittedIndicator = true;
       this.teamService.addTeam(this.newTeam)
-        .subscribe(
-        team => {
-          if (team && team.id > 0) {
-            let newRunner: Runner;
-            let legs = 6;
-            if (team.isJuniorTeam) {
-              legs = 4;
-            }
-
-            for (let i = 1; i <= legs; i++) {
-              newRunner = new Runner();
-              newRunner.leg = i;
-              team.runners.push(newRunner);
-            }
-
-            this.teams.push(team);
-            this.messageService.success(`Team ${team.name} created`, true);
-            this.formSubmittedIndicator = false;
-          }
-        },
-        error => {
-          this.messageService.error(error);
+        .pipe(finalize(() => {
           this.formSubmittedIndicator = false;
+          this.cdr.detectChanges();
+        }))
+        .subscribe({
+          next: team => {
+            if (team) {
+              let newRunner: Runner;
+              let legs = 6;
+              if (team.isJuniorTeam) {
+                legs = 4;
+              }
+
+              for (let i = 1; i <= legs; i++) {
+                newRunner = new Runner();
+                newRunner.leg = i;
+                team.runners.push(newRunner);
+              }
+
+              this.teams.push(team);
+              this.cdr.detectChanges();
+              this.messageService.success(`Team ${team.name} created`, true);
+            } else {
+              this.messageService.error('Team creation returned no team object');
+            }
+          },
+          error: error => {
+            this.messageService.error(error);
+          }
         });
     } catch (e) {
       this.formSubmittedIndicator = false;
@@ -147,25 +167,26 @@ export class DashboardComponent implements OnInit {
     // Save team, Update, set to view mode.
 
     this.teamService.updateTeam(team)
-      .subscribe(
-      updatedTeam => {
+      .subscribe({
+        next: updatedTeam => {
 
-        this.addRunnerPlaceHolders(updatedTeam);
+          this.addRunnerPlaceHolders(updatedTeam);
 
-        // Update array
-        for (let i = 0; i < this.teams.length; i++) {
-          if (this.teams[i].id == updatedTeam.id) {
-            this.teams[i] = updatedTeam;
-            this.teams[i].isShown = true;
-            break;
+          // Update array
+          for (let i = 0; i < this.teams.length; i++) {
+            if (this.teams[i].id == updatedTeam.id) {
+              this.teams[i] = updatedTeam;
+              this.teams[i].isShown = true;
+              break;
+            }
           }
+
+          this.messageService.success(`Team ${updatedTeam.name} updated`, true);
+
+        },
+        error: error => {
+          this.messageService.error(error);
         }
-
-        this.messageService.success(`Team ${updatedTeam.name} updated`, true);
-
-      },
-      error => {
-        this.messageService.error(error);
       });
 
     this.editing[team.id] = false;
@@ -185,30 +206,43 @@ export class DashboardComponent implements OnInit {
 
   openDeleteTeamModal(deleteTeamModal, team) {
     this.selectedDeleteTeam = team;
-    this.modalService.open(deleteTeamModal).result.then((result) => {
-      // Closed
-    }, (reason) => {
-      // Dismissed
+    const modalRef = this.modalService.open(
+      deleteTeamModal,
+      { container: 'body', backdrop: true, windowClass: 'modal-above-all' }
+    );
+
+    modalRef.result.then(
+      () => {
+        this.deleteTeam();
+        this.cdr.detectChanges();
+      },
+      () => {
+        // dismissed, do nothing
+      }
+    ).finally(() => {
+      // Force cleanup any lingering backdrop
+      document.querySelectorAll('ngb-modal-backdrop').forEach(el => el.remove());
     });
   }
 
   deleteTeam() {
     this.teamService.deleteTeam(this.selectedDeleteTeam)
-      .subscribe(
-      success => {
+      .subscribe({
+        next: () => {
 
-        for (let i = this.teams.length - 1; i >= 0; i--) {
-          if (this.teams[i].id == this.selectedDeleteTeam.id) {
-            this.teams.splice(i, 1);
-            break;
+          for (let i = this.teams.length - 1; i >= 0; i--) {
+            if (this.teams[i].id == this.selectedDeleteTeam.id) {
+              this.teams.splice(i, 1);
+              break;
+            }
           }
+          this.cdr.detectChanges();
+          this.messageService.success(`Team ${this.selectedDeleteTeam.name} deleted`, true);
+
+        },
+        error: error => {
+          this.messageService.error(error);
         }
-
-        this.messageService.success(`Team ${this.selectedDeleteTeam.name} deleted`, true);
-
-      },
-      error => {
-        this.messageService.error(error);
       });
   }
 
@@ -249,15 +283,31 @@ export class DashboardComponent implements OnInit {
 
   getLegDistance(leg: any) {
     switch (String(leg)) {
-      case "1" :
+      case "1":
         return "7.2K";
-      case "2" :
-      case "4" :
-      case "6" :
+      case "2":
+      case "4":
+      case "6":
         return "5K";
-      case "3" :
-      case "5" :
+      case "3":
+      case "5":
         return "10K";
+      default:
+        return '';
     }
+  }
+
+  getJuniorMinDate(): string {
+    const year = new Date().getFullYear();
+    const cutoff = new Date(year, 7, 31); // 31 Aug this year
+    cutoff.setFullYear(cutoff.getFullYear() - 15); // 15 years before cutoff
+    return cutoff.toISOString().split('T')[0];
+  }
+
+  getJuniorMaxDate(): string {
+    const year = new Date().getFullYear();
+    const cutoff = new Date(year, 7, 31); // 31 Aug this year
+    cutoff.setFullYear(cutoff.getFullYear() - 5); // 5 years before cutoff
+    return cutoff.toISOString().split('T')[0];
   }
 }

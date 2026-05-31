@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { Subject } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { NgbAlertModule } from '@ng-bootstrap/ng-bootstrap';
 import { MessageService } from '../services/message.service';
 
 @Component({
   selector: 'app-messages',
+  standalone: true,
+  imports: [CommonModule, NgbAlertModule],
   templateUrl: './messages.component.html',
   styleUrls: ['./messages.component.css']
 })

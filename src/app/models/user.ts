@@ -8,5 +8,5 @@ export class User {
     token: string;
     isAdmin: boolean;
 
-  constructor(email?: string, password?: string) {}
+  constructor(_email?: string, _password?: string) {}
 }

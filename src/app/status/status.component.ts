@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription ,  Subject } from 'rxjs';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { RouterModule } from '@angular/router';
+import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 
 import { User } from '../models/user';
 import { AuthService } from '../services/auth.service';
@@ -8,6 +11,8 @@ import { MessageService } from '../services/message.service';
 
 @Component({
   selector: 'app-status',
+  standalone: true,
+  imports: [CommonModule, FormsModule, RouterModule],
   templateUrl: './status.component.html',
   styleUrls: ['./status.component.css']
 })
@@ -19,7 +24,6 @@ export class StatusComponent {
   model: any = {};
 
   constructor(
-    private route: ActivatedRoute,
     private router: Router,
     private authenticationService: AuthService,
     private messageService: MessageService) {
@@ -32,12 +36,12 @@ export class StatusComponent {
   login(): void {
     this.loading = true;
     this.authenticationService.login(this.model.email, this.model.password)
-      .subscribe(
-        data => {
+      .subscribe({
+        next: () => {
           this.loading = false;
           this.router.navigate(['/dashboard']);
         },
-        error => {
+        error: error => {
           let message = 'ERROR: Login failed. Please try again.';
           if (error.status == 403) {
             message = 'ERROR: Incorrect email or password.';
@@ -46,7 +50,7 @@ export class StatusComponent {
 
           this.messageService.error(message);
           this.loading = false;
-        });
+        }});
   }
 
   logout(): void {

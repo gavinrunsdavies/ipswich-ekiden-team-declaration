@@ -12,7 +12,10 @@
           </div>
           <input type="text" class="form-control" placeholder="Team name or club name or category" [(ngModel)]="searchString">
         </div>
-        <div class="list-group teams">
+        <div *ngIf="!teams || teams.length === 0" class="alert alert-info">
+          <p>No teams found for this category.</p>
+        </div>
+        <div *ngIf="teams && teams.length > 0" class="list-group teams">
           <li *ngFor="let team of teams | FilterPipe: searchString : searchableList | paginate: { itemsPerPage: 10, currentPage: currentPageNumber }"
             class="list-group-item list-group-item-action flex-column align-items-start mb-1" [class.selected]="selectedTeam && team.id === selectedTeam.id"
             (click)="showTeam(team)">

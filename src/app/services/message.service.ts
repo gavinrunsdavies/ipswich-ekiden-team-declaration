@@ -4,19 +4,19 @@ import { Observable ,  Subject } from 'rxjs';
 
 @Injectable()
 export class MessageService {
-    private subject = new Subject<any>();
+    private subject = new Subject<any | null>();
     private keepAfterNavigationChange = false;
 
     constructor(private router: Router) {
         // clear alert message on route change
-        router.events.subscribe(event => {
+        this.router.events.subscribe(event => {
             if (event instanceof NavigationStart) {
                 if (this.keepAfterNavigationChange) {
                     // only keep for a single location change
                     this.keepAfterNavigationChange = false;
                 } else {
                     // clear alert
-                    this.subject.next();
+                    this.subject.next(null);
                 }
             }
         });

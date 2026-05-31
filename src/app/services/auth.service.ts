@@ -5,14 +5,14 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Router } from '@angular/router';
 import { User } from '../models/user';
-import { Observable ,  Subject } from 'rxjs';
+import { Observable ,  Subject, of } from 'rxjs';
 import { environment } from '../../environments/environment';
 
 @Injectable()
 export class AuthService {
   private headers: HttpHeaders = new HttpHeaders({ 'Content-Type': 'application/json' });
 
-  private currentUserSubject: Subject<User>;
+  private currentUserSubject: Subject<User | null>;
 
   constructor(private router: Router,
     private http: HttpClient) {
@@ -43,7 +43,7 @@ export class AuthService {
   logout() {
     // remove user from local storage to log user out and clear observable
     sessionStorage.removeItem('currentUser');
-    this.currentUserSubject.next();
+    this.currentUserSubject.next(null);
 
     this.router.navigateByUrl('/');
 
@@ -54,24 +54,28 @@ export class AuthService {
     return this.currentUserSubject.asObservable();
   }
 
-  ensureAuthenticated() {
+  ensureAuthenticated(): Observable<User | null> {
     const localStorageCurrentUser = sessionStorage.getItem('currentUser');
 
     if (localStorageCurrentUser) {
       const user = JSON.parse(localStorageCurrentUser);
+      this.currentUserSubject.next(user);
+      
       const url = `${environment.baseUrl}/wp-json/jwt-auth/v1/token/Validate`;
       const headers: HttpHeaders = new HttpHeaders({
         'Content-Type': 'application/json',
         Authorization: `Bearer ${user.token}`
       });
-      return this.http.post<any>(url, { headers: headers }).pipe(
+      return this.http.post<any>(url, {}, { headers: headers }).pipe(
         map(validateResponse => {
           // tslint:disable-next-line:triple-equals
           if (validateResponse.data.status == '200') {
             this.currentUserSubject.next(user);
             return user;
           }
+          return null;
         }));
     }
+    return of(null);
   }
 }

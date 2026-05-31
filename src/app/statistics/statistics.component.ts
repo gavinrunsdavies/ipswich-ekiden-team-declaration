@@ -1,12 +1,15 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectionStrategy, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import { BrowserModule } from '@angular/platform-browser';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TeamService } from '../services/team.service';
 import { Statistics, StatisticItem } from '../models/statistics';
+import { SpinnerComponent } from '../spinner/spinner.component';
 
 @Component({
   selector: 'app-statistics',
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [CommonModule, NgxChartsModule, SpinnerComponent],
   templateUrl: './statistics.component.html',
   styleUrls: ['./statistics.component.css']
 })
@@ -40,7 +43,7 @@ export class StatisticsComponent implements OnInit {
   };
   view: any[] = [1000, 400];
 
-  constructor(private teamService: TeamService) { }
+  constructor(private teamService: TeamService, private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {
     this.getStatistics();
@@ -92,14 +95,7 @@ export class StatisticsComponent implements OnInit {
           'value': `${this.juniorTeamsCount}`
         }];
         this.loadingIndicator = false;
+        this.cdr.markForCheck();
       });
-  }
-
-  gdpLabelFormatting(c) {
-    return `${c.label}<br/><small class="number-card-label">GDP Per Capita</small>`;
-  }
-
-  statusLabelFormat(c): string {
-    return `${c.label}<br/><small class="number-card-label">This week</small>`;
-  }
+  }  
 }

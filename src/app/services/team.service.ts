@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 
 import { Observable ,  of } from 'rxjs';
-import { catchError, map, tap } from 'rxjs/operators';
+import { catchError, tap } from 'rxjs/operators';
 
 import { Team } from '../models/team';
 import { Club } from '../models/club';
 import { Statistics } from '../models/statistics';
-import { MessageService } from './message.service';
+ 
 import { environment } from '../../environments/environment';
 
 @Injectable()
@@ -20,8 +20,7 @@ export class TeamService {
   };
 
   constructor(
-    private http: HttpClient,
-    private messageService: MessageService) { }
+    private http: HttpClient) { }
 
   getStatistics(): Observable<Statistics> {
     const url = `${this.teamsUrl}/statistics`;
@@ -41,7 +40,7 @@ export class TeamService {
     }
     return this.http.get<Team[]>(url)
       .pipe(
-        tap(teams => this.log(`fetched teams`)),
+        tap(() => this.log(`fetched teams`)),
         catchError(this.handleError('getTeams', []))
       );
   }
@@ -50,7 +49,7 @@ export class TeamService {
     const url = `${this.teamsUrl}/clubs`;
     return this.http.get<Club[]>(url)
       .pipe(
-        tap(clubs => this.log(`fetched clubs`)),
+        tap(() => this.log(`fetched clubs`)),
         catchError(this.handleError('getClubs', []))
       );
   }
@@ -59,7 +58,7 @@ export class TeamService {
     const url = `${this.teamsUrl}/myteams`;
     return this.http.get<Team[]>(url)
       .pipe(
-        tap(teams => this.log(`fetched teams`)),
+        tap(() => this.log(`fetched teams`)),
         catchError(this.handleError('getMyTeams', []))
       );
   }
